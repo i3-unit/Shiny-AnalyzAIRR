@@ -52,7 +52,7 @@ compareSampleTab <-
                             selectizeInput(
                                 "renyiLevel",
                                 "Select level",
-                                choices = list("V", "J", "VJ", "VpJ", "CDR3aa"),
+                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
                         ),
                         column(width = 3,
@@ -66,15 +66,15 @@ compareSampleTab <-
                 ),
                 tabPanel("Dissimilarity Analysis",
                     fluidRow(
-                        column(width = 3,
+                        column(width = 5,
                             selectizeInput(
                                 "dissimilarityLevel",
                                 "Select level",
-                                choices = list("V", "J", "VJ", "VpJ", "CDR3aa"),
+                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                 options = list(onInitialize = I('function() { this.setValue(""); }'))
                             )
                         ),
-                        column(width = 3,
+                        column(width = 5,
                             selectizeInput("dissimilarityIndex", "Select dissimlarity Index",
                                 choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
                                     "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
@@ -82,8 +82,21 @@ compareSampleTab <-
                                 options = list(onInitialize = I('function() { this.setValue(""); }'))
                             )
                         ),
-                        column(width = 3,
-                            uiOutput("GrpColMDS")
+                        column(width = 5,
+                               selectizeInput("dissimilarityClustering", "Select dissimlarity Clustering",
+                                              choices = list("ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
+                                                             "median", "centroid"),
+                                              options = list(onInitialize = I('function() { this.setValue(""); }'))
+                               )
+                        ),
+                        column(width = 5,
+                               selectizeInput("dissimilarityMethod", "Select dissimlarity Method",
+                                              choices = list("MDS", "PCA"),
+                                              options = list(onInitialize = I('function() { this.setValue(""); }'))
+                               )
+                        ),
+                        column(width = 5,
+                               uiOutput("GrpColMDS")
                         )
                     ),
                     splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
@@ -100,8 +113,8 @@ compareSampleTab <-
                         column(width = 3, 
                             selectInput("distribVpJGroupMeth", 
                                 "Select method",
-                                choices = c("counts" = "counts", "frequency" = "frequency"), #modified by VMH
-                                selected = "counts"   #modified by VMH
+                                choices = c("count" = "count", "frequency" = "frequency"), #modified by VMH
+                                selected = "count"   #modified by VMH
                             )
                         )
                     ),
@@ -113,7 +126,7 @@ compareSampleTab <-
                         column(width = 2,
                             selectizeInput("vennLevel",
                                 "Select level",
-                                choices = list("V", "J", "VJ", "VpJ", "CDR3aa"),
+                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                 options = list(onInitialize = I('function() { this.setValue(""); }'))
                             )
                         ),
@@ -140,7 +153,7 @@ compareSampleTab <-
                         #    )    
                         #)
                     ),
-                    plotOutput("plotVenn", height = 800, width = 800),
+                    plotOutput("plotEulerr", height = 800, width = 800),
                     busyIndicator(wait = 500)
                 ),
                 tabPanel("Multivariate scores",
@@ -168,7 +181,7 @@ compareSampleTab <-
                         column(width = 3,
                             selectizeInput("count2v2Level",
                                 "Select level",
-                                choices = list("V", "J", "VJ", "VpJ", "CDR3aa"),
+                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                 options = list(onInitialize = I('function() { this.setValue(""); }'))
                             )
                         ),

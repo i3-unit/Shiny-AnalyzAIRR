@@ -63,7 +63,7 @@ source("tabs/server_multiplesamples.R", local = TRUE)
     # Don't execute filter if filter-button has never been clicked.
     #    return(NULL)
     #} else {
-        out <- rarefyRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
+        out <- sampleRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
         return(out)
     #}    
     })
@@ -86,7 +86,7 @@ source("tabs/server_perturbation.R", local = TRUE)
 #  download RDS section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
     # sample info render
-    output$singleInfoDT <- renderDataTable(sData(RepSeqDT())[input$singleSample,], options=list(scrollX=TRUE))
+    output$singleInfoDT <- renderDataTable(mData(RepSeqDT())[input$singleSample,], options=list(scrollX=TRUE))
     # count assay render 
     output$singleAssayDT <- renderDataTable(assay(RepSeqDT())[lib == input$singleSample], options=list(scrollX=TRUE))
     # 

@@ -10,7 +10,7 @@
     # create reactive
     raretabreactive <- reactive({
         if (is.na(match("raretab", names(mData(RepSeqDT()))))) {
-            raretab <- raretabRepSeq(RepSeqDT())
+            raretab <- rarefactionTab(RepSeqDT())
         } else {
             raretab <- mData(RepSeqDT())$raretab
         }
@@ -23,21 +23,21 @@
     # plot rarefaction curves
     output$rarecurves <- renderPlot({
         validate(need(!(is.null(input$rareGroup) || input$rareGroup == ""), ""))
-        sdata <- copy(sData(RepSeqDT()))
+        sdata <- copy(mData(RepSeqDT()))
         setDT(sdata, keep.rownames=TRUE)
-        names(sdata)[1] <- "lib"
-        #raretab <- raretable$raretab[sdata, on = "lib"]
-        raretab <- raretabreactive()[sdata, on = "lib"]
+        names(sdata)[1] <- "sample_id"
+        #raretab <- raretable$raretab[sdata, on = "sample_id"]
+        raretab <- raretabreactive()[sdata, on = "sample_id"]
         
-        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
-        names=as.vector(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
+        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
+        names=as.vector(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
         ann_colors<-vector("list")
         for(i in unique(names)){
           
-          l<- length(unique(sData(RepSeqDT())[,i]))
-          name<- unique(colnames(sData(RepSeqDT())[i]))
+          l<- length(unique(mData(RepSeqDT())[,i]))
+          name<- unique(colnames(mData(RepSeqDT())[i]))
           mycolors_b<- mycolors[1:l]
-          names(mycolors_b) <- levels(sData(RepSeqDT())[i][[i]])
+          names(mycolors_b) <- levels(mData(RepSeqDT())[i][[i]])
           
           ann_colors[[name]] <- mycolors_b
           mycolors<- mycolors[!mycolors %in% mycolors_b]
@@ -52,7 +52,7 @@
         
         
         
-        p <- ggplot(data = raretab, aes(x = x, y = y, fill = lib, color = get(input$rareGroup))) +
+        p <- ggplot(data = raretab, aes(x = x, y = y, fill = sample_id, color = get(input$rareGroup))) +
                         geom_line() + 
                         guides(fill = FALSE) + 
                         labs(title = "Rarefaction curves", 
@@ -61,7 +61,7 @@
                              color = input$rareGroup) +
                         scale_x_continuous(breaks = pretty(1:max(raretab$x), n = 13),expand=expansion(mult = c(0.02, .2)))  + #modified by VMH
 
-          directlabels::geom_dl(aes(label = lib), method = list(directlabels::dl.trans(x = x), "last.bumpup")) +#modified by VMH so the text fits in the plot
+          directlabels::geom_dl(aes(label = sample_id), method = list(directlabels::dl.trans(x = x), "last.bumpup")) +#modified by VMH so the text fits in the plot
             # scale_color_manual(values= colorRampPalette(RColorBrewer::brewer.pal(8, "Set2"))(length(unique(input$rareGroup)))) #added by VMH  
           # scale_color_brewer(palette="Set2")+ #added by VMH
           scale_color_manual(values=color_palette[,1])+ #added by VMH
@@ -77,9 +77,9 @@
     # barplot library
     output$libsizes <- plotly::renderPlotly({
     validate(need(!(is.null(input$rareGroup) || input$rareGroup == ""), ""))
-        sdata <- sData(RepSeqDT())
+        sdata <- mData(RepSeqDT())
         sdata <- data.frame(libName=rownames(sdata), sdata, check.names = FALSE)
-        p <- ggplot(sdata, aes(x = libName, y = nReads)) +
+        p <- ggplot(sdata, aes(x = libName, y = nSequences)) +
             geom_bar(stat = "identity", color="gray", alpha=.8) +  #modified by VMH
             xlab("samples") + ylab("Total number of reads") + #modified by VMH
           theme_light()+ #added by VMH
@@ -95,12 +95,12 @@
     
     # render downsampling choice
     output$downlibsize <- renderUI({
-        sdata <- sData(RepSeqDT())
+        sdata <- mData(RepSeqDT())
         numericInput(inputId = "libsizechoice", 
                      label = "New lib size",
-                     value = min(sdata$nReads),
-                     min = min(sdata$nReads),
-                     max = max(sdata$nReads),
+                     value = min(sdata$nSequences),
+                     min = min(sdata$nSequences),
+                     max = max(sdata$nSequences),
                      width = NULL
         )
     })
@@ -109,7 +109,7 @@
     observeEvent(input$down, {
         output$histdownlibsizes <- renderPlot({
             cts1 <- RepSeq::assay(RepSeqDT()) 
-            p1 <- histSums(cts1[, sum(count), by=VpJ][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
+            p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
               ggtitle("Orignial data - Clonotype count distribution")+ #modified by VMH
               theme_light()+ #added by VMH
               theme( panel.grid.minor = ggplot2::element_blank(),
@@ -121,7 +121,7 @@
             #            xlab(NULL) #optional, but safer in case another theme is applied later
             #} else {
                 cts2 <- RepSeq::assay(RepSeqDown())
-                p2 <- histSums(cts2[, sum(count), by=VpJ][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
+                p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
                   ggtitle("Downsampled data - Clonotype count distribution") +  #modified by VMH
                   theme_light()+ #added by VMH
                   theme( panel.grid.minor = ggplot2::element_blank(),
@@ -157,7 +157,7 @@
     output$renyiGroupChoice <- renderUI({
         validate(need(!(is.null(input$renyiLevel) || input$renyiLevel ==""), "select level"))
         validate(need(!(is.null(input$renyiGroup) || input$renyiGroup == ""), "select group"))
-        choice <- unique(sData(dat())[, input$renyiGroup])
+        choice <- unique(mData(dat())[, input$renyiGroup])
         checkboxGroupInput("renyiGroupChoice", 
             label = input$renyiGroup,
             choices = choice,
@@ -169,28 +169,33 @@
         validate(need(!(is.null(input$renyiLevel) || input$renyiLevel ==""), " "))
         validate(need(!(is.null(input$renyiGroup) || input$renyiGroup == ""), " "))  
         #group <- switch((input$renyiGroup == "Sample") + 1, input$renyiGroup, NULL)
-        plotRenyiProfiles(x = dat(), alpha=c(0, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, Inf), level=input$renyiLevel, colorBy=input$renyiGroup) +
+        plotRenyiIndex(x = dat(), alpha=c(0, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, Inf), level=input$renyiLevel, colorBy=input$renyiGroup) +
             ggplot2::theme(aspect.ratio = 1) ##modified by VMH
     })  
     # create Group selector
     output$GrpColMDS <- renderUI({
         validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), " "))
         validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), " "))
+        validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), " "))
+        validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), " "))
         selectGroup("grpCol4MDS", dat())
     })
     # plot dissimilarity
     output$plotDissimilarityHM <- renderPlot({
         validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select level"))
         validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select dissimilarity index"))
-        plotDissimilarityMatrix(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE)    
+        validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
+        plotDissimilarityMatrix(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
     })    
     # plot MDS
     output$plotMDS <- renderPlot({
         validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), " "))
         validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), " "))
+        validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
+        validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select dissimilarity method"))
         validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select group"))
         group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-        plotMDS(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colGrp = group)
+        plotDimReduction(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
     })
     # include md formula distance function
     output$distFuncsMD <- renderUI({
@@ -212,7 +217,7 @@
     output$plotDistribVpJ <- renderPlot({
         validate(need(!(is.null(input$distribVpJGroup) || input$distribVpJGroup == ""), "select group"))
         group <- input$distribVpJGroup
-        plotDistribVpJ(dat(), group, input$distribVpJGroupMeth)
+        plotRankDistrib(dat(), group, input$distribVpJGroupMeth)
     })
     # render VennUI for selecting type of Venn Diagram
     output$vennUISample <- renderUI({
@@ -220,7 +225,7 @@
     #    validate(need(!(is.null(input$venntype) || input$venntype ==""), message=" ", label=" "))
         # render Venn samples
     #    if (input$venntype == "Samples") {
-            choices <- rownames(sData(dat()))
+            choices <- rownames(mData(dat()))
             selectizeInput("vennSamples",
                 "Select samples (maximum 4)",  #modified by VMH
                 choices = choices,
@@ -234,7 +239,7 @@
     # render Venn
     #output$vennSubGroup <- renderUI({
     #    validate(need(!(is.null(input$vennGroupSelected) || input$vennGroupSelected == ""), "select group"))
-    #    choices <- levels(sData(dat())[, input$vennGroupSelected])
+    #    choices <- levels(mData(dat())[, input$vennGroupSelected])
     #    selectizeInput("vennSubGroup",
     #        "Select groups (3 max)",
     #        choices = choices,
@@ -245,7 +250,7 @@
     #output$VennSamplesUI <- renderUI({
     #    validate(need(!(is.null(input$vennLevel) || input$vennLevel ==""), message=" ", label=" "))
     #    validate(need(input$vennGroupSelected == "Sample", message=" ", label=" "))
-    #    choices <- rownames(sData(dat()))
+    #    choices <- rownames(mData(dat()))
     #    selectizeInput("vennSamples",
     #        "Select samples (3 max)",
     #        choices = choices,
@@ -264,11 +269,11 @@
     #    } else grp <- input$vennGroupSelected
     #        plotVenn(dat(), level = input$vennLevel, colorBy = grp)
     #})
-    output$plotVenn <- renderPlot({
+    output$plotEulerr <- renderPlot({
         validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select level"))
         validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
         validate(need(length(input$vennSamples)>1, "select a second sample"))
-        plotVenn(dat(), level = input$vennLevel, libs = input$vennSamples)
+        plotEulerr(dat(), level = input$vennLevel, sampleNames = input$vennSamples)
     })
     # render mu Score 
     output$plotmuScore <- renderPlot({
@@ -280,7 +285,7 @@
                 if(is.null(input$muLevel) || input$muLevel == "" || is.null(input$muType) || input$muType == "") return(20)
                 else {
                     level <- input$muLevel
-                    sdata <- sData(dat())
+                    sdata <- mData(dat())
                     nrowsGrid <- max(sdata[, level])
                     slengthMax <- max(nchar(rownames(sdata)))
                     return(20 * nrowsGrid + 5 * slengthMax)
@@ -291,7 +296,7 @@
                 else {
                     level <- input$muLevel
                     levelLengthMax <- assay(dat())[, max(nchar(as.character(get(level))))]
-                    nsamples <- nrow(sData(dat()))
+                    nsamples <- nrow(mData(dat()))
                     return(20*nsamples + 5*levelLengthMax)
                 }
             }
@@ -300,7 +305,7 @@
     output$count2v2Libs <- renderUI({
         selectizeInput("count2v2Libs",
             "Select two samples", #modified by VMH
-            choices = rownames(sData(dat())),
+            choices = rownames(mData(dat())),
             options = list(maxItems = 2, onInitialize = I('function() { this.setValue(""); }')),
             multiple = T
         )
@@ -311,7 +316,7 @@
         validate(need(!(is.null(input$count2v2Level) || input$count2v2Level == ""), "select level"))
         validate(need(!(is.null(input$count2v2Libs) || input$count2v2Libs == ""), "select a first sample"))
         validate(need(length(input$count2v2Libs)==2, "select a second sample"))
-        plot2v2count(dat(), input$count2v2Level, input$count2v2Libs, input$count2v2scale) + 
+        plotScatter(dat(), input$count2v2Level, input$count2v2Libs, input$count2v2scale) + 
             ggplot2::theme(aspect.ratio = 1)
     })
     # selected region

@@ -22,18 +22,18 @@ output$freqVpJ <- renderPlot({
 output$spectraPlot <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    plotSpectratype(RepSeqDT(), input$singleSample, input$singleScale)
+    plotSpectratyping(RepSeqDT(), input$singleSample, input$singleScale)
 })
 # plot individual spectratype 
 output$spectraPlotbis <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    plotSpectratypeV(RepSeqDT(), input$singleSample, input$singleScale, input$spectraCDR3)
+    plotSpectratypingV(RepSeqDT(), input$singleSample, input$singleScale, input$spectraCDR3)
     },  width="auto", 
         height <- function() {
             if (is.null(input$singleSample) || input$singleSample == "") return(600)
             else { 
-                nrowsGrid <- ceiling(length(RepSeq::assay(RepSeqDT())[lib == input$singleSample, unique(V)])/4)
+                nrowsGrid <- ceiling(length(RepSeq::assay(RepSeqDT())[sample_id == input$singleSample, unique(V)])/4)
                 return(150 * nrowsGrid)
             }
         }
@@ -52,8 +52,8 @@ output$plotCountHeatmap <- renderPlot({
     },  height = function() {
             if (is.null(input$singleSample) || input$singleSample == "") return(20)
             else {
-                VlengthMax <- RepSeq::assay(RepSeqDT())[lib == input$singleSample, max(nchar(V))]
-                nrowsGrid <- max(sData(RepSeqDT())$J)     
+                VlengthMax <- RepSeq::assay(RepSeqDT())[sample_id == input$singleSample, max(nchar(V))]
+                nrowsGrid <- max(mData(RepSeqDT())$J)     
                 return(30*nrowsGrid + 5*VlengthMax)
             }
         }

@@ -10,7 +10,7 @@
         validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
         selectizeInput("CtrlGroup",
             "Select control group",
-            choices = levels(sData(RepSeqDT())[, input$PertGroupSelected]),
+            choices = levels(mData(RepSeqDT())[, input$PertGroupSelected]),
             options = list(onInitialize = I('function() { this.setValue(""); }')),
             multiple = F
         )
@@ -31,9 +31,9 @@
         validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
         validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
         validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
-        sampleinfo <- sData(RepSeqDT())
+        sampleinfo <- mData(RepSeqDT())
         ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-        pertscore <- perturbation(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist)
+        pertscore <- perturbationScore(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist)
         return(pertscore)
     })
     # pca
@@ -45,17 +45,17 @@
         pca <- prcomp(t(perturb), scale = TRUE)
         varexp <- (pca$sdev^2 / sum(pca$sdev^2))*100
         scores <- as.data.frame(pca$x)
-        scores <- merge(scores, sData(RepSeqDT()), by = 0)
+        scores <- merge(scores, mData(RepSeqDT()), by = 0)
         
-        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
-        names=as.vector(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
+        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
+        names=as.vector(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
         ann_colors<-vector("list")
         for(i in unique(names)){
           
-          l<- length(unique(sData(RepSeqDT())[,i]))
-          name<- unique(colnames(sData(RepSeqDT())[i]))
+          l<- length(unique(mData(RepSeqDT())[,i]))
+          name<- unique(colnames(mData(RepSeqDT())[i]))
           mycolors_b<- mycolors[1:l]
-          names(mycolors_b) <- levels(sData(RepSeqDT())[i][[i]])
+          names(mycolors_b) <- levels(mData(RepSeqDT())[i][[i]])
           
           ann_colors[[name]] <- mycolors_b
           mycolors<- mycolors[!mycolors %in% mycolors_b]
@@ -99,18 +99,18 @@
     output$pertHeatmap <- renderPlot({
         validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
         perturb <- dataPert()
-        sampleinfo <- sData(RepSeqDT())[,unlist(lapply(sData(RepSeqDT()), is.factor))]  
+        sampleinfo <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), is.factor))]  
         # sampleinfo$Sample<- NULL
         
-        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
-        names=as.vector(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
+        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
+        names=as.vector(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
         ann_colors<-vector("list")
         for(i in unique(names)){
           
-          l<- length(unique(sData(RepSeqDT())[,i]))
-          name<- unique(colnames(sData(RepSeqDT())[i]))
+          l<- length(unique(mData(RepSeqDT())[,i]))
+          name<- unique(colnames(mData(RepSeqDT())[i]))
           mycolors_b<- mycolors[1:l]
-          names(mycolors_b) <- levels(sData(RepSeqDT())[i][[i]])
+          names(mycolors_b) <- levels(mData(RepSeqDT())[i][[i]])
           
           ann_colors[[name]] <- mycolors_b
           mycolors<- mycolors[!mycolors %in% mycolors_b]

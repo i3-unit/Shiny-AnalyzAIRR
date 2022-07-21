@@ -17,7 +17,7 @@ output$downloadAssay <- downloadHandler(
     }, contentType = "text/csv"
 ) 
 # output infoTable
-output$infoTable <- renderDataTable(RepSeq::sData(RepSeqDT()), 
+output$infoTable <- renderDataTable(RepSeq::mData(RepSeqDT()), 
     server = F, 
     style="bootstrap", 
     extensions = 'Buttons', 
@@ -28,10 +28,12 @@ output$assayTable <- renderDataTable(RepSeq::assay(RepSeqDT()),
     options=list(scrollX=TRUE)
 )
 # get information of slot metadata
-output$metadataTable <- renderPrint({
-    out <- mData(RepSeqDT())
-    if (length(out)==0) print("Nothing to display") else names(out)
-})
+output$metadataTable <- renderDataTable(RepSeq::oData(RepSeqDT())$filtered, 
+                                        server = F, 
+                                        style="bootstrap", 
+                                        extensions = 'Buttons', 
+                                        options = list(scrollX=TRUE, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
+)
 # output history
 output$historyTable <- renderDataTable(History(RepSeqDT()), 
     server = F, style="bootstrap", extensions = 'Buttons', 

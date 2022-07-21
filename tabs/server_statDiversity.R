@@ -30,19 +30,19 @@
         validate(need(!(is.null(input$DivRepLevel) || input$DivRepLevel == ""), ""))
         validate(need(!(is.null(input$DivMethod) || input$DivMethod == ""), ""))
         validate(need(!(is.null(input$DivGroup) || input$DivGroup == ""), "select group"))
-        grp <- sData(RepSeqDT())[, input$DivGroup, drop=FALSE]
+        grp <- mData(RepSeqDT())[, input$DivGroup, drop=FALSE]
         #rownames(grp) <- gsub("-", ".", rownames(grp))
         dat <- as.matrix(dataDiv())
         
-        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
-        names=as.vector(sData(RepSeqDT())[, unlist(lapply(sData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
+        mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
+        names=as.vector(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
         ann_colors<-vector("list")
         for(i in unique(names)){
           
-          l<- length(unique(sData(RepSeqDT())[,i]))
-          name<- unique(colnames(sData(RepSeqDT())[i]))
+          l<- length(unique(mData(RepSeqDT())[,i]))
+          name<- unique(colnames(mData(RepSeqDT())[i]))
           mycolors_b<- mycolors[1:l]
-          names(mycolors_b) <- levels(sData(RepSeqDT())[i][[i]])
+          names(mycolors_b) <- levels(mData(RepSeqDT())[i][[i]])
           
           ann_colors[[name]] <- mycolors_b
           mycolors<- mycolors[!mycolors %in% mycolors_b]

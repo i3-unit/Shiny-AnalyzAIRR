@@ -23,9 +23,9 @@ requiredPkgs <- c("devtools", "shiny", "shinydashboard", "ggplot2", "shinysky", 
     "ade4", "scales", "magick", "directlabels")
 githubPkgs <- "RepSeq"
 
-if (is.na(match("RepSeq", instPkgs))) {
-    devtools::install_github("https://github.com/ph-pham/RepSeq")
-}
+# if (is.na(match("RepSeq", instPkgs))) {
+#     devtools::install_github("https://github.com/ph-pham/RepSeq")
+# }
 
 # missing packages
 missing_packages <- requiredPkgs[is.na(match(requiredPkgs, instPkgs))]

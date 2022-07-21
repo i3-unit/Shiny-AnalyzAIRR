@@ -28,9 +28,9 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
             menuItem(tabName = "singleSampleTab",
                 text = "single sample analysis",
                 icon = icon("user"),
-                selectSample("singleSample", rownames(sData(RepSeqDT()))),
+                selectSample("singleSample", rownames(RepSeq::mData(RepSeqDT()))),
                 radioButtons("singleScale", "Choose a scale",
-                    choices = c("counts", "frequency", "cpm"), #VMH replaced "percent" with "frequency"
+                    choices = c("count", "frequency"), #VMH replaced "percent" with "frequency"
                     selected = character(0),
                     inline = T)
             ), "singleSampleTab")
@@ -68,9 +68,9 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     # library sizes
     output$histlibsizes <- renderPlot({
         cts <- RepSeq::assay(RepSeqDT()) 
-        p1 <- histSums(cts[, sum(count), by=lib][,V1], xlab="Read count", ylab="Number of samples") + ggtitle("Read count in data")+theme_light()+theme( panel.grid.minor = element_blank(),legend.position ="top",
+        p1 <- histSums(cts[, sum(count), by=sample_id][,V1], xlab="Read count", ylab="Number of samples") + ggtitle("Read count in data")+theme_light()+theme( panel.grid.minor = element_blank(),legend.position ="top",
                                                                                                                                                                 panel.grid.major = element_line(colour = "gray89",linetype="dashed",size=0.1)) #modified by VMH
-        p2 <- histSums(cts[, sum(count), by=VpJ][,V1], xlab="clonotype count", ylab="Total number of clonotypes") + ggtitle("Clonotype count distribution across all samples") +theme_light()+theme( panel.grid.minor = element_blank(),legend.position ="top",
+        p2 <- histSums(cts[, sum(count), by=clone][,V1], xlab="clonotype count", ylab="Total number of clonotypes") + ggtitle("Clonotype count distribution across all samples") +theme_light()+theme( panel.grid.minor = element_blank(),legend.position ="top",
                                                                                                                                                                                                 panel.grid.major = element_line(colour = "gray89",linetype="dashed",size=0.1)) #modified by VMH
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })        

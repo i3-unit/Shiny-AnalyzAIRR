@@ -8,6 +8,7 @@ library(RepSeq)
 library(ggplot2)
 library(shinysky)
 library(DT)
+
 #------------------------------------------------------------------------------#
 # options
 #------------------------------------------------------------------------------#
@@ -26,7 +27,7 @@ options(shiny.maxRequestSize = 200 * 1024 ^ 2) # limite la taille des fichiers i
 #' @return a data.table
 #' @export
 # @example
-brush2v2count <- function(x, level = c("V", "J", "VJ", "VpJ", "CDR3aa"), libs = NULL, plot = NULL){
+brush2v2count <- function(x, level = c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"), libs = NULL, plot = NULL){
     if (missing(x)) stop("x is missing.")
     if (!is.RepSeqExperiment(x)) stop("an object of class RepSeqExperiment is expected.")
     levelChoice <- match.arg(level)
@@ -68,7 +69,7 @@ selectSample <- function(ID, sampleNames) {
 
 # function generate selectizeInput for selecting biological groups
 selectGroup <- function(ID, x) {  
-    sdata <- sData(x)[,unlist(lapply(sData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+    sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
     choices <- colnames(sdata)
     selectizeInput(
         ID,
@@ -80,7 +81,7 @@ selectGroup <- function(ID, x) {
 
 # same as above but exclude factor having the number of levels equal to its length 
 selectGroupDE <- function(ID, x){
-  sdata <- sData(x)[,unlist(lapply(sData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+  sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
   idx <- sapply(sdata, function(i) nlevels(i)/length(i))
   choices <- colnames(sdata)[which(idx < 1)]
   selectizeInput(

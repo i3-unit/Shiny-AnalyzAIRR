@@ -56,7 +56,7 @@ bodyTabs <-
         ),
         tabItem(tabName = "showMetaTab",
             #dataTableOutput("metadataTable")),
-            verbatimTextOutput("metadataTable")
+            dataTableOutput("metadataTable")
         ),
         tabItem(tabName = "showHistoryTab",
             dataTableOutput("historyTable")
@@ -68,7 +68,7 @@ bodyTabs <-
                         selectizeInput(
                             "diversityLevel",
                             "Select level",
-                            choices = list("V", "J", "VJ", "VpJ", "CDR3aa"),
+                            choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                             options = list(onInitialize = I('function() { this.setValue(""); }'))
                         )
                     ),
@@ -87,7 +87,7 @@ bodyTabs <-
 #-------------------------------------------------------------------------------#
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
-dashboardPage(skin = "red",
+dashboardPage(skin = "blue",
     mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("refresh")))),
     dashboardSidebar(width = "20%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
