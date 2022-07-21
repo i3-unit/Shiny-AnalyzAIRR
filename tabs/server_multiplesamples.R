@@ -216,8 +216,11 @@
     # plot VJ distribution
     output$plotDistribVpJ <- renderPlot({
         validate(need(!(is.null(input$distribVpJGroup) || input$distribVpJGroup == ""), "select group"))
+        validate(need(!(is.null(input$distribVpJGroupMeth) || input$distribVpJGroupMeth == ""), "select scale"))
+        validate(need(!(is.null(input$distribVpJLevel) || input$distribVpJLevel == ""), "select level"))
+      
         group <- input$distribVpJGroup
-        plotRankDistrib(dat(), group, input$distribVpJGroupMeth)
+        plotRankDistrib(dat(), colorBy = group, scale = input$distribVpJGroupMeth, level = input$distribVpJLevel, grouped = FALSE, label_colors = NULL)
     })
     # render VennUI for selecting type of Venn Diagram
     output$vennUISample <- renderUI({

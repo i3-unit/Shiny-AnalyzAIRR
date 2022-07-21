@@ -113,9 +113,16 @@ compareSampleTab <-
                         column(width = 3, 
                             selectInput("distribVpJGroupMeth", 
                                 "Select method",
-                                choices = c("count" = "count", "frequency" = "frequency"), #modified by VMH
+                                choices = list("count" = "count", "frequency" = "frequency"), #modified by VMH
                                 selected = "count"   #modified by VMH
                             )
+                        ),
+                        column(width = 3, 
+                               selectInput("distribVpJLevel", 
+                                           "Select level",
+                                           choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"), #modified by VMH
+                                           selected = "V"   #modified by VMH
+                               )
                         )
                     ),
                     plotOutput("plotDistribVpJ"),
