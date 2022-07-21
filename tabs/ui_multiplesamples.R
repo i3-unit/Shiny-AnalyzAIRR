@@ -107,17 +107,17 @@ compareSampleTab <-
                 ),
                 tabPanel("Clonotype distribution",  #modified by VMH
                     fluidRow(
-                        column(width = 3, 
+                        column(width = 4, 
                             uiOutput("distribVpJGroup")
                         ),
-                        column(width = 3, 
+                        column(width = 4, 
                             selectInput("distribVpJGroupMeth", 
                                 "Select method",
                                 choices = list("count" = "count", "frequency" = "frequency"), #modified by VMH
                                 selected = "count"   #modified by VMH
                             )
                         ),
-                        column(width = 3, 
+                        column(width = 4, 
                                selectInput("distribVpJLevel", 
                                            "Select level",
                                            choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"), #modified by VMH
