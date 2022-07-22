@@ -41,7 +41,7 @@ output$Spectra <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=1200, res=300)
+        png(file, height=2400, width=4800, res=300)
         grid.newpage()
         grid.draw(plotSpectratyping(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
         dev.off()  # turn the device off
@@ -77,7 +77,7 @@ output$Spectrabis <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=1200, res=300)
+        png(file, height=4800, width=2400, res=300)
         grid.newpage()
         grid.draw(plotSpectratypingV(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
         dev.off()  # turn the device off

@@ -3,49 +3,7 @@ compareSampleTab <-
         fluidRow(
             tabBox(width = 12,
                 id = 'multiple.topTabs',
-                tabPanel("Rarefaction",
-                    fluidRow(
-                        column(width = 3,
-                            uiOutput("rareChoiceGroup")
-                        ),
-                        column(width = 3, 
-                            radioButtons(inputId = "samplingchoice", 
-                                    label = "Transformation method:", 
-                                    choices = c("No" = "N", "Downsampling" = "Y"), #VMH removed "-" in downsampling
-                                    )
-                        ),
-                        column(width = 6,
-                            conditionalPanel("input.samplingchoice == 'Y'", 
-                                fluidRow(
-                                    column(width = 3, 
-                                        uiOutput("downlibsize")
-                                    ),
-                                    column(width = 3,
-                                        numericInput(inputId = "downseed", 
-                                            label = "Set seed",
-                                            value = 1234,
-                                            min = 1,
-                                            max = 9999,
-                                            width = NULL
-                                        )
-                                    ),
-                                    column(width = 3,
-                                        actionButton("down", "Downsampling") #modified by VMH
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    #splitLayout(cellWidths = c("50%", "50%"), plotOutput("rarecurves"), plotly::plotlyOutput("libsizes")),
-                    plotOutput("rarecurves"), 
-                    busyIndicator(wait = 50),
-                    plotly::plotlyOutput("libsizes"),
-                    busyIndicator(wait = 50),
-                    value = "rarefaction",
-                    tags$hr(),
-                    h4(textOutput("dataselected")),
-                    plotOutput("histdownlibsizes")
-                ),
+                
                 tabPanel("Renyi Profile",
                     fluidRow(
                         column(width = 3,

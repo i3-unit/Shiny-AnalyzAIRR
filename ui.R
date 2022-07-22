@@ -21,7 +21,7 @@ source("tabs/ui_statistics.R")
 #-------------------------------------------------------------------------------#
 # Dashboard header
 #-------------------------------------------------------------------------------# 
-header <- dashboardHeader(titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("redo"))))
+header <- dashboardHeader(titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("redo", verify_fa = FALSE))))
 #-------------------------------------------------------------------------------#
 # Dashboard body
 #-------------------------------------------------------------------------------# 
@@ -30,20 +30,29 @@ bodyTabs <-
         tabItem(tabName = "aboutTab",
             fluidRow(
                 box(width = 12, htmlOutput("about")),
-                tags$h2("Session info"), 
-                box(width = 12, verbatimTextOutput("session"))
+                # tags$h2("Session info"), 
+                # box(width = 12, verbatimTextOutput("session"))
             )
         ),
         tabItem(tabName = "uploadRDStab",
-            h4("Histograms"),
-            plotOutput("histlibsizes"),
-            busyIndicator(wait = 50),
-            h4("Data summary"),
-            htmlOutput("summaryRDS"),
-            busyIndicator(wait = 50)
+                h2("Data overview"),
+                htmlOutput("summaryRDS"),
+                busyIndicator(wait = 50),
+                h4(""),
+                fluidRow(
+                    column(width = 3,
+                        selectizeInput("summaryLevel",
+                                          "Select level",
+                                       choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
+                          )
+                 )
+             ),
+              plotOutput("histlibsizes"),
+             busyIndicator(wait = 50),
         ),
         tabItem(tabName = "uploadTXTtab",
-            h4("Data summary"),
+            h4("Data overview"),
             htmlOutput("summaryTXT"),
             busyIndicator(wait = 50)
         ),
@@ -81,14 +90,22 @@ bodyTabs <-
         ),
     singleSampleTab,
     compareSampleTab,
-    stats
+    basicstats,
+    divstats,
+    clonalstats,
+    tabItem(tabName = "sessionTab",
+            fluidRow(
+                tags$h2("Session info"), 
+                box(width = 12, verbatimTextOutput("session"))
+            )
+    )
 )
 
 #-------------------------------------------------------------------------------#
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
-    mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync")))),
+    mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
     dashboardSidebar(width = "20%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 

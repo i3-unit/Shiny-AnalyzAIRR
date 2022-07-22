@@ -8,6 +8,8 @@ library(RepSeq)
 library(ggplot2)
 library(shinysky)
 library(DT)
+library(grid)
+library(dplyr)
 
 #------------------------------------------------------------------------------#
 # options
@@ -92,6 +94,17 @@ selectGroupDE <- function(ID, x){
   )
 }
 
+selectGroupStat <- function(ID, x){
+  sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]
+  #idx <- sapply(sdata, function(i) nlevels(i)/length(i))
+  choices <- colnames(sdata)#[which(idx < 1)]
+  selectizeInput(
+    ID,
+    "Select group",
+    choices = choices,
+    options = list(onInitialize = I('function() { this.setValue(""); }'))
+  )
+}
 
 # For plotRenyiProfile, prend str en transforme en liste de valeurs de alpha
 getAlpha <- function(str) {
@@ -143,7 +156,7 @@ mydashboardHeader <- function(..., title = NULL, titleWidth = NULL, disable = FA
               span(class = "logo", title),
               tags$nav(class = "navbar navbar-static-top", role = "navigation",
                        # Embed hidden icon so that we get the font-awesome dependency
-                       span(shiny::icon("bars"), style = "display:none;"),
+                       span(shiny::icon("bars", verify_fa = FALSE), style = "display:none;"),
                        title.navbar,
                        div(class = "navbar-custom-menu",
                            tags$ul(class = "nav navbar-nav",
@@ -152,4 +165,38 @@ mydashboardHeader <- function(..., title = NULL, titleWidth = NULL, disable = FA
                        )
               )
   )
+}
+
+
+summary_hist <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
+  
+  metadata <- RepSeq::mData(x)
+  freq <- data.frame(table(metadata[[level]]))
+  
+  p1 <- ggplot2::ggplot(freq, aes(x=Var1, y=Freq)) +
+    ggplot2::geom_col(col="black",   ##added by VMH
+                         fill="gray", alpha=.8) + 
+    ggplot2::xlab(paste0("Number of ",level)) + 
+    ggplot2::ylab("Number of samples") +
+    RepSeq::theme_RepSeq()
+  
+  return(p1)
+}
+
+summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
+  
+  cts <- RepSeq::assay(x)
+  levelChoice <- match.arg(level)
+  out <- copy(cts)[, .(count = sum(count)), by = c("sample_id", levelChoice)]
+  
+  freq <- data.frame(table(out[["count"]]))
+  
+  p2 <- ggplot2::ggplot(freq, aes(x=as.numeric(Var1), y=Freq)) +
+    ggplot2::geom_col(col="black",  
+                      fill="gray", alpha=.8, width = 1) + 
+    ggplot2::ylab(paste0("Number of ", levelChoice)) + 
+    ggplot2::xlab("Count")+
+    RepSeq::theme_RepSeq()
+  
+  return(p2)
 }

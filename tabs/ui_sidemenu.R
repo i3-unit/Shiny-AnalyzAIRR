@@ -5,13 +5,13 @@ sideMenu <- sidebarMenu(id = "sideTabs",
     menuItem(
         selected = T,
         text = "About",
-        icon = icon("info"),
+        icon = icon("info", verify_fa = FALSE),
         tabName = "aboutTab"
     ),
     convertMenuItem(
         menuItem(
             text = "Upload RDS file",
-            icon = icon("upload"),
+            icon = icon("upload", verify_fa = FALSE),
             fileInput(
                 "RDSfile",
                 NULL,
@@ -26,7 +26,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
     convertMenuItem(
         menuItem(
             text = "Upload text files",
-            icon = icon("upload"),
+            icon = icon("folder-open", verify_fa = FALSE),
             selectizeInput(
                 "source",
                 'Source ?',
@@ -75,5 +75,10 @@ sideMenu <- sidebarMenu(id = "sideTabs",
   menuItemOutput("singleSampleTab"),
   menuItemOutput("multipleSampleTab"),
   shinyjs::useShinyjs(),
-  menuItemOutput("downloadRDS")
+  menuItemOutput("downloadRDS"),
+  #convertMenuItem(
+    menuItem(
+    selected = F,
+    text = "Session Info",
+    icon = icon('info-circle', verify_fa = FALSE), tabName = "sessionTab")
 )
