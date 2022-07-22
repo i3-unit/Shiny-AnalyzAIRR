@@ -120,8 +120,8 @@ compareSampleTab <-
                         column(width = 4, 
                                selectInput("distribVpJLevel", 
                                            "Select level",
-                                           choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"), #modified by VMH
-                                           selected = "V"   #modified by VMH
+                                           choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"), #modified by VMH
+                                           selected = "clone"   #modified by VMH
                                )
                         )
                     ),
@@ -163,26 +163,26 @@ compareSampleTab <-
                     plotOutput("plotEulerr", height = 800, width = 800),
                     busyIndicator(wait = 500)
                 ),
-                tabPanel("Multivariate scores",
-                    fluidRow(
-                        column(width = 3,
-                            selectizeInput("muLevel",
-                                "Select level",
-                                choices = list("V", "J", "VJ"),
-                                options = list(onInitialize = I('function() { this.setValue(""); }'))
-                            )
-                        ),
-                        column(width = 3,
-                            selectizeInput("muType",
-                                "Select data type",
-                                choices = c("count", "usage"),
-                                options = list(onInitialize = I('function() { this.setValue(""); }'))
-                            )
-                        )
-                    ),
-                    plotOutput("plotmuScore", height = "auto", width = "100%"),
-                    busyIndicator(wait = 500)                            
-                ),
+                # tabPanel("Multivariate scores",
+                #     fluidRow(
+                #         column(width = 3,
+                #             selectizeInput("muLevel",
+                #                 "Select level",
+                #                 choices = list("V", "J", "VJ"),
+                #                 options = list(onInitialize = I('function() { this.setValue(""); }'))
+                #             )
+                #         ),
+                #         column(width = 3,
+                #             selectizeInput("muType",
+                #                 "Select data type",
+                #                 choices = c("count", "usage"),
+                #                 options = list(onInitialize = I('function() { this.setValue(""); }'))
+                #             )
+                #         )
+                #     ),
+                #     plotOutput("plotmuScore", height = "auto", width = "100%"),
+                #     busyIndicator(wait = 500)                            
+                # ),
                 tabPanel("Sample correlation",
                     fluidRow(
                         column(width = 3,

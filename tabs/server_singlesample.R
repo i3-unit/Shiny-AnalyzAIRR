@@ -18,17 +18,49 @@ output$freqVpJ <- renderPlot({
     sampleError(input$singleSample)
     plotFreqVpJ(RepSeqDT(), input$singleSample)
 })
+
+##### Plot stacked spectratype #####
+
+#render UI download button for individual spectratype
+output$downSpectra <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
+        downloadButton("Spectra", "Download PNG")
+    }
+}) 
 # plot overlay spectratype 
 output$spectraPlot <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    plotSpectratyping(RepSeqDT(), input$singleSample, input$singleScale)
+    validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "Choose a proportion"))    
+    plotSpectratyping(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)
 })
-# plot individual spectratype 
+# download button for individual spectratype
+output$Spectra <- downloadHandler(
+    filename =  function() {
+        paste0("stacked_spectratype_", input$singleSample, "_", input$singleScale, "_", input$singleProp, ".png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=1200, res=300)
+        grid.newpage()
+        grid.draw(plotSpectratyping(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
+        dev.off()  # turn the device off
+    }#, contentType = "image/svg"
+)
+##### Plot individual spectratype #####
+
+#render UI download button for individual spectratype
+output$downSpectrabis <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
+        downloadButton("Spectrabis", "Download PNG")
+    }
+}) 
+# render plot individual spectratype
 output$spectraPlotbis <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    plotSpectratypingV(RepSeqDT(), input$singleSample, input$singleScale, input$spectraCDR3)
+    validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "Choose a proportion"))
+    plotSpectratypingV(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
     },  width="auto", 
         height <- function() {
             if (is.null(input$singleSample) || input$singleSample == "") return(600)
@@ -38,6 +70,22 @@ output$spectraPlotbis <- renderPlot({
             }
         }
 )
+# download button for individual spectratype
+output$Spectrabis <- downloadHandler(
+    filename =  function() {
+        paste0("individual_spectratypeV_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=1200, res=300)
+        grid.newpage()
+        grid.draw(plotSpectratypingV(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
+        dev.off()  # turn the device off
+    }#, contentType = "image/svg"
+)
+
+##### Plot VJ distribution #####
+
 # render UI download button countheatmap
 output$downVJheatmap <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale))) {

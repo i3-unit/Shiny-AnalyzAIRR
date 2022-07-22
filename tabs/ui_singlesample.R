@@ -16,22 +16,29 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
           ),
           navbarMenu("Immunoscope profile",
             tabPanel(title = "Stacked",
-              uiOutput("stackedspectraSample"),
-              plotOutput("spectraPlot"),
-              busyIndicator(wait = 500),
-              value = "stackedspectraTypetab"
-            ),
+                     fluidRow(column(width = 3,
+                                     numericInput("singleProp",
+                                                  "Select proportion",
+                                                  value = 0.01,
+                                                  min = 0, max = 1)
+                     )),
+                      uiOutput("downSpectra"),
+                      plotOutput("spectraPlot"),
+                      busyIndicator(wait = 500),
+                      value = "stackedspectraTypetab"
+                    ),
             tabPanel(title = "Individual",  
-            #   radioButtons("spectraCDR3", "Include bound CDR3 ?", #commented by VMH
-            #     inline = T,
-            #     choiceNames = c("Yes", "No"),
-            #     choiceValues = c(T, F),
-            #     selected = F
-            #   ),
-              plotOutput("spectraPlotbis", height = "auto", width = "90%"),
-              busyIndicator(wait = 500),
-              value = "individualspectraTypetab"
-            )
+                     fluidRow(column(width = 3,
+                                     numericInput("spectraProp",
+                                                  "Select proportion",
+                                                  value = 0.01,
+                                                  min = 0, max = 1)
+                     )),
+                      uiOutput("downSpectrabis"),
+                      plotOutput("spectraPlotbis", height = "auto", width = "90%"),
+                      busyIndicator(wait = 500),
+                      value = "individualspectraTypetab"
+                  )
           ),
           tabPanel("VJ Distribution",
             uiOutput("downVJheatmap"),

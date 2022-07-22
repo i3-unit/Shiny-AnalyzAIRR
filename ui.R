@@ -88,7 +88,7 @@ bodyTabs <-
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
-    mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("refresh")))),
+    mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync")))),
     dashboardSidebar(width = "20%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 

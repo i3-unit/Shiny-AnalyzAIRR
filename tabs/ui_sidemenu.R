@@ -71,9 +71,9 @@ sideMenu <- sidebarMenu(id = "sideTabs",
         ), tabName = "uploadTXTtab"
   ),
   menuItemOutput("showDataTab"),
+  menuItemOutput("statisticTab"),
   menuItemOutput("singleSampleTab"),
   menuItemOutput("multipleSampleTab"),
-  menuItemOutput("statisticTab"),
   shinyjs::useShinyjs(),
   menuItemOutput("downloadRDS")
 )

@@ -278,32 +278,32 @@
         validate(need(length(input$vennSamples)>1, "select a second sample"))
         plotEulerr(dat(), level = input$vennLevel, sampleNames = input$vennSamples)
     })
-    # render mu Score 
-    output$plotmuScore <- renderPlot({
-        validate(need(!(is.null(input$muLevel) || input$muLevel == ""), "select level"))
-        validate(need(!(is.null(input$muType) || input$muType == ""), "select type"))
-        print(session$clientData)
-        plotmuScore(dat(), input$muLevel, input$muType)
-        },  height = function() {    
-                if(is.null(input$muLevel) || input$muLevel == "" || is.null(input$muType) || input$muType == "") return(20)
-                else {
-                    level <- input$muLevel
-                    sdata <- mData(dat())
-                    nrowsGrid <- max(sdata[, level])
-                    slengthMax <- max(nchar(rownames(sdata)))
-                    return(20 * nrowsGrid + 5 * slengthMax)
-                }
-            }, 
-            width = function() {
-                if (is.null(input$muLevel) || input$muLevel == "" || is.null(input$muType) || input$muType == "") return(20)
-                else {
-                    level <- input$muLevel
-                    levelLengthMax <- assay(dat())[, max(nchar(as.character(get(level))))]
-                    nsamples <- nrow(mData(dat()))
-                    return(20*nsamples + 5*levelLengthMax)
-                }
-            }
-    )
+    # # render mu Score 
+    # output$plotmuScore <- renderPlot({
+    #     validate(need(!(is.null(input$muLevel) || input$muLevel == ""), "select level"))
+    #     validate(need(!(is.null(input$muType) || input$muType == ""), "select type"))
+    #     print(session$clientData)
+    #     plotmuScore(dat(), input$muLevel, input$muType)
+    #     },  height = function() {    
+    #             if(is.null(input$muLevel) || input$muLevel == "" || is.null(input$muType) || input$muType == "") return(20)
+    #             else {
+    #                 level <- input$muLevel
+    #                 sdata <- mData(dat())
+    #                 nrowsGrid <- max(sdata[, level])
+    #                 slengthMax <- max(nchar(rownames(sdata)))
+    #                 return(20 * nrowsGrid + 5 * slengthMax)
+    #             }
+    #         }, 
+    #         width = function() {
+    #             if (is.null(input$muLevel) || input$muLevel == "" || is.null(input$muType) || input$muType == "") return(20)
+    #             else {
+    #                 level <- input$muLevel
+    #                 levelLengthMax <- assay(dat())[, max(nchar(as.character(get(level))))]
+    #                 nsamples <- nrow(mData(dat()))
+    #                 return(20*nsamples + 5*levelLengthMax)
+    #             }
+    #         }
+    # )
     # render 2by2 comparison
     output$count2v2Libs <- renderUI({
         selectizeInput("count2v2Libs",
@@ -319,7 +319,7 @@
         validate(need(!(is.null(input$count2v2Level) || input$count2v2Level == ""), "select level"))
         validate(need(!(is.null(input$count2v2Libs) || input$count2v2Libs == ""), "select a first sample"))
         validate(need(length(input$count2v2Libs)==2, "select a second sample"))
-        plotScatter(dat(), input$count2v2Level, input$count2v2Libs, input$count2v2scale) + 
+        plotScatter(x = dat(), level = input$count2v2Level, sampleNames = input$count2v2Libs, scale = input$count2v2scale) + 
             ggplot2::theme(aspect.ratio = 1)
     })
     # selected region

@@ -7,7 +7,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$showDataTab <- renderMenu({
     convertMenuItem(
         menuItem(tabName = "showDataTab",
-            text = "View Data in Table",
+            text = "Data manipulation",
             icon = icon("table"),
             menuSubItem("show assay data",
                 tabName = "showAssayTab"),
@@ -26,7 +26,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$singleSampleTab <- renderMenu({
         convertMenuItem(
             menuItem(tabName = "singleSampleTab",
-                text = "single sample analysis",
+                text = "One-sample analysis",
                 icon = icon("user"),
                 selectSample("singleSample", rownames(RepSeq::mData(RepSeqDT()))),
                 radioButtons("singleScale", "Choose a scale",
@@ -39,7 +39,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$multipleSampleTab <- renderMenu({
         convertMenuItem(
             menuItem(
-                text = "comparative sample analysis",
+                text = "Multi-sample analysis",
                 icon = icon("users", lib = "font-awesome"),
                 tabName = "multipleSampleTab"
             ), 
@@ -49,7 +49,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     # render statistic menu       
     output$statisticTab <- renderMenu({
         menuItem(tabName = "statisticTab",
-            text = "statistical analysis",
+            text = "Exploratory statistics",
             icon = icon("square-root-alt", lib="font-awesome")
         )
     })
