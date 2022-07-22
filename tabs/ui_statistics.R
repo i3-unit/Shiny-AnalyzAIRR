@@ -41,6 +41,8 @@ basicstats <-
               )
            )
         )
+
+
 divstats<- tabItem(tabName = "showDivTab",
                       fluidRow(
                           tabBox(width = 12,
@@ -132,6 +134,8 @@ divstats<- tabItem(tabName = "showDivTab",
                           )
                           )
                    )
+
+
 clonalstats<- tabItem(tabName = "showClonalTab",
                       fluidRow(
                           tabBox(width = 12,

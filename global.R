@@ -130,16 +130,8 @@ printHtml <- function(obj){
 }
 
 # Plot histograms
-histSums <- function(dat=NULL, xlab="", ylab=""){
-  if(is.null(dat)){
-    p <- qplot(0)
-  } else {
-    p <- ggplot(data.frame(sums=dat), aes(x=sums)) +
-         geom_histogram(col="black",   ##added by VMH
-                        fill="gray", alpha=.8) + 
-         xlab(xlab) + ylab(ylab) +
-         scale_x_log10(labels = scales::comma)
-  }
+histSums<- function(dat=NULL, xlab="",ylab=""){
+  p<-ggplot(data.frame(sums=dat), aes(x=sums))+ggplot2::geom_histogram(position = "identity")+xlab(xlab)+ylab(ylab)+scale_x_log10(labels=scales::comma)+theme_RepSeq()
   return(p)
 }
 

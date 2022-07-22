@@ -74,12 +74,12 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
 
     # library sizes
     output$histlibsizes <- renderPlot({
-        # p1 <- histSums(cts[, sum(count), by=sample_id][,V1], xlab="Read count", ylab="Number of samples") + ggtitle("Read count in data")+theme_light()+theme( panel.grid.minor = element_blank(),legend.position ="top",
-        #                                                                                                                                                         panel.grid.major = element_line(colour = "gray89",linetype="dashed",size=0.1)) #modified by VMH
-        # 
-        p1 <- summary_hist(x=RepSeqDT(), level="VJ")
+        cts<- assay(RepSeqData)
+        p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
+        
         validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select level"))
-        p2 <- summary_hist2(x=RepSeqDT(), level=input$summaryLevel)
+        #menu déroulant: CDR3aa, CDR3nt, clone, clonotype:
+        p2<-histSums(cts[,sum(count), by=input$summaryLevel][,V1], xlab="count",ylab=paste("Number of", level))
         
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })        
