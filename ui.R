@@ -56,37 +56,135 @@ bodyTabs <-
             htmlOutput("summaryTXT"),
             busyIndicator(wait = 50)
         ),
-        tabItem(tabName = "showAssayTab",
-            downloadButton("downloadAssay"),
-            dataTableOutput("assayTable")
-        ),
         tabItem(tabName = "showInfoTab",
-            dataTableOutput("infoTable")
+                fluidRow(tabBox(width = 12,
+                                tabPanel("Show assay table",
+                                         downloadButton("downloadAssay"),
+                                         dataTableOutput("assayTable")),
+                                tabPanel("Show metadata table",
+                                         dataTableOutput("infoTable")),
+                                tabPanel("Show other data table",
+                                         dataTableOutput("metadataTable")),
+                                tabPanel("Show history table",
+                                         dataTableOutput("historyTable"))))
+            
+            
         ),
-        tabItem(tabName = "showMetaTab",
-            #dataTableOutput("metadataTable")),
-            dataTableOutput("metadataTable")
+        tabItem(tabName = "showFiltTab",
+                fluidRow(tabBox(width = 12,
+                                tabPanel("Filter sequences based on their count in each sample",
+                                         fluidRow(column(width = 3,
+                                                selectizeInput("filterCountLevel",
+                                                               "Select level",
+                                                               choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         ), 
+                                         column(width = 3,
+                                                numericInput(inputId = "filterCountN",
+                                                             label = "Set a count threshold",
+                                                             value = 1,
+                                                             min = 1,
+                                                             max = 1000)
+                                         ),
+                                         column(width = 3,
+                                                uiOutput("filterCountGroup")
+                                         )),
+                                         h4("Filtered table"),
+                                         dataTableOutput("filtercounts"),
+                                         busyIndicator(wait = 500)
+                                         ),
+                                tabPanel("Extract shared sequences",
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput("publicLevel",
+                                                                        "Select level",
+                                                                        choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         ), 
+                                         column(width = 3,
+                                                numericInput(inputId = "publicProp",
+                                                             label = "Set a proportion",
+                                                             value = 0,
+                                                             min = 0,
+                                                             max = 1)
+                                         ),
+                                         column(width = 3,
+                                                uiOutput("publicGroup")
+                                         )),
+                                         h4("Filtered table"),
+                                         dataTableOutput("publicdata"),
+                                         busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Extract private sequences",
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput("privateLevel",
+                                                                        "Select level",
+                                                                        choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         ), 
+                                         column(width = 3,
+                                                selectizeInput("privateSingletons",
+                                                               "Select if singletons",
+                                                               choices = list(TRUE, FALSE),
+                                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         )),
+                                         h4("Filtered table"),
+                                         dataTableOutput("privatedata"),
+                                         busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Filter productive or unproductive sequences",
+                                         fluidRow(column(width = 3,
+                                                    selectizeInput("productive",
+                                                                   "Select if productive",
+                                                                    choices = list(TRUE, FALSE),
+                                                                    options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         )),
+                                         h4("Filtered table"),
+                                         dataTableOutput("productivedata"),
+                                         busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Drop a sample",
+                                         fluidRow(column(width = 3,
+                                                         uiOutput("dropSampleNames")
+                                         )),
+                                         h4("Filtered table"),
+                                         dataTableOutput("dropeddata"),
+                                         busyIndicator(wait = 500)
+                                )
+                                ))
         ),
-        tabItem(tabName = "showHistoryTab",
-            dataTableOutput("historyTable")
-        ),
-        tabItem(
-            tabName = "computeDiversity",
-                fluidRow(
-                    column(width = 4,
-                        selectizeInput(
-                            "diversityLevel",
-                            "Select level",
-                            choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
-                            options = list(onInitialize = I('function() { this.setValue(""); }'))
-                        )
-                    ),
-                    column(width = 4,
-                        actionButton("diversityToSampleData", "Add diversity to sample data")
-                    )
-                ),
-                dataTableOutput("diversityTable"),
-                htmlOutput("diversityMD")
+        tabItem(tabName = "showNormTab",
+                fluidRow(tabBox(width = 12,
+                                tabPanel("Down-sampling",
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput("doDown",
+                                                                        "Do down-sampling normalization ?",
+                                                                        choices = list(TRUE, FALSE),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         ),
+                                             column(width = 3,
+                                                numericInput(inputId = "downSampleSize",
+                                                             label = "Set a sample size",
+                                                             value = 10000,
+                                                             min = 0,
+                                                             max = 100000000)
+                                         )),
+                                         h4("Normalized table"),
+                                         dataTableOutput("downsampleddata"),
+                                         busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Shannon-based normalization",
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput("doNorm",
+                                                                        "Do shannon normalization ?",
+                                                                        choices = list(TRUE, FALSE),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         )),
+                                         h4("Normalized table"),
+                                         dataTableOutput("shannonsampleddata"),
+                                         busyIndicator(wait = 500)
+                                )
+                ))
+            
         ),
     singleSampleTab,
     CompBasicTab,

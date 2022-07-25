@@ -76,7 +76,6 @@ sideMenu <- sidebarMenu(id = "sideTabs",
   menuItemOutput("multipleSampleTab"),
   shinyjs::useShinyjs(),
   menuItemOutput("downloadRDS"),
-  #convertMenuItem(
     menuItem(
     selected = F,
     text = "Session Info",

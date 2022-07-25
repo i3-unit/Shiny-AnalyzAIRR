@@ -159,6 +159,63 @@ output$plotPCA <- renderPlot({
   plotDimReduction(x = RepSeqDT(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
 })
 
+
+# render select group UI
+output$PertGroupUI <- renderUI({
+  selectGroup("PertGroupSelected", RepSeqDT())
+})
+# render selection control group
+output$CtrlGroupUI <- renderUI({
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  selectizeInput("CtrlGroup",
+                 "Select control group",
+                 choices = levels(mData(RepSeqDT())[, input$PertGroupSelected]),
+                 options = list(onInitialize = I('function() { this.setValue(""); }')),
+                 multiple = F
+  )
+})
+# render selection distance
+output$PertDistUI <- renderUI({
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  selectizeInput("pertDist",
+                 "Select distance",
+                 choices = list("manhattan", "euclidean"),
+                 options = list(onInitialize = I('function() { this.setValue(""); }')),
+                 multiple = F
+  )
+})
+# create perturbation data
+dataPert <- reactive({
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+  sampleinfo <- mData(RepSeqDT())
+  ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+  pertscore <- perturbationScore(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
+  return(pertscore)
+})
+output$pertOrder <- renderUI({
+  selectGroup("pertOrder", RepSeqDT())
+})
+
+output$plotPerturbation <- renderPlot({
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
+  sampleinfo <- mData(RepSeqDT())
+  ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+  plotPerturbationScore(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+})
+
+# data output
+output$PertTab <- renderDataTable({
+  return(datatable(dataPert(), options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)) %>% formatRound(c(1: ncol(dataPert())), 2))
+})
+
+
+
 # 
 # # render 2by2 comparison
 # output$count2v2Libs <- renderUI({

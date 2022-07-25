@@ -52,33 +52,6 @@ CompBasicTab<-
                          plotOutput("CountInt"),
                          busyIndicator(wait = 500)
                 )
-
-                # tabPanel("Sample correlation",
-                #     fluidRow(
-                #         column(width = 3,
-                #             selectizeInput("count2v2Level",
-                #                 "Select level",
-                #                 choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
-                #                 options = list(onInitialize = I('function() { this.setValue(""); }'))
-                #             )
-                #         ),
-                #         column(width = 3,
-                #             uiOutput("count2v2Libs")
-                #         ),
-                #         column(width = 3,
-                #             radioButtons("count2v2scale", 
-                #                 "Choose a scale",
-                #                 choices = c("frequency", "log"),  #modified by VMH
-                #                 selected = "frequency", #modified by VMH
-                #                 inline = T
-                #             )
-                #         )
-                #     ),
-                #     plotOutput("plot2v2count", brush = brushOpts(id = "plot2v2count_brush")),
-                #     tags$hr(),
-                #     uiOutput("downloadSelected"),
-                #     dataTableOutput("brush2v2countDT")
-                # )
             )
         )
     )
@@ -249,6 +222,27 @@ DiffTab<-
 PertTab<- 
     tabItem(tabName = "showPertTab",
             fluidRow(
-                tabBox()
+                tabBox(width=12,
+                       tabPanel("Compute perturbation scores",
+                                fluidRow(
+                                    column(width = 2,
+                                           uiOutput("PertGroupUI")
+                                    ),
+                                    column(width = 3,
+                                           uiOutput("CtrlGroupUI")
+                                    ),
+                                    column(width = 3,
+                                           uiOutput("PertDistUI")
+                                    ),
+                                    column(width = 3,
+                                           uiOutput("pertOrder")
+                                    )
+                                ),
+                                plotOutput("plotPerturbation"),
+                                busyIndicator(wait = 500),
+                                h4("Perturbation values:"),
+                                dataTableOutput("PertTab")
+                       )
+                       )
             )
     )

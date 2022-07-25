@@ -9,14 +9,12 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
         menuItem(tabName = "showDataTab",
             text = "Data manipulation",
             icon = icon("table", verify_fa = FALSE),
-            menuSubItem("show assay data",
-                tabName = "showAssayTab", icon = icon("angle-double-right", verify = FALSE)),
-            menuSubItem("show metadata",
+            menuSubItem("Extract information",
                 tabName = "showInfoTab", icon = icon("angle-double-right", verify = FALSE)),
-            menuSubItem("show other data",
-                tabName = "showMetaTab", icon = icon("angle-double-right", verify = FALSE)),
-            menuSubItem("show history",
-                tabName = "showHistoryTab", icon = icon("angle-double-right", verify = FALSE))
+            menuSubItem("Filtering",
+                tabName = "showFiltTab", icon = icon("angle-double-right", verify = FALSE)),
+            menuSubItem("Normalization",
+                tabName = "showNormTab", icon = icon("angle-double-right", verify = FALSE))
         ), tabName = "showDataTab"
     )
     })

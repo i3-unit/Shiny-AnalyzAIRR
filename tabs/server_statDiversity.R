@@ -6,8 +6,7 @@
         validate(need(!(is.null(input$DivRepLevel) || input$DivRepLevel == ""), "select level"))
         selectizeInput("DivMethod",
             "Select method",
-            choices = list("shannon", "shannon.norm", "simpson", "simpson.norm", "invsimpson", "inv.norm") #,
-            #options = list(onInitialize = I('function() { this.setValue(""); }'))
+            choices = list("shannon", "shannon.norm", "simpson", "simpson.norm", "invsimpson", "inv.norm") 
         )
     })
     # render select gropu UI for diversity analysis
