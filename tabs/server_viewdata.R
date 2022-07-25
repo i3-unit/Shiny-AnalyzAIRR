@@ -1,10 +1,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  view RepSeqExperiment object section
 #-------------------------------------------------------------------------------------------------------------------------------------------#   
-# show diversity table
-showDiversity <- reactive(
-    RepSeq::basicIndices(RepSeqDT(), level = input$diversityLevel)
-)
+
 # get name
 filenameDT <- function(fname){
     return(list(list(extend = 'csv', filename = fname), list(extend = 'excel', filename = fname)))

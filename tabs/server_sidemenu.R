@@ -82,10 +82,19 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
         p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
         
         validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select level"))
-        #menu déroulant: CDR3aa, CDR3nt, clone, clonotype:
-        p2<-histSums(cts[,sum(count), by=input$summaryLevel][,V1], xlab="count",ylab=paste("Number of", level))
+        p2<-histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel))
         
         gridExtra::grid.arrange(p1, p2, ncol=2)
-    })        
+    }) 
+    
+    output$histtxtlibsizes <- renderPlot({
+      cts<- assay(RepSeqData)
+      p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
+      
+      validate(need(!(is.null(input$summaryTXTLevel) || input$summaryTXTLevel == ""), "select level"))
+      p2<-histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel))
+      
+      gridExtra::grid.arrange(p1, p2, ncol=2)
+    }) 
 }) # end observeEvent RepSeqDT() is loaded
   

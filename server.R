@@ -17,12 +17,25 @@ shinyServer(function(input, output, session) {
         } else {
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
-                sInfo <- fread(input = input$sInfofile$datapath)
+              sInfo <- read.table(input$sInfofile$datapath, 
+                         header=T,
+                         row.names = 1)
+              #sInfo <- fread(input = input$sInfofile$datapath)
             }
             tempFile <- input$samplefiles$datapath
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
             file.rename(tempFile, inFiles)
-            RepSeqDT <- RepSeq::readClonotypeSet(fileList = inFiles, aligner = input$source, chain = input$chain, sampleinfo = sInfo)
+            RepSeqDT <- RepSeq::readAIRRSet(fileList = inFiles, 
+                                            fileFormat = input$source, 
+                                            chain = input$chain, 
+                                            sampleinfo = sInfo,
+                                            keep.ambiguous = TRUE,
+                                            keep.unproductive = TRUE,
+                                            filter.singletons = FALSE,
+                                            aa.th = 8,
+                                            outFiltered = TRUE,
+                                            raretab = FALSE,
+                                            cores = 1L)
             file.remove(inFiles)
         }
         return(RepSeqDT)
@@ -74,10 +87,6 @@ source("tabs/server_multiplesamples.R", local = TRUE)
 #  diffferential analysis section
 #--------------------------------------------------------------------------------#  
 source("tabs/server_exploratorystats.R", local = TRUE)
-#--------------------------------------------------------------------------------#
-#  diversity analysis section
-#--------------------------------------------------------------------------------#
-source("tabs/server_statDiversity.R", local = TRUE)
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  download RDS section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    

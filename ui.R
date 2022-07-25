@@ -54,7 +54,19 @@ bodyTabs <-
         tabItem(tabName = "uploadTXTtab",
             h4("Data overview"),
             htmlOutput("summaryTXT"),
-            busyIndicator(wait = 50)
+            busyIndicator(wait = 50),
+            h4(""),
+            fluidRow(
+                column(width = 3,
+                       selectizeInput("summaryTXTLevel",
+                                      "Select level",
+                                      choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                      options = list(onInitialize = I('function() { this.setValue(""); }'))
+                       )
+                )
+            ),
+            plotOutput("histtxtlibsizes"),
+            busyIndicator(wait = 50),
         ),
         tabItem(tabName = "showInfoTab",
                 fluidRow(tabBox(width = 12,
@@ -206,7 +218,7 @@ bodyTabs <-
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
-    mydashboardHeader(title = "DiversiTR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
+    mydashboardHeader(title = "Shiny-pAIRRis", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
     dashboardSidebar(width = "20%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 
