@@ -192,16 +192,17 @@ shannonNormed <- reactive({
 
 output$shannonsampleddata <- renderDataTable({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Do shannon normalization ?"))
-    
     return(datatable(RepSeq::History(shannonNormed()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
-
-
-
-
-
+dataFilt <- eventReactive(input$doNorm, {
+    if (input$doNorm == TRUE) {
+        return(shannonNormed())
+    } else {
+        return(RepSeqDT())
+    }
+})
 
 
 

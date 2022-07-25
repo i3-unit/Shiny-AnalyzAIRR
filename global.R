@@ -11,6 +11,7 @@ library(DT)
 library(grid)
 library(dplyr)
 library(rstatix)
+library(ggrepel)
 
 #------------------------------------------------------------------------------#
 # options

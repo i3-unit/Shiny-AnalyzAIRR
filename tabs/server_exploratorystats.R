@@ -130,25 +130,18 @@ output$downlibsize <- renderUI({
 observeEvent(input$down, {
     output$histdownlibsizes <- renderPlot({
         cts1 <- RepSeq::assay(RepSeqDT()) 
-        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
-            ggtitle("Orignial data - Clonotype count distribution")+ #modified by VMH
-            theme_light()+ #added by VMH
+        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + 
+            ggtitle("Orignial data - Clonotype count distribution")+
+            theme_light()+
             theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1)) #added by VMH
-        #if (is.null(RepSeqDown())) {
-        #    p2 <- ggplot() +
-        #            theme_void() +
-        #            geom_text(aes(0,0,label='N/A')) +
-        #            xlab(NULL) #optional, but safer in case another theme is applied later
-        #} else {
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
         cts2 <- RepSeq::assay(RepSeqDown())
-        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + #modified by VMH 
-            ggtitle("Downsampled data - Clonotype count distribution") +  #modified by VMH
-            theme_light()+ #added by VMH
+        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +  
+            ggtitle("Downsampled data - Clonotype count distribution") +
+            theme_light()+
             theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1)) #added by VMH
-        
-        #}
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1)) 
+
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })    
 })

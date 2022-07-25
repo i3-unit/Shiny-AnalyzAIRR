@@ -14,13 +14,12 @@ shinyServer(function(input, output, session) {
     RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile), {
         if (!is.null(input$RDSfile)) {
         RepSeqDT <- readRDS(input$RDSfile$datapath)
-        } else {
+        } else if(input$source != "Neither"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
               sInfo <- read.table(input$sInfofile$datapath, 
                          header=T,
                          row.names = 1)
-              #sInfo <- fread(input = input$sInfofile$datapath)
             }
             tempFile <- input$samplefiles$datapath
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
@@ -37,6 +36,28 @@ shinyServer(function(input, output, session) {
                                             raretab = FALSE,
                                             cores = 1L)
             file.remove(inFiles)
+        } else if(input$source == "Neither"){
+          sInfo <- NULL
+          if (!is.null(input$sInfofile)) { 
+            sInfo <- read.table(input$sInfofile$datapath, 
+                                header=T,
+                                row.names = 1)
+          }
+          tempFile <- input$samplefiles$datapath
+          inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
+          file.rename(tempFile, inFiles)
+          RepSeqDT <- RepSeq::readFormatSet(fileList = inFiles, 
+                                            chain = input$chain, 
+                                            sampleinfo = sInfo, 
+                                            keep.ambiguous = TRUE,
+                                            keep.unproductive = TRUE,
+                                            filter.singletons = FALSE,
+                                            aa.th = 8,
+                                            outFiltered = TRUE,
+                                            raretab = FALSE,
+                                            cores = 1L)
+          file.remove(inFiles)
+          
         }
         return(RepSeqDT)
     })
@@ -45,6 +66,7 @@ shinyServer(function(input, output, session) {
         return(is.RepSeqExperiment(RepSeqDT()))
     })
     outputOptions(output, "isUploaded", suspendWhenHidden = FALSE)
+    
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  Generate side menu section
 #-------------------------------------------------------------------------------------------------------------------------------------------#     
@@ -58,7 +80,7 @@ source("tabs/server_sidemenu.R", local = TRUE)
             shinyjs::info(paste0("Downloaded to ", getwd(), "/", "RepSeqFiles/RepSeqExperiment.rds"))
         }
     }, ignoreInit = T)
-
+    
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  view RepSeqExperiment object section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
@@ -72,13 +94,9 @@ source("tabs/server_singlesample.R", local = TRUE)
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 source("tabs/server_multiplesamples.R", local = TRUE)
     RepSeqDown <- eventReactive(input$down, {
-    #if(input$down == 0) {
-    # Don't execute filter if filter-button has never been clicked.
-    #    return(NULL)
-    #} else {
-        out <- sampleRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
-        return(out)
-    #}    
+
+    out <- sampleRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
+    return(out)
     })
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  statististical analysis section
@@ -109,7 +127,6 @@ source("tabs/server_exploratorystats.R", local = TRUE)
         session$reload()
         return()
     })
-  #session$onSessionEnded(stopApp)#!! comment out this commande if running on a server
 }) 
 
 

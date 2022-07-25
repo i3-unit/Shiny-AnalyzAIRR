@@ -30,12 +30,12 @@ sideMenu <- sidebarMenu(id = "sideTabs",
             selectizeInput(
                 "source",
                 'Source ?',
-                choices = list("MiXCR", "immunoseq", "rTCR", "AIRR"),
+                choices = list("MiXCR", "immunoseq", "rTCR", "AIRR", "Neither"),
                 options = list(onInitialize = I('function() { this.setValue(""); }'))
             ),
             checkboxGroupInput(
                 "chain",
-                "chain ?",
+                "Chain ?",
                 choiceNames = c("alpha", "beta", "gamma", "delta", "IGH", "IGK", "IGL"),
                 choiceValues = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL")
             ),
