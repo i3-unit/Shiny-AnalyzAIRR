@@ -73,7 +73,7 @@ source("tabs/server_multiplesamples.R", local = TRUE)
 #--------------------------------------------------------------------------------#
 #  diffferential analysis section
 #--------------------------------------------------------------------------------#  
-source("tabs/server_statDE.R", local = TRUE)
+source("tabs/server_exploratorystats.R", local = TRUE)
 #--------------------------------------------------------------------------------#
 #  diversity analysis section
 #--------------------------------------------------------------------------------#

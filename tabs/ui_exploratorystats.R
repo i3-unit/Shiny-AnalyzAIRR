@@ -5,11 +5,7 @@ basicstats <-
                 tabPanel("Visualize the metaData statistics",
                     fluidRow(
                         column(width = 3,
-                            selectizeInput(
-                                "plotStats",
-                                "Select stat",
-                                choices = list("nSequences", "clone", "clonotype", "V", "J", "VJ", "CDR3aa", "CDR3nt"),
-                                options = list(onInitialize = I('function() { this.setValue(""); }')))
+                               uiOutput("plotStats")
                         ),
                         column(width = 3,
                                uiOutput("statGroup")
@@ -111,7 +107,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    h4(textOutput("Diversity table")),
                                    dataTableOutput("dataDiv"),
                                    busyIndicator(wait = 500)
-                          ),
+                                   ),
                           tabPanel("Evaluation of the Renyi diversity",
                                    fluidRow(
                                        column(width = 3,
@@ -124,8 +120,8 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 3,
                                               uiOutput("renyiGroup")
                                        )
-                                   ), 
-                                   plotOutput("plotRenyi"), 
+                                   ),
+                                   plotOutput("plotRenyi"),
                                    busyIndicator(wait = 500),
                                    h4(textOutput("Renyi diversity table")),
                                    dataTableOutput("dataRenyi"),
@@ -139,22 +135,46 @@ divstats<- tabItem(tabName = "showDivTab",
 clonalstats<- tabItem(tabName = "showClonalTab",
                       fluidRow(
                           tabBox(width = 12,
-                          tabPanel("Perturbation analysis",
+                          tabPanel("Clonal distribution with count intervals",
                                    fluidRow(
-                                    column(width = 2, 
-                                        uiOutput("PertGroupUI")
-                                    ),
-                                    column(width = 3,
-                                        uiOutput("CtrlGroupUI")
-                                    ),
-                                    column(width = 3,
-                                        uiOutput("PertDistUI")
-                                    )
+                                       column(width = 3,
+                                              selectizeInput(
+                                                  "countIntLevel",
+                                                  "Select level",
+                                                  choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
+                                                  selected = "clone")
+                                       ),
+                                       column(width = 3,
+                                              uiOutput("countIntGroup")
+                                       )
                                    ),
-                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("pertPCA"), plotOutput("pertHeatmap")),
-                         busyIndicator(wait = 500),
-                         hr(),
-                         h4("Perturbation values:"),
-                         dataTableOutput("PertTab")
-                ))))
+                                   plotOutput("CountIntervals"),
+                                   busyIndicator(wait = 500)
+                                   ),
+                          tabPanel("Clonal distribution per decreasing rank", 
+                                   fluidRow(
+                                       column(width = 4, 
+                                              selectInput("rankDistribGroupMeth", 
+                                                          "Select method",
+                                                          choices = list("count" = "count", "frequency" = "frequency"), 
+                                                          selected = "count"   
+                                              )
+                                       ),
+                                       column(width = 4, 
+                                              selectInput("rankDistribLevel", 
+                                                          "Select level",
+                                                          choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"), 
+                                                          selected = "clone" 
+                                              )
+                                       ),
+                                       column(width = 4, 
+                                              uiOutput("rankDistribGroup")
+                                       )
+                                   ),
+                                   plotOutput("rankDistrib"),
+                                   busyIndicator(wait = 500)
+                          )
+                          )
+                          )
+                      )
 

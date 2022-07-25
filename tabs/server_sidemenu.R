@@ -51,12 +51,18 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     # render multiple samples comparison menu
     output$multipleSampleTab <- renderMenu({
         convertMenuItem(
-            menuItem(
+            menuItem(tabName = "multipleSampleTab",
                 text = "Multi-sample analysis",
                 icon = icon("users", lib = "font-awesome", verify_fa = FALSE),
-                tabName = "multipleSampleTab"
-            ), 
-            "multipleSampleTab"
+                menuSubItem("Comparison of basic statistics",
+                            tabName = "showCompBasicTab", icon = icon("angle-double-right", verify = FALSE)),
+                menuSubItem("Similarity analysis",
+                            tabName = "showSimTab", icon = icon("angle-double-right", verify = FALSE)),
+                menuSubItem("Differential analysis",
+                            tabName = "showDiffTab", icon = icon("angle-double-right", verify = FALSE)),
+                menuSubItem("Pertubation score",
+                            tabName = "showPertTab", icon = icon("angle-double-right", verify = FALSE))
+            ), tabName = "multipleSampleTab"
         )
     })
 

@@ -10,6 +10,7 @@ library(shinysky)
 library(DT)
 library(grid)
 library(dplyr)
+library(rstatix)
 
 #------------------------------------------------------------------------------#
 # options
@@ -96,11 +97,10 @@ selectGroupDE <- function(ID, x){
 
 selectGroupStat <- function(ID, x){
   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]
-  #idx <- sapply(sdata, function(i) nlevels(i)/length(i))
-  choices <- colnames(sdata)#[which(idx < 1)]
+  choices <- colnames(sdata)
   selectizeInput(
     ID,
-    "Select group",
+    "Select stat",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
