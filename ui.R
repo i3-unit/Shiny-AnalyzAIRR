@@ -185,15 +185,18 @@ bodyTabs <-
                                          busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Shannon-based normalization",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(
+                                             column(width = 3,
                                                          selectizeInput("doNorm",
                                                                         "Do shannon normalization ?",
                                                                         choices = list(TRUE, FALSE),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         )),
+                                         )
+                                         ),
                                          h4("Normalized table"),
                                          dataTableOutput("shannonsampleddata"),
                                          busyIndicator(wait = 500)
+                                         
                                 )
                 ))
             

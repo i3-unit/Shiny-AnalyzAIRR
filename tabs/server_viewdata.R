@@ -10,15 +10,15 @@ filenameDT <- function(fname){
 output$downloadAssay <- downloadHandler(
     "RepSeqAssay.csv",
     content = function(file) {
-        write.table(RepSeq::assay(RepSeqDT()), file, row.names = F, sep = '\t')
+        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # output AssayTable
-output$assayTable <- renderDataTable(RepSeq::assay(RepSeqDT()),
+output$assayTable <- renderDataTable(RepSeq::assay(dataFilt()),
                                      options = list(scrollX=TRUE)
 )
 # output infoTable
-output$infoTable <- renderDataTable(RepSeq::mData(RepSeqDT()), 
+output$infoTable <- renderDataTable(RepSeq::mData(dataFilt()), 
                                     server = FALSE,
                                     style="bootstrap", 
                                     extensions = 'Buttons',
@@ -26,14 +26,14 @@ output$infoTable <- renderDataTable(RepSeq::mData(RepSeqDT()),
 )
 
 # get information of slot metadata
-output$metadataTable <- renderDataTable(RepSeq::oData(RepSeqDT())$filtered, 
+output$metadataTable <- renderDataTable(RepSeq::oData(dataFilt())$filtered, 
                                         server = FALSE, 
                                         style="bootstrap", 
                                         extensions = 'Buttons', 
                                         options = list(scrollX=TRUE, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
 )
 # output history
-output$historyTable <- renderDataTable(RepSeq::History(RepSeqDT()), 
+output$historyTable <- renderDataTable(RepSeq::History(dataFilt()), 
                                        server = FALSE, 
                                        style="bootstrap", 
                                        extensions = 'Buttons', 
@@ -182,27 +182,64 @@ output$downsampleddata <- renderDataTable({
 
 shannonNormed <- reactive({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Do shannon normalization ?"))
-    
+
     if(input$doNorm==TRUE){
-        shannonsampleddata <- ShannonNorm(x = RepSeqDT())    
+        shannonsampleddata <- ShannonNorm(x = RepSeqDT())
     }
 
     return(shannonsampleddata)
 })
 
+
 output$shannonsampleddata <- renderDataTable({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Do shannon normalization ?"))
-    return(datatable(RepSeq::History(shannonNormed()), 
+    return(datatable(RepSeq::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
-dataFilt <- eventReactive(input$doNorm, {
-    if (input$doNorm == TRUE) {
+
+dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$filterCountGroup, 
+                            input$publicLevel, input$publicProp, input$publicGroup,
+                            input$privateLevel, input$privateSingletons, 
+                            input$productive, 
+                            input$dropSampleNames,
+                            input$doNorm,
+                            input$doDown), {
+    if(!(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
+       !(is.null(input$filterCountN) || input$filterCountN == "") && 
+       !(is.null(input$filterCountGroup) || input$filterCountGroup == "")){
+        return(dataFilterCount())
+    } else if(!(is.null(input$publicLevel) || input$publicLevel == "") &&
+              !(is.null(input$publicProp) || input$publicProp == "") &&
+              !(is.null(input$publicGroup) || input$publicGroup == "")){
+        return(dataPublic())
+    } else if(!(is.null(input$privateLevel) || input$privateLevel == "") &&
+              !(is.null(input$privateSingletons) || input$privateSingletons == "")){
+        return(dataPrivate())
+    }
+    else if(input$productive == TRUE){
+        return(dataProductiveOrUnproductive())
+    } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
+        return(dataDropedSamples())
+    } else if(input$doNorm == TRUE){
         return(shannonNormed())
+    } else if(input$doDown == TRUE){
+        return(downSampling())
     } else {
         return(RepSeqDT())
     }
 })
+
+
+
+
+
+
+
+
+
+
+
 
 
 

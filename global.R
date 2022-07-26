@@ -12,6 +12,7 @@ library(grid)
 library(dplyr)
 library(rstatix)
 library(ggrepel)
+library(shinyjs)
 
 #------------------------------------------------------------------------------#
 # options

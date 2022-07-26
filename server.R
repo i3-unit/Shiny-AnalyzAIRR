@@ -14,7 +14,7 @@ shinyServer(function(input, output, session) {
     RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile), {
         if (!is.null(input$RDSfile)) {
         RepSeqDT <- readRDS(input$RDSfile$datapath)
-        } else if(input$source != "Neither"){
+        } else if(input$source != "Other"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
               sInfo <- read.table(input$sInfofile$datapath, 
@@ -36,7 +36,7 @@ shinyServer(function(input, output, session) {
                                             raretab = FALSE,
                                             cores = 1L)
             file.remove(inFiles)
-        } else if(input$source == "Neither"){
+        } else if(input$source == "Other"){
           sInfo <- NULL
           if (!is.null(input$sInfofile)) { 
             sInfo <- read.table(input$sInfofile$datapath, 
