@@ -2,7 +2,7 @@ CompBasicTab<-
     tabItem(tabName = "showCompBasicTab",
         fluidRow(
             tabBox(width = 12,
-                tabPanel("Compare metaData statistics",
+                tabPanel("Metadata statistics",
                     fluidRow(
                         column(width = 3,
                                uiOutput("statisticsStat")
@@ -14,7 +14,7 @@ CompBasicTab<-
                     plotOutput("Statistics"),
                     busyIndicator(wait = 500)
                 ),
-                tabPanel("Compare repertoire diversities",
+                tabPanel("Repertoire diversity",
                          fluidRow(
                              column(width = 2,
                                     selectizeInput("diverLevel",
@@ -37,7 +37,7 @@ CompBasicTab<-
                          plotOutput("RenyiDiversity"),
                          busyIndicator(wait = 500)
                 ),
-                tabPanel("Compare clonal distributions",
+                tabPanel("Clonal distribution",
                          fluidRow(
                              column(width = 2,
                                     selectizeInput("countIntervalsLevel",
@@ -60,7 +60,7 @@ SimTab<-
     tabItem(tabName = "showSimTab",
             fluidRow(
                 tabBox(width = 12,
-                       tabPanel("Compare the number of shared sequences",
+                       tabPanel("Repertoire overlap",
                            fluidRow(
                                column(width = 2,
                                    selectizeInput("vennLevel",
@@ -77,7 +77,7 @@ SimTab<-
                            plotOutput("plotEulerr", height = 800, width = 800),
                            busyIndicator(wait = 500)
                        ),
-                       tabPanel("Assess the correlation between a pair of samples",
+                       tabPanel("Repertoire correlation",
                                 fluidRow(
                                     column(width = 2,
                                            selectizeInput("scatterLevel",
@@ -101,7 +101,7 @@ SimTab<-
                                 plotOutput("Scatter"),
                                 busyIndicator(wait = 500)
                        ),
-                       tabPanel("Compute dissimilarity distances",
+                       tabPanel("Dissimilarity indices",
                                 fluidRow(
                                     column(width = 5,
                                            selectizeInput(
@@ -138,8 +138,8 @@ SimTab<-
                                 ),
                                 splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
                                 busyIndicator(wait = 500),
-                                withMathJax(),
-                                htmlOutput("distFuncsMD"),
+                                # withMathJax(),
+                                # htmlOutput("distFuncsMD"),
                                 value = "dissimilarityHM"
                        )
                 )
@@ -150,9 +150,9 @@ SimTab<-
 
 DiffTab<- 
     tabItem(tabName = "showDiffTab",
-            fluidRow(
-                tabBox(width=12,
-                       tabPanel("Perform differential analysis",
+            #fluidRow(
+                #tabBox(width=12,
+                 #      tabPanel("",#"Perform differential analysis",
                                 fluidRow(
                                     column(width = 5,
                                            selectizeInput(
@@ -161,6 +161,23 @@ DiffTab<-
                                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
+                                    ),
+                                    column(width = 5,
+                                           uiOutput("diffColGroup")
+                                    ),
+                                    column(width = 5,
+                                           sliderInput(inputId = "diffFC",
+                                                       label = "Set fold-change threshold",
+                                                       value = 1,
+                                                       min = 0,
+                                                       max = 10)
+                                    ),
+                                    column(width = 5,
+                                           sliderInput(inputId = "diffPV",
+                                                       label = "Set pvalue threshold",
+                                                       value = 0.05,
+                                                       min = 0,
+                                                       max = 1)
                                     ),
                                     column(width = 5,
                                            selectizeInput(
@@ -181,39 +198,16 @@ DiffTab<-
                                            )
                                     ),
                                     column(width = 5,
-                                           numericInput(inputId = "diffFC",
-                                                        label = "Set fold-change threshold",
-                                                        value = 1,
-                                                        min = 0,
-                                                        max = 10)
-                                    ),
-                                    column(width = 5,
-                                           numericInput(inputId = "diffPV",
-                                                        label = "Set pvalue threshold",
-                                                        value = 0.05,
-                                                        min = 0,
-                                                        max = 1)
-                                    ),
-                                    column(width = 5,
-                                           numericInput(inputId = "diffTop",
-                                                        label = "Set top n features",
-                                                        value = 5,
-                                                        min = 0,
-                                                        max = 15)
-                                    ),
-                                    column(width = 5,
-                                           uiOutput("diffColGroup")
-                                    ),
-                                    column(width = 5,
                                            uiOutput("diffGroup")
                                     )
                                 ),
-                                splitLayout(cellWidths = c("60%", "40%"), plotOutput("Volcano"), plotOutput("plotPCA")),
+                                splitLayout(cellWidths = c("50%", "50%"), plotOutput("Volcano"), plotOutput("plotPCA")),
                                 busyIndicator(wait = 500),
                                 dataTableOutput("tableDiffExpGroup"),
                                 busyIndicator(wait = 500)
-                       ))
-            )
+                 #      )
+                #)
+            #)
     )
 
 
@@ -225,7 +219,7 @@ PertTab<-
                 tabBox(width=12,
                        tabPanel("Compute perturbation scores",
                                 fluidRow(
-                                    column(width = 2,
+                                    column(width = 3,
                                            uiOutput("PertGroupUI")
                                     ),
                                     column(width = 3,

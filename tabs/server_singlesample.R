@@ -6,7 +6,7 @@
 output$IndCountIntervals <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$indLevel) ||  input$indLevel == ""), "Select a level"))
-    plotIndCountIntervals(x = RepSeqDT(), sampleName = input$singleSample, level = input$indLevel)
+    plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel)
 })
 
 
@@ -15,7 +15,7 @@ output$geneUsage <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "Choose a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
-    plotGeneUsage(x = RepSeqDT(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)
+    plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)
 })
 
 # plot V and J gene usages
@@ -24,7 +24,7 @@ output$VJUsage <- renderPlot({
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "Choose a scale"))
     validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "Select a level"))
     validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "Select a level"))
-    plotVJusage(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+    plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
 })
 
 ##### Plot stacked spectratype #####
@@ -40,7 +40,7 @@ output$spectraPlot <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
     validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "Choose a proportion"))    
-    plotSpectratyping(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)
+    plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)
 })
 # download button for individual spectratype
 output$Spectra <- downloadHandler(
@@ -51,7 +51,7 @@ output$Spectra <- downloadHandler(
     content = function(file) {
         png(file, height=2400, width=4800, res=300)
         grid.newpage()
-        grid.draw(plotSpectratyping(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
+        grid.draw(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
         dev.off()
     }
 )
@@ -68,12 +68,12 @@ output$spectraPlotbis <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
     validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "Choose a proportion"))
-    plotSpectratypingV(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
+    plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
     },  width="auto", 
         height <- function() {
             if (is.null(input$singleSample) || input$singleSample == "") return(600)
             else { 
-                nrowsGrid <- ceiling(length(RepSeq::assay(RepSeqDT())[sample_id == input$singleSample, unique(V)])/4)
+                nrowsGrid <- ceiling(length(RepSeq::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
                 return(150 * nrowsGrid)
             }
         }
@@ -87,7 +87,7 @@ output$Spectrabis <- downloadHandler(
     content = function(file) {
         png(file, height=4800, width=2400, res=300)
         grid.newpage()
-        grid.draw(plotSpectratypingV(x = RepSeqDT(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
+        grid.draw(plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
         dev.off()  
     }
 )

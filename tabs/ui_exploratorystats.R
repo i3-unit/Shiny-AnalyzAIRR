@@ -2,19 +2,16 @@ basicstats <-
     tabItem(tabName = "showBasicTab", 
         fluidRow(
             tabBox(width = 12,
-                tabPanel("Visualize the metaData statistics",
+                tabPanel("Metadata statistics",
                     fluidRow(
                         column(width = 3,
                                uiOutput("plotStats")
-                        ),
-                        column(width = 3,
-                               uiOutput("statGroup")
                         )
                     ), 
                     plotOutput("plotStatistic"), 
                     busyIndicator(wait = 500)
                  ),
-                tabPanel("Calculate the count or the proportion of a chosen repertoire level",
+                tabPanel("Detailed repertoire level statistics",
                          fluidRow(
                              column(width = 3,
                                     selectizeInput(
@@ -82,7 +79,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                 h4(textOutput("dataselected")),
                                 plotOutput("histdownlibsizes")
                                 ),
-                          tabPanel("Calculation of diversity indices",
+                          tabPanel("Diversity indices",
                                    fluidRow(
                                        column(width = 3,
                                               selectizeInput(
@@ -97,9 +94,6 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   "Select level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
                                                   selected = "clone")
-                                       ),
-                                       column(width = 3,
-                                              uiOutput("divGroup")
                                        )
                                    ), 
                                    plotOutput("plotDiv"), 
@@ -108,7 +102,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    dataTableOutput("dataDiv"),
                                    busyIndicator(wait = 500)
                                    ),
-                          tabPanel("Evaluation of the Renyi diversity",
+                          tabPanel("Renyi index",
                                    fluidRow(
                                        column(width = 3,
                                               selectizeInput(
@@ -116,9 +110,6 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   "Select level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
                                                   selected = "clone")
-                                       ),
-                                       column(width = 3,
-                                              uiOutput("renyiGroup")
                                        )
                                    ),
                                    plotOutput("plotRenyi"),
@@ -135,7 +126,7 @@ divstats<- tabItem(tabName = "showDivTab",
 clonalstats<- tabItem(tabName = "showClonalTab",
                       fluidRow(
                           tabBox(width = 12,
-                          tabPanel("Clonal distribution with count intervals",
+                          tabPanel("Per count interval",
                                    fluidRow(
                                        column(width = 3,
                                               selectizeInput(
@@ -151,24 +142,21 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                    plotOutput("CountIntervals"),
                                    busyIndicator(wait = 500)
                                    ),
-                          tabPanel("Clonal distribution per decreasing rank", 
+                          tabPanel("Per decreasing rank", 
                                    fluidRow(
-                                       column(width = 4, 
+                                       column(width = 3, 
                                               selectInput("rankDistribGroupMeth", 
                                                           "Select method",
                                                           choices = list("count" = "count", "frequency" = "frequency"), 
                                                           selected = "count"   
                                               )
                                        ),
-                                       column(width = 4, 
+                                       column(width = 3, 
                                               selectInput("rankDistribLevel", 
                                                           "Select level",
                                                           choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"), 
                                                           selected = "clone" 
                                               )
-                                       ),
-                                       column(width = 4, 
-                                              uiOutput("rankDistribGroup")
                                        )
                                    ),
                                    plotOutput("rankDistrib"),

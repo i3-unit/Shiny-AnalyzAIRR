@@ -67,7 +67,9 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                     buttonLabel = "Choose sample File(s)",
                     placeholder = "No file(s) selected"
                 )
-            ), tabName = "uploadTXTtab"
+            ), tabName = "uploadTXTtab",
+            div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
+                downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
         ), tabName = "uploadTXTtab"
   ),
   menuItemOutput("showDataTab"),
@@ -75,7 +77,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
   menuItemOutput("singleSampleTab"),
   menuItemOutput("multipleSampleTab"),
   shinyjs::useShinyjs(),
-  menuItemOutput("downloadRDS"),
+  #menuItemOutput("downloadRDS"),
     menuItem(
     selected = F,
     text = "Session Info",

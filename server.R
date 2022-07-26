@@ -95,7 +95,7 @@ source("tabs/server_singlesample.R", local = TRUE)
 source("tabs/server_multiplesamples.R", local = TRUE)
     RepSeqDown <- eventReactive(input$down, {
 
-    out <- sampleRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
+    out <- sampleRepSeqExp(x = dataFilt(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
     return(out)
     })
 #-------------------------------------------------------------------------------------------------------------------------------------------#
@@ -109,9 +109,9 @@ source("tabs/server_exploratorystats.R", local = TRUE)
 #  download RDS section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
     # sample info render
-    output$singleInfoDT <- renderDataTable(mData(RepSeqDT())[input$singleSample,], options=list(scrollX=TRUE))
+    output$singleInfoDT <- renderDataTable(mData(dataFilt())[input$singleSample,], options=list(scrollX=TRUE))
     # count assay render 
-    output$singleAssayDT <- renderDataTable(assay(RepSeqDT())[lib == input$singleSample], options=list(scrollX=TRUE))
+    output$singleAssayDT <- renderDataTable(assay(dataFilt())[sample_id == input$singleSample], options=list(scrollX=TRUE))
     # 
     observeEvent(input$showsampleInfo,
         showModal(modalDialog(

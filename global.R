@@ -13,6 +13,7 @@ library(dplyr)
 library(rstatix)
 library(ggrepel)
 library(shinyjs)
+library(shinythemes)
 
 #------------------------------------------------------------------------------#
 # options
@@ -128,7 +129,7 @@ renameFiles <- function (x, y) {
 
 # render R print output
 printHtml <- function(obj){
-  HTML(paste("<p style='font-size:10px;'>", paste0(capture.output(print(obj)), collapse="<br/>"), "</p>"))
+  HTML(paste("<p style='font-size:15px;'>", paste0(capture.output(print(obj)), collapse="<br/>"), "</p>"))
 }
 
 # Plot histograms

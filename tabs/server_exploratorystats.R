@@ -3,65 +3,59 @@
 #--------------------------------------------------------------------------------#  
 #### Basic Statistics ####
 
-output$statGroup <- renderUI({
-    validate(need(!(is.null(input$plotStats) || input$plotStats ==""), " "))
-    selectGroup(ID = "statGroup", x = RepSeqDT())
-})
-
 output$plotStats <- renderUI({
-    selectGroupStat("plotStats", RepSeqDT())
+    selectGroupStat("plotStats", dataFilt())
 })
 output$plotStatistic <- renderPlot({
         validate(need(!(is.null(input$plotStats) || input$plotStats == ""), "select stat"))
-        validate(need(!(is.null(input$statGroup) || input$statGroup == ""), "select group"))
-        plotStatistics(x=RepSeqDT(), stat = input$plotStats, groupBy = input$statGroup, label_colors = NULL)
+        plotStatistics(x=dataFilt(), stat = input$plotStats, groupBy = NULL, label_colors = NULL)
     })
 
 output$dataCountFeatures <- renderDataTable({
     validate(need(!(is.null(input$countLevel) || input$countLevel == ""), "select level"))
     validate(need(!(is.null(input$countScale) || input$countScale == ""), "select scale"))
-    countFeatures(x=RepSeqDT(), level = input$countLevel, scale = input$countScale, group = NULL)
+    countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL)
 })
 
 #### Diversity estimation ####
 
 # render rarefaction selection UI
 output$rareChoiceGroup <- renderUI(
-    selectGroupDE("rareGroup", RepSeqDT())
+    selectGroup("rareGroup", dataFilt())
 )
 # compute rarefaction table if not existing
 #raretable <- reactiveValues(raretab = NULL)
 # create reactive
 raretabreactive <- reactive({
-    if (is.na(match("raretab", names(mData(RepSeqDT()))))) {
-        raretab <- rarefactionTab(RepSeqDT())
+    if (is.na(match("raretab", names(mData(dataFilt()))))) {
+        raretab <- rarefactionTab(dataFilt())
     } else {
-        raretab <- mData(RepSeqDT())$raretab
+        raretab <- mData(dataFilt())$raretab
     }
     return(raretab)
 })
-#observeEvent(is.RepSeqExperiment(RepSeqDT()), {
+#observeEvent(is.RepSeqExperiment(dataFilt()), {
 #    raretable$raretab <- raretabreactive()
 #})
 
 # plot rarefaction curves
 output$rarecurves <- renderPlot({
     validate(need(!(is.null(input$rareGroup) || input$rareGroup == ""), ""))
-    sdata <- copy(mData(RepSeqDT()))
+    sdata <- copy(mData(dataFilt()))
     setDT(sdata, keep.rownames=TRUE)
     names(sdata)[1] <- "sample_id"
     #raretab <- raretable$raretab[sdata, on = "sample_id"]
     raretab <- raretabreactive()[sdata, on = "sample_id"]
     
-    mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE])) %>% unique() %>% length())
-    names=as.vector(mData(RepSeqDT())[, unlist(lapply(mData(RepSeqDT()), is.factor)), drop = FALSE]) %>% colnames()
+    mycolors <- colorRampPalette(rev(RColorBrewer::brewer.pal(8, "Set2")))(as.vector(as.matrix(mData(dataFilt())[, unlist(lapply(mData(dataFilt()), is.factor)), drop = FALSE])) %>% unique() %>% length())
+    names=as.vector(mData(dataFilt())[, unlist(lapply(mData(dataFilt()), is.factor)), drop = FALSE]) %>% colnames()
     ann_colors<-vector("list")
     for(i in unique(names)){
         
-        l<- length(unique(mData(RepSeqDT())[,i]))
-        name<- unique(colnames(mData(RepSeqDT())[i]))
+        l<- length(unique(mData(dataFilt())[,i]))
+        name<- unique(colnames(mData(dataFilt())[i]))
         mycolors_b<- mycolors[1:l]
-        names(mycolors_b) <- levels(mData(RepSeqDT())[i][[i]])
+        names(mycolors_b) <- levels(mData(dataFilt())[i][[i]])
         
         ann_colors[[name]] <- mycolors_b
         mycolors<- mycolors[!mycolors %in% mycolors_b]
@@ -98,7 +92,7 @@ output$rarecurves <- renderPlot({
 # barplot library
 output$libsizes <- plotly::renderPlotly({
     validate(need(!(is.null(input$rareGroup) || input$rareGroup == ""), ""))
-    sdata <- mData(RepSeqDT())
+    sdata <- mData(dataFilt())
     sdata <- data.frame(libName=rownames(sdata), sdata, check.names = FALSE)
     p <- ggplot(sdata, aes(x = libName, y = nSequences)) +
         geom_bar(stat = "identity", color="gray", alpha=.8) +  #modified by VMH
@@ -116,7 +110,7 @@ output$libsizes <- plotly::renderPlotly({
 
 # render downsampling choice
 output$downlibsize <- renderUI({
-    sdata <- mData(RepSeqDT())
+    sdata <- mData(dataFilt())
     numericInput(inputId = "libsizechoice", 
                  label = "New lib size",
                  value = min(sdata$nSequences),
@@ -129,7 +123,7 @@ output$downlibsize <- renderUI({
 # new libsize after downsampling # library sizes
 observeEvent(input$down, {
     output$histdownlibsizes <- renderPlot({
-        cts1 <- RepSeq::assay(RepSeqDT()) 
+        cts1 <- RepSeq::assay(dataFilt()) 
         p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") + 
             ggtitle("Orignial data - Clonotype count distribution")+
             theme_light()+
@@ -148,7 +142,7 @@ observeEvent(input$down, {
 # select data
 dat <- eventReactive(c(input$samplingchoice, input$down), {
     if (input$samplingchoice == "N") {
-        return(RepSeqDT())
+        return(dataFilt())
     } else {
         return(RepSeqDown())
     }
@@ -163,58 +157,43 @@ output$dataselected <- renderText({
     return(txt)
 })
 
-
-output$divGroup <- renderUI({
-    selectGroup(ID = "divGroup", x = RepSeqDT())
-})
-
 output$plotDiv <- renderPlot({
     validate(need(!(is.null(input$divIndex) || input$divIndex == ""), "select index"))
     validate(need(!(is.null(input$divLevel) || input$divLevel == ""), "select level"))
-    validate(need(!(is.null(input$divGroup) || input$divGroup == ""), "select group"))
-    plotDiversity(x=RepSeqDT(), index = input$divIndex, level = input$divLevel, groupBy = input$divGroup, label_colors = NULL)
+    plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, groupBy = NULL, label_colors = NULL)
 })
 
 output$dataDiv <- renderDataTable({
     validate(need(!(is.null(input$divLevel) || input$divLevel == ""), "select level"))
-    diversityIndices(x=RepSeqDT(), level = input$divLevel)
+    diversityIndices(x=dataFilt(), level = input$divLevel)
 })
 
-
-output$renyiGroup <- renderUI({
-    selectGroup(ID = "renyiGroup", x = RepSeqDT())
-})
 
 output$plotRenyi <- renderPlot({
     validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select level"))
-    validate(need(!(is.null(input$renyiGroup) || input$renyiGroup == ""), "select group"))
-    plotRenyiIndex(x=RepSeqDT(), level = input$renyiLevel, colorBy = input$renyiGroup, grouped = FALSE, label_colors = NULL)
+    plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = NULL, grouped = FALSE, label_colors = NULL)
 })
 
 output$dataRenyi <- renderDataTable({
     validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select level"))
-    renyiIndex(x=RepSeqDT(), level = input$renyiLevel)
+    renyiIndex(x=dataFilt(), level = input$renyiLevel)
 })
 
 output$countIntGroup <- renderUI({
-    selectGroup(ID = "countIntGroup", x = RepSeqDT())
+    selectGroup(ID = "countIntGroup", x = dataFilt())
 })
 
 output$CountIntervals <- renderPlot({
     validate(need(!(is.null(input$countIntLevel) || input$countIntLevel == ""), "select level"))
     validate(need(!(is.null(input$countIntGroup) || input$countIntGroup == ""), "select group"))
-    plotCountIntervals(x=RepSeqDT(), level = input$countIntLevel, groupBy = input$countIntGroup, label_colors = NULL)
+    plotCountIntervals(x=dataFilt(), level = input$countIntLevel, groupBy = input$countIntGroup, label_colors = NULL)
 })
 
-# render rank distribution
-output$rankDistribGroup <- renderUI(
-    selectGroup("rankDistribGroup", RepSeqDT())
-)
+
 # plot VJ distribution
 output$rankDistrib <- renderPlot({
     validate(need(!(is.null(input$rankDistribGroupMeth) || input$rankDistribGroupMeth == ""), "select scale"))
     validate(need(!(is.null(input$rankDistribLevel) || input$rankDistribLevel == ""), "select level"))
-    validate(need(!(is.null(input$rankDistribGroup) || input$rankDistribGroup == ""), "select group"))
-    plotRankDistrib(x = dat(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = input$rankDistribGroup, grouped = FALSE, label_colors = NULL)
+    plotRankDistrib(x = dat(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = "sample_id", grouped = FALSE, label_colors = NULL)
 })
 

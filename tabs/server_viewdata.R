@@ -6,40 +6,53 @@
 filenameDT <- function(fname){
     return(list(list(extend = 'csv', filename = fname), list(extend = 'excel', filename = fname)))
 }
-# create download button for all assay data
+
+# output AssayTable
+output$assayTable <- renderDataTable(RepSeq::assay(dataFilt()),
+                                     options = list(scrollX=TRUE)
+)
 output$downloadAssay <- downloadHandler(
     "RepSeqAssay.csv",
     content = function(file) {
         write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
-# output AssayTable
-output$assayTable <- renderDataTable(RepSeq::assay(dataFilt()),
-                                     options = list(scrollX=TRUE)
-)
 # output infoTable
 output$infoTable <- renderDataTable(RepSeq::mData(dataFilt()), 
-                                    server = FALSE,
-                                    style="bootstrap", 
-                                    extensions = 'Buttons',
-                                    options = list(scrollX=TRUE, dom = 'Bfrtip', buttons = filenameDT("RepSeqInfo"))
-)
+                                    options = list(scrollX=TRUE))
 
+output$downloadMetadata <- downloadHandler(
+    "RepSeqMetadata.csv",
+    content = function(file) {
+        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+    }, contentType = "text/csv"
+) 
 # get information of slot metadata
 output$metadataTable <- renderDataTable(RepSeq::oData(dataFilt())$filtered, 
-                                        server = FALSE, 
-                                        style="bootstrap", 
-                                        extensions = 'Buttons', 
-                                        options = list(scrollX=TRUE, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
+                                        # server = FALSE, 
+                                        # style="bootstrap", 
+                                        # extensions = 'Buttons', 
+                                        options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
 )
+output$downloadOtherdata <- downloadHandler(
+    "RepSeqOtherdata.csv",
+    content = function(file) {
+        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+    }, contentType = "text/csv"
+) 
 # output history
 output$historyTable <- renderDataTable(RepSeq::History(dataFilt()), 
-                                       server = FALSE, 
-                                       style="bootstrap", 
-                                       extensions = 'Buttons', 
-                                       options = list(scrollX=TRUE, dom = 'Bfrtip', buttons = filenameDT("RepSeqHistory"))
+                                       # server = FALSE, 
+                                       # style="bootstrap", 
+                                       # extensions = 'Buttons', 
+                                       options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqHistory"))
 )
-
+output$downloadHistory <- downloadHandler(
+    "RepSeqHistory.csv",
+    content = function(file) {
+        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+    }, contentType = "text/csv"
+) 
 
 #### Filtering ####
 output$filterCountGroup <- renderUI({
@@ -50,7 +63,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   "Select group and a feature",  
+                   "Select a group and a feature",  
                    choices = choices,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
@@ -59,7 +72,7 @@ output$filterCountGroup <- renderUI({
 dataFilterCount <- reactive({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select group and a feature")) 
+    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a feature")) 
     filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
     return(filtercounts)
 })
@@ -67,10 +80,17 @@ dataFilterCount <- reactive({
 output$filtercounts <- renderDataTable({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select group and a feature")) 
+    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a feature")) 
     return(datatable(RepSeq::History(dataFilterCount()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
+
+output$downloaddataFilterCount <- downloadHandler(
+    "RepSeqData_filteredcount.rds",
+    content = function(file) {
+        saveRDS(dataFilterCount(), file)
+    }, 
+) 
 
 output$publicGroup <- renderUI({
     sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
@@ -80,7 +100,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   "Select group and a feature",  
+                   "Select a group and a feature",  
                    choices = choices,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
@@ -102,6 +122,12 @@ output$publicdata <- renderDataTable({
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
+output$downloaddataPublic <- downloadHandler(
+    "RepSeqData_publicdata.rds",
+    content = function(file) {
+        saveRDS(dataPublic(), file)
+    }, 
+) 
 
 dataPrivate <- reactive({
     validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select level"))
@@ -117,6 +143,12 @@ output$privatedata <- renderDataTable({
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
+output$downloaddataPrivate <- downloadHandler(
+    "RepSeqData_privatedata.rds",
+    content = function(file) {
+        saveRDS(dataPrivate(), file)
+    }, 
+) 
 
 dataProductiveOrUnproductive <- reactive({
     validate(need(!(is.null(input$productive) || input$productive == ""), "select if productive"))
@@ -135,6 +167,18 @@ output$productivedata <- renderDataTable({
     return(datatable(RepSeq::History(dataProductiveOrUnproductive()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
+
+output$downloaddataProductiveOrUnproductive <- downloadHandler(
+    if(input$productive==TRUE){
+        "RepSeqData_productive.rds"
+    } else{
+        "RepSeqData_unproductive.rds"
+    }
+    
+    ,content = function(file) {
+        saveRDS(dataProductiveOrUnproductive(), file)
+    }, 
+) 
 
 output$dropSampleNames <- renderUI({
     choices <- rownames(mData(RepSeqDT()))
@@ -158,13 +202,19 @@ output$dropeddata <- renderDataTable({
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
-
+output$downloaddataDropedSamples <- downloadHandler(
+        "RepSeqData_dropedsamples.rds",
+    
+    content = function(file) {
+        saveRDS(dataDropedSamples(), file)
+    }, 
+) 
 
 #### Normalization ####
 
 
 downSampling <- reactive({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Do shannon normalization ?"))
+    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     if(input$doDown==TRUE){
         downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize)
@@ -173,15 +223,22 @@ downSampling <- reactive({
 })
 
 output$downsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Do shannon normalization ?"))
+    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     return(datatable(RepSeq::History(downSampling()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
+output$downloaddownSampling <- downloadHandler(
+    "RepSeqData_downsampling.rds",
+    
+    content = function(file) {
+        saveRDS(downSampling(), file)
+    }, 
+) 
 
 shannonNormed <- reactive({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Do shannon normalization ?"))
+    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))
 
     if(input$doNorm==TRUE){
         shannonsampleddata <- ShannonNorm(x = RepSeqDT())
@@ -192,10 +249,18 @@ shannonNormed <- reactive({
 
 
 output$shannonsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Do shannon normalization ?"))
+    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))
     return(datatable(RepSeq::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
+
+output$downloadshannonNormed <- downloadHandler(
+    "RepSeqData_shannonNormed.rds",
+    
+    content = function(file) {
+        saveRDS(shannonNormed(), file)
+    }, 
+) 
 
 
 dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$filterCountGroup, 

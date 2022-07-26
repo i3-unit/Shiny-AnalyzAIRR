@@ -9,12 +9,12 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
         menuItem(tabName = "showDataTab",
             text = "Data manipulation",
             icon = icon("table", verify_fa = FALSE),
-            menuSubItem("Extract information",
-                tabName = "showInfoTab", icon = icon("angle-double-right", verify = FALSE)),
+            menuSubItem("Data extraction",
+                tabName = "showInfoTab", icon = icon("angle-double-right", verify_fa = FALSE)),
             menuSubItem("Filtering",
-                tabName = "showFiltTab", icon = icon("angle-double-right", verify = FALSE)),
+                tabName = "showFiltTab", icon = icon("angle-double-right", verify_fa = FALSE)),
             menuSubItem("Normalization",
-                tabName = "showNormTab", icon = icon("angle-double-right", verify = FALSE))
+                tabName = "showNormTab", icon = icon("angle-double-right", verify_fa = FALSE))
         ), tabName = "showDataTab"
     )
     })
@@ -25,11 +25,11 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                text = "Exploratory statistics",
                icon = icon("square-root-alt", lib="font-awesome", verify_fa = FALSE),
                menuSubItem("Basic statistics",
-                           tabName = "showBasicTab", icon = icon("angle-double-right", verify = FALSE)),
+                           tabName = "showBasicTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                menuSubItem("Diversity estimation",
-                           tabName = "showDivTab", icon = icon("angle-double-right", verify = FALSE)),
+                           tabName = "showDivTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                menuSubItem("Clonal distribution",
-                           tabName = "showClonalTab", icon = icon("angle-double-right", verify = FALSE))
+                           tabName = "showClonalTab", icon = icon("angle-double-right", verify_fa = FALSE))
         ), tabName = "statisticTab"
       )
     })
@@ -39,7 +39,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
             menuItem(tabName = "singleSampleTab",
                 text = "One-sample analysis",
                 icon = icon("user", verify_fa = FALSE),
-                selectSample("singleSample", rownames(RepSeq::mData(RepSeqDT()))),
+                selectSample("singleSample", rownames(RepSeq::mData(dataFilt()))),
                 radioButtons("singleScale", "Choose a scale",
                     choices = c("count", "frequency"), #VMH replaced "percent" with "frequency"
                     selected = character(0),
@@ -53,13 +53,13 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                 text = "Multi-sample analysis",
                 icon = icon("users", lib = "font-awesome", verify_fa = FALSE),
                 menuSubItem("Comparison of basic statistics",
-                            tabName = "showCompBasicTab", icon = icon("angle-double-right", verify = FALSE)),
+                            tabName = "showCompBasicTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Similarity analysis",
-                            tabName = "showSimTab", icon = icon("angle-double-right", verify = FALSE)),
+                            tabName = "showSimTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Differential analysis",
-                            tabName = "showDiffTab", icon = icon("angle-double-right", verify = FALSE)),
+                            tabName = "showDiffTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Pertubation score",
-                            tabName = "showPertTab", icon = icon("angle-double-right", verify = FALSE))
+                            tabName = "showPertTab", icon = icon("angle-double-right", verify_fa = FALSE))
             ), tabName = "multipleSampleTab"
         )
     })
@@ -73,28 +73,48 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     # show summary of the RepSeqExperiment object  
     output$summaryRDS <- output$summaryTXT <- renderUI({
         #flush.console()
-        printHtml(RepSeqDT())
+        printHtml(dataFilt())
     })
-
+    
+    output$downloadNewRepSeq <- downloadHandler(
+      "RepSeqData.rds",
+      
+      content = function(file) {
+        saveRDS(RepSeqDT(), file)
+      }, 
+    ) 
+    
     # library sizes
-    output$histlibsizes <- renderPlot({
-        cts<- assay(RepSeqData)
+    output$histlibsizesp1 <- renderPlot({
+        cts<- RepSeq::assay(dataFilt())
         p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
         
-        validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select level"))
-        p2<-histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel))
+        p1
         
-        gridExtra::grid.arrange(p1, p2, ncol=2)
     }) 
+    output$histlibsizesp2 <- renderPlot({
+      validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select level"))
+      
+      cts<- RepSeq::assay(dataFilt())
+      p2<-histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel))
+      
+      p2
+    })
     
-    output$histtxtlibsizes <- renderPlot({
-      cts<- assay(RepSeqData)
+    
+    output$histtxtlibsizesp1 <- renderPlot({
+      cts<- RepSeq::assay(dataFilt())
       p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
       
+      p1
+    }) 
+    
+    output$histtxtlibsizesp2 <- renderPlot({
       validate(need(!(is.null(input$summaryTXTLevel) || input$summaryTXTLevel == ""), "select level"))
+      cts<- RepSeq::assay(dataFilt())
       p2<-histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel))
       
-      gridExtra::grid.arrange(p1, p2, ncol=2)
+      p2
     }) 
 }) # end observeEvent RepSeqDT() is loaded
   

@@ -3,24 +3,24 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
 
 output$statisticsStat <- renderUI({
-  selectGroupStat("statisticsStat", RepSeqDT())
+  selectGroupStat("statisticsStat", dataFilt())
 })
 
 output$statisticsGroup <- renderUI({
-  selectGroup("statisticsGroup", RepSeqDT())
+  selectGroupDE("statisticsGroup", dataFilt())
 })
 
 # plot statistics
 output$Statistics <- renderPlot({
     validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "select stat"))
     validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "select group"))
-    plotStatistics(x = RepSeqDT(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
+    plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
 })  
 
 
 
 output$diverGroup <- renderUI({
-  selectGroup("diverGroup", RepSeqDT())
+  selectGroupDE("diverGroup", dataFilt())
 })
 
 # plot diversity
@@ -28,23 +28,23 @@ output$Diversity <- renderPlot({
   validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
   validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "select index"))
   validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
-  plotDiversity(x = RepSeqDT(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
+  plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
 })  
 
 output$RenyiDiversity <- renderPlot({
   validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
   validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
-  plotRenyiIndex(x = RepSeqDT(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL)    
+  plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL)    
 })  
 
 output$countIntervalsGroup <- renderUI({
-  selectGroup("countIntervalsGroup", RepSeqDT())
+  selectGroup("countIntervalsGroup", dataFilt())
 })
 # plot count intervals
 output$CountInt <- renderPlot({
   validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "select level"))
   validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "select group"))
-  plotCountIntervals(x = RepSeqDT(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
+  plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
 }) 
 
 
@@ -63,11 +63,11 @@ output$plotEulerr <- renderPlot({
   validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select level"))
   validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
   validate(need(length(input$vennSamples)>1, "select a second sample"))
-  plotEulerr(x = RepSeqDT(), level = input$vennLevel, sampleNames = input$vennSamples)
+  plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
 })
 
 output$scatterUISample <- renderUI({
-  choices <- rownames(mData(RepSeqDT()))
+  choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
                  "Select samples (maximum 2)",  
                  choices = choices,
@@ -80,7 +80,7 @@ output$Scatter <- renderPlot({
   validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "select scale"))
   validate(need(!(is.null(input$scatterUISample) || input$scatterUISample ==""), "select samples"))
   validate(need(length(input$scatterUISample)>1, "select a second sample"))
-  plotScatter(x = RepSeqDT(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
+  plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
 })
 
 output$GrpColMDS <- renderUI({
@@ -118,11 +118,11 @@ output$diversityMD <- renderUI({
 })
 
 output$diffColGroup <- renderUI({
-  selectGroup("diffColGroup", RepSeqDT())
+  selectGroupDE("diffColGroup", dataFilt())
 })
 
 output$diffGroup <- renderUI({
-  sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+  sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
   idx <- sapply(sdata, function(i) unique(i))
   choices <- list()
   for(i in 1:length(idx)){
@@ -139,16 +139,15 @@ output$tableDiffExpGroup <- DT::renderDataTable({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select level"))
   validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and features")) 
-  diffExpGroup(x = RepSeqDT(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup)
+  diffExpGroup(x = dataFilt(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup)
 })
 
 output$Volcano <- renderPlot({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "select fold-change threshold")) 
   validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "select pvalue threshold")) 
-  validate(need(!(is.null(input$diffTop) || input$diffTop == ""), "select top n")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and features")) 
-  plotVolcano(x = RepSeqDT(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = input$diffTop)
+  plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0)
 })
 
 output$plotPCA <- renderPlot({
@@ -156,20 +155,20 @@ output$plotPCA <- renderPlot({
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select distance method")) 
   validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select dimension reduction method")) 
   validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
-  plotDimReduction(x = RepSeqDT(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
+  plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
 })
 
 
 # render select group UI
 output$PertGroupUI <- renderUI({
-  selectGroup("PertGroupSelected", RepSeqDT())
+  selectGroupDE("PertGroupSelected", dataFilt())
 })
 # render selection control group
 output$CtrlGroupUI <- renderUI({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   selectizeInput("CtrlGroup",
                  "Select control group",
-                 choices = levels(mData(RepSeqDT())[, input$PertGroupSelected]),
+                 choices = levels(mData(dataFilt())[, input$PertGroupSelected]),
                  options = list(onInitialize = I('function() { this.setValue(""); }')),
                  multiple = F
   )
@@ -190,13 +189,16 @@ dataPert <- reactive({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
-  sampleinfo <- mData(RepSeqDT())
+  sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  pertscore <- perturbationScore(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
+  pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
   return(pertscore)
 })
 output$pertOrder <- renderUI({
-  selectGroup("pertOrder", RepSeqDT())
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+  selectGroupDE("pertOrder", dataFilt())
 })
 
 output$plotPerturbation <- renderPlot({
@@ -204,9 +206,9 @@ output$plotPerturbation <- renderPlot({
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
-  sampleinfo <- mData(RepSeqDT())
+  sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  plotPerturbationScore(x = RepSeqDT(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+  plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
 })
 
 # data output
