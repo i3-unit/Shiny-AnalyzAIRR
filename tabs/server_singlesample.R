@@ -11,18 +11,17 @@ output$IndCountIntervals <- renderPlot({
 
 output$downPlotIndCountIntervals <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$indLevel))) {
-        downloadButton("PlotIndCountIntervals", "Download PNG")
+        downloadButton("PlotIndCountIntervals", "Download PDF")
     }
 }) 
 
 output$PlotIndCountIntervals <- downloadHandler(
     filename =  function() {
-        paste0("individualCountsIntervals_", input$singleSample, "_", input$indLevel, ".png")
+        paste0("individualCountsIntervals_", input$singleSample, "_", input$indLevel, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
         dev.off()
     }
@@ -38,18 +37,17 @@ output$geneUsage <- renderPlot({
 })
 output$downPlotgeneUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {
-        downloadButton("PlotgeneUsage", "Download PNG")
+        downloadButton("PlotgeneUsage", "Download PDF")
     }
 }) 
 
 output$PlotgeneUsage <- downloadHandler(
     filename =  function() {
-        paste0("geneUsage_", input$singleSample, "_", input$geneUsageLevel, "_", input$singleScale, ".png")
+        paste0("geneUsage_", input$singleSample, "_", input$geneUsageLevel, "_", input$singleScale, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
         dev.off()
     }
@@ -66,18 +64,17 @@ output$VJUsage <- renderPlot({
 
 output$downPlotVJUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !(is.null(input$VJLevel)) & !(is.null(input$VJProp))) {
-        downloadButton("PlotVJUsage", "Download PNG")
+        downloadButton("PlotVJUsage", "Download PDF")
     }
 }) 
 
 output$PlotVJUsage <- downloadHandler(
     filename =  function() {
-        paste0("VJusage_", input$singleSample, "_", input$singleScale, "_", input$VJLevel, "_", input$VJProp, ".png")
+        paste0("VJusage_", input$singleSample, "_", input$singleScale, "_", input$VJLevel, "_", input$VJProp, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
         dev.off()
     }
@@ -88,7 +85,7 @@ output$PlotVJUsage <- downloadHandler(
 #render UI download button for individual spectratype
 output$downSpectra <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectra", "Download PNG")
+        downloadButton("Spectra", "Download PDF")
     }
 }) 
 # plot overlay spectratype 
@@ -101,12 +98,11 @@ output$spectraPlot <- renderPlot({
 # download button for individual spectratype
 output$Spectra <- downloadHandler(
     filename =  function() {
-        paste0("stacked_spectratype_", input$singleSample, "_", input$singleScale, "_", input$singleProp, ".png")
+        paste0("stacked_spectratype_", input$singleSample, "_", input$singleScale, "_", input$singleProp, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
         dev.off()
     }
@@ -116,7 +112,7 @@ output$Spectra <- downloadHandler(
 #render UI download button for individual spectratype
 output$downSpectrabis <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectrabis", "Download PNG")
+        downloadButton("Spectrabis", "Download PDF")
     }
 }) 
 # render plot individual spectratype
@@ -137,12 +133,11 @@ output$spectraPlotbis <- renderPlot({
 # download button for individual spectratype
 output$Spectrabis <- downloadHandler(
     filename =  function() {
-        paste0("individual_spectratypeV_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".png")
+        paste0("individual_spectratypeV_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=4800, width=2400, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
         dev.off()  
     }

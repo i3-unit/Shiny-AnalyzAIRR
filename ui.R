@@ -81,6 +81,9 @@ bodyTabs <-
                                          downloadButton("downloadMetadata", "Export table"),
                                          dataTableOutput("infoTable")),
                                 tabPanel("Other data",
+                                         fluidRow(column(width = 3,
+                                                         uiOutput("otherDataList")
+                                         )),
                                          downloadButton("downloadOtherdata", "Export table"),
                                          dataTableOutput("metadataTable")),
                                 tabPanel("History",
@@ -144,7 +147,7 @@ bodyTabs <-
                                          ), 
                                          column(width = 3,
                                                 selectizeInput("privateSingletons",
-                                                               "Select if singletons",
+                                                               "Private singletons",
                                                                choices = list(TRUE, FALSE),
                                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          )),
@@ -156,8 +159,8 @@ bodyTabs <-
                                 tabPanel("Filter out productive or unproductive sequences",
                                          fluidRow(column(width = 3,
                                                     selectizeInput("productive",
-                                                                   "Select if productive",
-                                                                    choices = list(TRUE, FALSE),
+                                                                   "Filter out sequences",
+                                                                    choices = list("Productive", "Unproductive"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          )),
                                          h4("Filtered table"),
@@ -182,7 +185,7 @@ bodyTabs <-
                                          fluidRow(column(width = 3,
                                                          selectizeInput("doDown",
                                                                         "Perform a down-sampling normalization",
-                                                                        choices = list(TRUE, FALSE),
+                                                                        choices = list("Yes", "No"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ),
                                                   column(width = 3,
@@ -204,7 +207,16 @@ bodyTabs <-
                                          downloadButton("downloaddownSampling", "Download RDS"),
                                          dataTableOutput("downsampleddata"),
                                          busyIndicator(wait = 500),
+                                         hr(),
                                          h4("Results"),
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput(
+                                                             "DownLevel",
+                                                             "Select a level",
+                                                             choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                             options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                                         )
+                                         )),
                                          uiOutput("downhistdownlibsizes"),
                                          plotOutput("histdownlibsizes"),
                                          busyIndicator(wait = 500)
@@ -214,15 +226,14 @@ bodyTabs <-
                                              column(width = 3,
                                                          selectizeInput("doNorm",
                                                                         "Perform a shannon normalization",
-                                                                        choices = list(TRUE, FALSE),
+                                                                        choices = list("Yes", "No"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          )
                                          ),
                                          h4("Normalized table"),
+                                         downloadButton("downloadshannonNormed", "Download RDS"),
                                          dataTableOutput("shannonsampleddata"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloadshannonNormed", "Download RDS")
+                                         busyIndicator(wait = 500)
                                          
                                 )
                 ))
@@ -249,7 +260,7 @@ bodyTabs <-
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
     mydashboardHeader(title = "Shiny-pAIRRis", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
-    dashboardSidebar(width = "15%", sideMenu),
+    dashboardSidebar(width = "17%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 
         bodyTabs

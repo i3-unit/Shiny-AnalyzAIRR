@@ -85,6 +85,17 @@ selectGroup <- function(ID, x) {
     )
 }
 
+selectList <- function(ID, x) {  
+  choices <- names(RepSeq::oData(x))
+  selectizeInput(
+    ID,
+    "Select a list",
+    choices = choices,
+    options = list(onInitialize = I('function() { this.setValue(""); }'))
+  )
+}
+
+
 # same as above but exclude factor having the number of levels equal to its length 
 selectGroupDE <- function(ID, x){
   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]

@@ -28,15 +28,30 @@ output$downloadMetadata <- downloadHandler(
     }, contentType = "text/csv"
 ) 
 # get information of slot metadata
-output$metadataTable <- renderDataTable(RepSeq::oData(dataFilt())$filtered, 
-                                        # server = FALSE, 
-                                        # style="bootstrap", 
-                                        # extensions = 'Buttons', 
-                                        options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
+# output$metadataTable <- renderDataTable(RepSeq::oData(dataFilt())$filtered, 
+#                                         # server = FALSE, 
+#                                         # style="bootstrap", 
+#                                         # extensions = 'Buttons', 
+#                                         options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
+# )
+
+output$otherDataList <- renderUI({
+    selectList("otherDataList", dataFilt())
+})
+
+output$metadataTable <- renderDataTable(
+    if (!is.null(input$otherDataList) & !(is.null(input$otherDataList)))
+    RepSeq::oData(dataFilt())[[input$otherDataList]], 
+    # server = FALSE, 
+    # style="bootstrap", 
+    # extensions = 'Buttons', 
+    options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
 )
+
 output$downloadOtherdata <- downloadHandler(
-    "RepSeqOtherdata.csv",
+    paste0("RepSeqOtherdata_", input$otherDataList, ".csv"),
     content = function(file) {
+        if (!is.null(input$otherDataList) & !(is.null(input$otherDataList)))
         write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
@@ -66,7 +81,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   "Select a group and a feature",  
+                   "Select a group and a subgroup",  
                    choices = choices,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
@@ -75,7 +90,7 @@ output$filterCountGroup <- renderUI({
 dataFilterCount <- reactive({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a feature")) 
+    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
     filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
     return(filtercounts)
 })
@@ -83,7 +98,7 @@ dataFilterCount <- reactive({
 output$filtercounts <- renderDataTable({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a feature")) 
+    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
     return(datatable(RepSeq::History(dataFilterCount()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -106,7 +121,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   "Select a group and a feature",  
+                   "Select a group and a subgroup",  
                    choices = choices,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
@@ -115,7 +130,7 @@ output$publicGroup <- renderUI({
 dataPublic <- reactive({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a feature")) 
+    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup")) 
     publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup, prop = input$publicProp)
     return(publicdata)
 })
@@ -123,7 +138,7 @@ dataPublic <- reactive({
 output$publicdata <- renderDataTable({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a feature")) 
+    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup")) 
     return(datatable(RepSeq::History(dataPublic()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -159,7 +174,7 @@ output$downloaddataPrivate <- downloadHandler(
 dataProductiveOrUnproductive <- reactive({
     validate(need(!(is.null(input$productive) || input$productive == ""), "select if productive"))
     
-    if(input$productive==TRUE){
+    if(input$productive=="Productive"){
         productivedata <- getProductive(x = RepSeqDT())
     } else {
         productivedata <- getUnproductive(x = RepSeqDT())
@@ -175,7 +190,7 @@ output$productivedata <- renderDataTable({
 })
 
 output$downloaddataProductiveOrUnproductive <- downloadHandler(
-    if(input$productive==TRUE){
+    if(input$productive=="Productive"){
         "RepSeqData_productive.rds"
     } else{
         "RepSeqData_unproductive.rds"
@@ -222,7 +237,7 @@ output$downloaddataDropedSamples <- downloadHandler(
 downSampling <- reactive({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
-    if(input$doDown==TRUE){
+    if(input$doDown=="Yes"){
         downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
     }
     return(downsampleddata)
@@ -244,53 +259,60 @@ output$downloaddownSampling <- downloadHandler(
 ) 
 
 # new libsize after downsampling # library sizes
-observeEvent(input$doDown, {
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
+        validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+        validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- RepSeq::assay(RepSeqDT())
-        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
-            ggtitle("Orignial data - Clonotype count distribution")+
+        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+            ggtitle("Orignial data")+
             theme_light()+
             theme( panel.grid.minor = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
         cts2 <- RepSeq::assay(downSampling())
-        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
-            ggtitle("Downsampled data - Clonotype count distribution") +
+        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+            ggtitle("Downsampled data") +
             theme_light()+
-            theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15),
+                  panel.grid.minor = ggplot2::element_blank(),
+                  panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
 
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })
 })
 
 output$downhistdownlibsizes <- renderUI({
-    if (!is.null(input$doDown)) {
-        downloadButton("Plothistdownlibsizes", "Download PNG")
+    if (!is.null(input$doDown) & !is.null(input$DownLevel)) {
+        downloadButton("Plothistdownlibsizes", "Download PDF")
     }
 }) 
 
 output$Plothistdownlibsizes <- downloadHandler(
     filename =  function() {
-        paste0("histdownlibsizes.png")
+        paste0("histdownlibsizes_", input$DownLevel, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
+        pdf(file, height=12, width=24)
         cts1 <- RepSeq::assay(RepSeqDT())
-        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
-            ggtitle("Orignial data - Clonotype count distribution")+
+        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+            ggtitle("Orignial data")+
             theme_light()+
             theme( panel.grid.minor = ggplot2::element_blank(),
                    panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
         cts2 <- RepSeq::assay(downSampling())
-        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
-            ggtitle("Downsampled data - Clonotype count distribution") +
+        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+            ggtitle("Downsampled data") +
             theme_light()+
-            theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
-        
-        grid.newpage()
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15),
+                  panel.grid.minor = ggplot2::element_blank(),
+                  panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
         grid.draw(gridExtra::grid.arrange(p1, p2, ncol=2))
         dev.off()
     }
@@ -299,7 +321,7 @@ output$Plothistdownlibsizes <- downloadHandler(
 shannonNormed <- reactive({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))
 
-    if(input$doNorm==TRUE){
+    if(input$doNorm=="Yes"){
         shannonsampleddata <- ShannonNorm(x = RepSeqDT())
     }
 
@@ -341,13 +363,13 @@ dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$fi
               !(is.null(input$privateSingletons) || input$privateSingletons == "")){
         return(dataPrivate())
     }
-    else if(input$productive == TRUE){
+    else if(input$productive == "Productive"){
         return(dataProductiveOrUnproductive())
     } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
         return(dataDropedSamples())
-    } else if(input$doNorm == TRUE){
+    } else if(input$doNorm == "Yes"){
         return(shannonNormed())
-    } else if(input$doDown == TRUE){
+    } else if(input$doDown == "Yes"){
         return(downSampling())
     } else {
         return(RepSeqDT())

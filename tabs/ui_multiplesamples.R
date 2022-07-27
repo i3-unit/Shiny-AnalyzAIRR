@@ -109,8 +109,9 @@ SimTab<-
                                 busyIndicator(wait = 500)
                        ),
                        tabPanel("Dissimilarity indices",
+                                h4("Heatmap parameters"),
                                 fluidRow(
-                                    column(width = 5,
+                                    column(width = 3,
                                            selectizeInput(
                                                "dissimilarityLevel",
                                                "Select a level",
@@ -118,28 +119,32 @@ SimTab<-
                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 5,
-                                           selectizeInput("dissimilarityIndex", "Select a dissimlarity Index",
+                                    column(width = 3,
+                                           selectizeInput("dissimilarityIndex", "Select a dissimlarity method",
                                                           choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
                                                                          "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
                                                                          "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 5,
-                                           selectizeInput("dissimilarityClustering", "Select a dissimlarity Clustering",
+                                    column(width = 3,
+                                           selectizeInput("dissimilarityClustering", "Select a dissimlarity clustering",
                                                           choices = list("ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
-                                                                         "median", "centroid"),
+                                                                           "median", "centroid"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
-                                    ),
-                                    column(width = 5,
-                                           selectizeInput("dissimilarityMethod", "Select a dissimlarity Method",
+                                    )
+                                ),
+                                h4("MDS/PCA parameters"),
+                                fluidRow(
+                                    
+                                    column(width = 3,
+                                           selectizeInput("dissimilarityMethod", "Select a dimension reduction Method",
                                                           choices = list("MDS", "PCA"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 5,
+                                    column(width = 3,
                                            uiOutput("GrpColMDS")
                                     )
                                 ),
@@ -161,6 +166,7 @@ DiffTab<-
             #fluidRow(
                 #tabBox(width=12,
                  #      tabPanel("",#"Perform differential analysis",
+                                    h4("Volcano parameters"),
                                     fluidRow(
                                         column(width = 3,
                                                selectizeInput(
@@ -188,6 +194,7 @@ DiffTab<-
                                                            max = 1)
                                         )
                                     ),
+                                    h4("PCA/MDS parameters"),
                                     fluidRow(
                                         column(width = 3,
                                            selectizeInput(
@@ -214,6 +221,7 @@ DiffTab<-
                                     splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotVolcano"), uiOutput("downPlotPCA")),
                                     splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotly::plotlyOutput("plotPCA")),
                                     busyIndicator(wait = 500),
+                                    downloadButton("downloadtableDiffExpGroup", "Export table"),
                                     dataTableOutput("tableDiffExpGroup"),
                                     busyIndicator(wait = 500)
                  #      )

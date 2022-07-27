@@ -13,18 +13,17 @@ output$plotStatistic <- renderPlot({
 
 output$downPlotStatsBasic <- renderUI({
     if (!is.null(input$plotStats)) {
-        downloadButton("PlotStatsBasic", "Download PNG")
+        downloadButton("PlotStatsBasic", "Download PDF")
     }
 }) 
 
 output$PlotStatsBasic <- downloadHandler(
     filename =  function() {
-        paste0("metadataStatistics_", input$plotStats, ".png")
+        paste0("metadataStatistics_", input$plotStats, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotStatistics(x=dataFilt(), stat = input$plotStats, groupBy = NULL, label_colors = NULL))
         dev.off()
     }
@@ -52,18 +51,17 @@ output$plotrarefaction <- renderPlot({
 
 output$downPlotRare <- renderUI({
     if (!is.null(input$plotRare)) {
-        downloadButton("PlotRare", "Download PNG")
+        downloadButton("PlotRare", "Download PDF")
     }
 }) 
 
 output$PlotRare <- downloadHandler(
     filename =  function() {
-        paste0("rarefactionCurve_", input$plotRare, ".png")
+        paste0("rarefactionCurve_", input$plotRare, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL))
         dev.off()
     }
@@ -88,18 +86,17 @@ output$plotDiv <- renderPlot({
 })
 output$downPlotDiv <- renderUI({
     if (!is.null(input$plotRare) & !is.null(input$divLevel)) {
-        downloadButton("PlotDiv", "Download PNG")
+        downloadButton("PlotDiv", "Download PDF")
     }
 }) 
 
 output$PlotDiv <- downloadHandler(
     filename =  function() {
-        paste0("diversityPlot_", input$divIndex, "_", input$divLevel, ".png")
+        paste0("diversityPlot_", input$divIndex, "_", input$divLevel, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, groupBy = NULL, label_colors = NULL))
         dev.off()
     }
@@ -123,18 +120,17 @@ output$plotRenyi <- renderPlot({
 })
 output$downPlotRenyi2 <- renderUI({
     if (!is.null(input$renyiLevel)) {
-        downloadButton("PlotRenyi2", "Download PNG")
+        downloadButton("PlotRenyi2", "Download PDF")
     }
 }) 
 
 output$PlotRenyi2 <- downloadHandler(
     filename =  function() {
-        paste0("RenyiPlot_", input$renyiLevel, ".png")
+        paste0("RenyiPlot_", input$renyiLevel, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
         dev.off()
     }
@@ -162,18 +158,17 @@ output$CountIntervals <- renderPlot({
 
 output$downPlotCountIntervals2 <- renderUI({
     if (!is.null(input$countIntLevel)) {
-        downloadButton("PlotCountIntervals2", "Download PNG")
+        downloadButton("PlotCountIntervals2", "Download PDF")
     }
 }) 
 
 output$PlotCountIntervals2 <- downloadHandler(
     filename =  function() {
-        paste0("CountIntervals_", input$countIntLevel, ".png")
+        paste0("CountIntervals_", input$countIntLevel, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotCountIntervals(x=dataFilt(), level = input$countIntLevel, groupBy = NULL, label_colors = NULL))
         dev.off()
     }
@@ -188,18 +183,17 @@ output$rankDistrib <- renderPlot({
 
 output$downPlotrankDistrib <- renderUI({
     if (!is.null(input$rankDistribLevel) & !is.null(input$rankDistribGroupMeth)) {
-        downloadButton("PlotrankDistrib", "Download PNG")
+        downloadButton("PlotrankDistrib", "Download PDF")
     }
 }) 
 
 output$PlotrankDistrib <- downloadHandler(
     filename =  function() {
-        paste0("rankDistrib_", input$rankDistribLevel, "_", input$rankDistribGroupMeth, ".png")
+        paste0("rankDistrib_", input$rankDistribLevel, "_", input$rankDistribGroupMeth, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        png(file, height=2400, width=4800, res=300)
-        grid.newpage()
+        pdf(file, height=12, width=24)
         grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
         dev.off()
     }
