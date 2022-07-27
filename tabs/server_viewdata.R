@@ -24,35 +24,25 @@ output$infoTable <- renderDataTable(RepSeq::mData(dataFilt()),
 output$downloadMetadata <- downloadHandler(
     "RepSeqMetadata.csv",
     content = function(file) {
-        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+        write.table(RepSeq::mData(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # get information of slot metadata
-# output$metadataTable <- renderDataTable(RepSeq::oData(dataFilt())$filtered, 
-#                                         # server = FALSE, 
-#                                         # style="bootstrap", 
-#                                         # extensions = 'Buttons', 
-#                                         options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
-# )
-
 output$otherDataList <- renderUI({
     selectList("otherDataList", dataFilt())
 })
 
 output$metadataTable <- renderDataTable(
-    if (!is.null(input$otherDataList) & !(is.null(input$otherDataList)))
-    RepSeq::oData(dataFilt())[[input$otherDataList]], 
-    # server = FALSE, 
-    # style="bootstrap", 
-    # extensions = 'Buttons', 
-    options = list(scrollX=TRUE)#, dom = 'Bfrtip', buttons = filenameDT("RepSeqOtherInfo"))
+    if(!(is.null(input$otherDataList)))
+        RepSeq::oData(dataFilt())[[input$otherDataList]], 
+        options = list(scrollX=TRUE)
 )
 
 output$downloadOtherdata <- downloadHandler(
-    paste0("RepSeqOtherdata_", input$otherDataList, ".csv"),
+    paste0("RepSeqOtherdata", input$otherDataList, ".csv"),
     content = function(file) {
-        if (!is.null(input$otherDataList) & !(is.null(input$otherDataList)))
-        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+        if(!(is.null(input$otherDataList)))
+            write.table(RepSeq::oData(dataFilt())[[input$otherDataList]], file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # output history
@@ -65,7 +55,7 @@ output$historyTable <- renderDataTable(RepSeq::History(dataFilt()),
 output$downloadHistory <- downloadHandler(
     "RepSeqHistory.csv",
     content = function(file) {
-        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+        write.table(RepSeq::History(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 
@@ -91,6 +81,7 @@ dataFilterCount <- reactive({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
     validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
+    validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
     filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
     return(filtercounts)
 })
@@ -98,7 +89,8 @@ dataFilterCount <- reactive({
 output$filtercounts <- renderDataTable({
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
+    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup"))
+    validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
     return(datatable(RepSeq::History(dataFilterCount()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -131,6 +123,7 @@ dataPublic <- reactive({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
     validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup")) 
+    validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup, prop = input$publicProp)
     return(publicdata)
 })
@@ -138,7 +131,8 @@ dataPublic <- reactive({
 output$publicdata <- renderDataTable({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup")) 
+    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup"))
+    validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     return(datatable(RepSeq::History(dataPublic()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
