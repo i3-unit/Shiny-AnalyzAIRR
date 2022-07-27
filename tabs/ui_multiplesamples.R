@@ -11,6 +11,7 @@ CompBasicTab<-
                                uiOutput("statisticsGroup")
                         )
                     ),
+                    uiOutput("downPlotStatistics"),
                     plotOutput("Statistics"),
                     busyIndicator(wait = 500)
                 ),
@@ -18,13 +19,13 @@ CompBasicTab<-
                          fluidRow(
                              column(width = 2,
                                     selectizeInput("diverLevel",
-                                                   "Select level",
+                                                   "Select a level",
                                                    choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ), 
                              column(width = 2,
                                     selectizeInput("diverIndex",
-                                                   "Select index",
+                                                   "Select an index",
                                                    choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
@@ -32,8 +33,11 @@ CompBasicTab<-
                                     uiOutput("diverGroup")
                              )
                          ),
+                         uiOutput("downPlotDiversity"),
                          plotOutput("Diversity"),
                          busyIndicator(wait = 500),
+                         hr(),
+                         uiOutput("downPlotRenyi"),
                          plotOutput("RenyiDiversity"),
                          busyIndicator(wait = 500)
                 ),
@@ -41,7 +45,7 @@ CompBasicTab<-
                          fluidRow(
                              column(width = 2,
                                     selectizeInput("countIntervalsLevel",
-                                                   "Select level",
+                                                   "Select a level",
                                                    choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ), 
@@ -49,6 +53,7 @@ CompBasicTab<-
                                     uiOutput("countIntervalsGroup")
                              )
                          ),
+                         uiOutput("downPlotCountInt"),
                          plotOutput("CountInt"),
                          busyIndicator(wait = 500)
                 )
@@ -64,7 +69,7 @@ SimTab<-
                            fluidRow(
                                column(width = 2,
                                    selectizeInput("vennLevel",
-                                       "Select level",
+                                       "Select a level",
                                        choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                        options = list(onInitialize = I('function() { this.setValue(""); }'))
                                    )
@@ -74,6 +79,7 @@ SimTab<-
                                    )
 
                            ),
+                           uiOutput("downPlotEulerr"),
                            plotOutput("plotEulerr", height = 800, width = 800),
                            busyIndicator(wait = 500)
                        ),
@@ -81,14 +87,14 @@ SimTab<-
                                 fluidRow(
                                     column(width = 2,
                                            selectizeInput("scatterLevel",
-                                                          "Select level",
+                                                          "Select a level",
                                                           choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
                                     column(width = 2,
                                            selectizeInput("scatterScale",
-                                                          "Select scale",
+                                                          "Select a scale",
                                                           choices = list("frequency", "log"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
@@ -98,6 +104,7 @@ SimTab<-
                                     )
                                     
                                 ),
+                                uiOutput("downPlotScatter"),
                                 plotOutput("Scatter"),
                                 busyIndicator(wait = 500)
                        ),
@@ -106,13 +113,13 @@ SimTab<-
                                     column(width = 5,
                                            selectizeInput(
                                                "dissimilarityLevel",
-                                               "Select level",
+                                               "Select a level",
                                                choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
                                     column(width = 5,
-                                           selectizeInput("dissimilarityIndex", "Select dissimlarity Index",
+                                           selectizeInput("dissimilarityIndex", "Select a dissimlarity Index",
                                                           choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
                                                                          "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
                                                                          "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
@@ -120,14 +127,14 @@ SimTab<-
                                            )
                                     ),
                                     column(width = 5,
-                                           selectizeInput("dissimilarityClustering", "Select dissimlarity Clustering",
+                                           selectizeInput("dissimilarityClustering", "Select a dissimlarity Clustering",
                                                           choices = list("ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
                                                                          "median", "centroid"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
                                     column(width = 5,
-                                           selectizeInput("dissimilarityMethod", "Select dissimlarity Method",
+                                           selectizeInput("dissimilarityMethod", "Select a dissimlarity Method",
                                                           choices = list("MDS", "PCA"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
@@ -136,6 +143,7 @@ SimTab<-
                                            uiOutput("GrpColMDS")
                                     )
                                 ),
+                                splitLayout(cellWidths = c("60%", "40%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
                                 splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
                                 busyIndicator(wait = 500),
                                 # withMathJax(),
@@ -157,7 +165,7 @@ DiffTab<-
                                         column(width = 3,
                                                selectizeInput(
                                                    "diffLevel",
-                                                   "Select level",
+                                                   "Select a level",
                                                    choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                )
@@ -167,14 +175,14 @@ DiffTab<-
                                         ),
                                         column(width = 3,
                                                sliderInput(inputId = "diffFC",
-                                                           label = "Set fold-change threshold",
+                                                           label = "Set a fold-change threshold",
                                                            value = 1,
                                                            min = 0,
                                                            max = 10)
                                         ),
                                         column(width = 3,
                                                sliderInput(inputId = "diffPV",
-                                                           label = "Set pvalue threshold",
+                                                           label = "Set a pvalue threshold",
                                                            value = 0.05,
                                                            min = 0,
                                                            max = 1)
@@ -184,7 +192,7 @@ DiffTab<-
                                         column(width = 3,
                                            selectizeInput(
                                                "PCAMethod",
-                                               "Select distance method",
+                                               "Select a distance method",
                                                choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
                                                               "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
                                                               "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
@@ -194,7 +202,7 @@ DiffTab<-
                                         column(width = 3,
                                                selectizeInput(
                                                    "PCAdimMethod",
-                                                   "Select dimension reduction method",
+                                                   "Select a dimension reduction method",
                                                    choices = list("PCA", "MDS"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                )
@@ -203,6 +211,7 @@ DiffTab<-
                                                uiOutput("diffColGroup")
                                         )
                                     ),
+                                    splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotVolcano"), uiOutput("downPlotPCA")),
                                     splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotly::plotlyOutput("plotPCA")),
                                     busyIndicator(wait = 500),
                                     dataTableOutput("tableDiffExpGroup"),
@@ -234,6 +243,7 @@ PertTab<-
                                            uiOutput("pertOrder")
                                     )
                                 ),
+                                uiOutput("downPlotPert"),
                                 plotOutput("plotPerturbation"),
                                 busyIndicator(wait = 500),
                                 h4("Perturbation values:"),

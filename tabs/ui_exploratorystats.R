@@ -8,6 +8,7 @@ basicstats <-
                                uiOutput("plotStats")
                         )
                     ), 
+                    uiOutput("downPlotStatsBasic"),
                     plotOutput("plotStatistic"), 
                     busyIndicator(wait = 500)
                  ),
@@ -16,14 +17,14 @@ basicstats <-
                              column(width = 3,
                                     selectizeInput(
                                         "countLevel",
-                                        "Select level",
+                                        "Select a level",
                                         choices = list("clone", "V", "J", "VJ", "CDR3aa", "clonotype", "CDR3nt"),
                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
                              column(width = 3,
                                     selectizeInput(
                                         "countScale",
-                                        "Select scale",
+                                        "Select a scale",
                                         choices = list("count", "frequency"),
                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                              )
@@ -48,6 +49,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                             uiOutput("plotRare")
                                      ),
                                 ),
+                                uiOutput("downPlotRare"),
                                 plotOutput("plotrarefaction"), 
                                 busyIndicator(wait = 50),
                                 h4(textOutput("dataselected")),
@@ -61,18 +63,19 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 3,
                                               selectizeInput(
                                                   "divIndex",
-                                                  "Select index",
+                                                  "Select an index",
                                                   choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
                                                   selected = "chao1")
                                        ),
                                        column(width = 3,
                                               selectizeInput(
                                                   "divLevel",
-                                                  "Select level",
+                                                  "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
                                                   selected = "clone")
                                        )
                                    ), 
+                                   uiOutput("downPlotDiv"),
                                    plotOutput("plotDiv"), 
                                    busyIndicator(wait = 500),
                                    h4(textOutput("Diversity table")),
@@ -86,11 +89,12 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 3,
                                               selectizeInput(
                                                   "renyiLevel",
-                                                  "Select level",
+                                                  "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
                                                   selected = "clone")
                                        )
                                    ),
+                                   uiOutput("downPlotRenyi2"),
                                    plotOutput("plotRenyi"),
                                    busyIndicator(wait = 500),
                                    h4(textOutput("Renyi diversity table")),
@@ -112,7 +116,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        column(width = 3,
                                               selectizeInput(
                                                   "countIntLevel",
-                                                  "Select level",
+                                                  "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
                                                   selected = "clone")
                                        )#,
@@ -120,6 +124,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        #        uiOutput("countIntGroup")
                                        # )
                                    ),
+                                   uiOutput("downPlotCountIntervals2"),
                                    plotOutput("CountIntervals"),
                                    busyIndicator(wait = 500)
                                    ),
@@ -127,19 +132,20 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                    fluidRow(
                                        column(width = 3, 
                                               selectInput("rankDistribGroupMeth", 
-                                                          "Select method",
+                                                          "Select a method",
                                                           choices = list("count" = "count", "frequency" = "frequency"), 
                                                           selected = "count"   
                                               )
                                        ),
                                        column(width = 3, 
                                               selectInput("rankDistribLevel", 
-                                                          "Select level",
+                                                          "Select a level",
                                                           choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"), 
                                                           selected = "clone" 
                                               )
                                        )
                                    ),
+                                   uiOutput("downPlotrankDistrib"),
                                    plotOutput("rankDistrib"),
                                    busyIndicator(wait = 500)
                           )

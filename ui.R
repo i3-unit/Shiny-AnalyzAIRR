@@ -30,25 +30,25 @@ bodyTabs <-
         tabItem(tabName = "aboutTab",
             fluidRow(
                 box(width = 12, htmlOutput("about")),
-                # tags$h2("Session info"), 
-                # box(width = 12, verbatimTextOutput("session"))
             )
         ),
         tabItem(tabName = "uploadRDStab",
                 h2("Data overview"),
                 htmlOutput("summaryRDS"),
                 busyIndicator(wait = 50),
+                uiOutput("downPlothistlibsizesp1"),
                 plotOutput("histlibsizesp1"),
                 h4(""),
                 fluidRow(
                     column(width = 3,
                         selectizeInput("summaryLevel",
-                                          "Select level",
+                                          "Select a level",
                                        choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
                                        options = list(onInitialize = I('function() { this.setValue(""); }'))
                           )
                  )
              ),
+             uiOutput("downPlothistlibsizesp2"),
              plotOutput("histlibsizesp2"),
              busyIndicator(wait = 50),
         ),
@@ -56,17 +56,19 @@ bodyTabs <-
             h4("Data overview"),
             htmlOutput("summaryTXT"),
             busyIndicator(wait = 50),
+            uiOutput("downPlothisttxtlibsizesp1"),
             plotOutput("histtxtlibsizesp1"),
             h4(""),
             fluidRow(
                 column(width = 3,
                        selectizeInput("summaryTXTLevel",
-                                      "Select level",
+                                      "Select a level",
                                       choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
                        )
                 )
             ),
+            uiOutput("downPlothisttxtlibsizesp2"),
             plotOutput("histtxtlibsizesp2"),
             busyIndicator(wait = 50),
         ),
@@ -92,7 +94,7 @@ bodyTabs <-
                                 tabPanel("Filter out a repertoire level count",
                                          fluidRow(column(width = 3,
                                                 selectizeInput("filterCountLevel",
-                                                               "Select level",
+                                                               "Select a level",
                                                                choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ), 
@@ -107,15 +109,14 @@ bodyTabs <-
                                                 uiOutput("filterCountGroup")
                                          )),
                                          h4("Filtered table"),
+                                         downloadButton("downloaddataFilterCount", "Download RDS"),
                                          dataTableOutput("filtercounts"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddataFilterCount", "Download RDS")
+                                         busyIndicator(wait = 500)
                                          ),
                                 tabPanel("Extract shared sequences",
                                          fluidRow(column(width = 3,
                                                          selectizeInput("publicLevel",
-                                                                        "Select level",
+                                                                        "Select a level",
                                                                         choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ), 
@@ -130,15 +131,14 @@ bodyTabs <-
                                                 uiOutput("publicGroup")
                                          )),
                                          h4("Filtered table"),
+                                         downloadButton("downloaddataPublic", "Download RDS"),
                                          dataTableOutput("publicdata"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddataPublic", "Download RDS")
+                                         busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Extract private sequences",
                                          fluidRow(column(width = 3,
                                                          selectizeInput("privateLevel",
-                                                                        "Select level",
+                                                                        "Select a level",
                                                                         choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ), 
@@ -149,10 +149,9 @@ bodyTabs <-
                                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          )),
                                          h4("Filtered table"),
+                                         downloadButton("downloaddataPrivate", "Download RDS"),
                                          dataTableOutput("privatedata"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddataPrivate", "Download RDS")
+                                         busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Filter out productive or unproductive sequences",
                                          fluidRow(column(width = 3,
@@ -162,20 +161,18 @@ bodyTabs <-
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          )),
                                          h4("Filtered table"),
+                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
                                          dataTableOutput("productivedata"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS")
+                                         busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Drop a sample",
                                          fluidRow(column(width = 3,
                                                          uiOutput("dropSampleNames")
                                          )),
                                          h4("Filtered table"),
+                                         downloadButton("downloaddataDropedSamples", "Download RDS"),
                                          dataTableOutput("dropeddata"),
-                                         busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddataDropedSamples", "Download RDS")
+                                         busyIndicator(wait = 500)
                                 )
                                 ))
         ),
@@ -197,18 +194,18 @@ bodyTabs <-
                                          ),
                                          column(width = 3,
                                                 sliderInput(inputId = "downseed",
-                                                             label = "Set seed",
+                                                             label = "Set a seed",
                                                              value = 1234,
                                                              min = 1,
                                                              max = 9999,
                                                              width = NULL)
                                          )),
                                          h4("Normalized table"),
+                                         downloadButton("downloaddownSampling", "Download RDS"),
                                          dataTableOutput("downsampleddata"),
                                          busyIndicator(wait = 500),
-                                         hr(),
-                                         downloadButton("downloaddownSampling", "Download RDS"),
                                          h4("Results"),
+                                         uiOutput("downhistdownlibsizes"),
                                          plotOutput("histdownlibsizes"),
                                          busyIndicator(wait = 500)
                                 ),

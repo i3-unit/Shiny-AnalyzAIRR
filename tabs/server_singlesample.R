@@ -9,6 +9,25 @@ output$IndCountIntervals <- renderPlot({
     plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel)
 })
 
+output$downPlotIndCountIntervals <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$indLevel))) {
+        downloadButton("PlotIndCountIntervals", "Download PNG")
+    }
+}) 
+
+output$PlotIndCountIntervals <- downloadHandler(
+    filename =  function() {
+        paste0("individualCountsIntervals_", input$singleSample, "_", input$indLevel, ".png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=4800, res=300)
+        grid.newpage()
+        grid.draw(plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
+        dev.off()
+    }
+)
+
 
 # plot V and J gene usages
 output$geneUsage <- renderPlot({
@@ -17,6 +36,24 @@ output$geneUsage <- renderPlot({
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
     plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)
 })
+output$downPlotgeneUsage <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {
+        downloadButton("PlotgeneUsage", "Download PNG")
+    }
+}) 
+
+output$PlotgeneUsage <- downloadHandler(
+    filename =  function() {
+        paste0("geneUsage_", input$singleSample, "_", input$geneUsageLevel, "_", input$singleScale, ".png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=4800, res=300)
+        grid.newpage()
+        grid.draw(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
+        dev.off()
+    }
+)
 
 # plot V and J gene usages
 output$VJUsage <- renderPlot({
@@ -26,6 +63,25 @@ output$VJUsage <- renderPlot({
     validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "Select a level"))
     plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
 })
+
+output$downPlotVJUsage <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !(is.null(input$VJLevel)) & !(is.null(input$VJProp))) {
+        downloadButton("PlotVJUsage", "Download PNG")
+    }
+}) 
+
+output$PlotVJUsage <- downloadHandler(
+    filename =  function() {
+        paste0("VJusage_", input$singleSample, "_", input$singleScale, "_", input$VJLevel, "_", input$VJProp, ".png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=4800, res=300)
+        grid.newpage()
+        grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
+        dev.off()
+    }
+)
 
 ##### Plot stacked spectratype #####
 

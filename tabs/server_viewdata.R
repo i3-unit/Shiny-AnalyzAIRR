@@ -57,7 +57,10 @@ output$downloadHistory <- downloadHandler(
 #### Filtering ####
 output$filterCountGroup <- renderUI({
     sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-    idx <- sapply(sdata, function(i) unique(i))
+    to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+    to_keep <- names(to_keep)[which(to_keep < 1)]
+    idx <- sapply(sdata, function(i) unique(i))[to_keep]
+    
     choices <- list()
     for(i in 1:length(idx)){
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
@@ -94,7 +97,10 @@ output$downloaddataFilterCount <- downloadHandler(
 
 output$publicGroup <- renderUI({
     sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-    idx <- sapply(sdata, function(i) unique(i))
+    to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+    to_keep <- names(to_keep)[which(to_keep < 1)]
+    idx <- sapply(sdata, function(i) unique(i))[to_keep]
+    
     choices <- list()
     for(i in 1:length(idx)){
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
@@ -257,6 +263,38 @@ observeEvent(input$doDown, {
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })
 })
+
+output$downhistdownlibsizes <- renderUI({
+    if (!is.null(input$doDown)) {
+        downloadButton("Plothistdownlibsizes", "Download PNG")
+    }
+}) 
+
+output$Plothistdownlibsizes <- downloadHandler(
+    filename =  function() {
+        paste0("histdownlibsizes.png")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        png(file, height=2400, width=4800, res=300)
+        cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
+            ggtitle("Orignial data - Clonotype count distribution")+
+            theme_light()+
+            theme( panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+        cts2 <- RepSeq::assay(downSampling())
+        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
+            ggtitle("Downsampled data - Clonotype count distribution") +
+            theme_light()+
+            theme( panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+        
+        grid.newpage()
+        grid.draw(gridExtra::grid.arrange(p1, p2, ncol=2))
+        dev.off()
+    }
+)
 
 shannonNormed <- reactive({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))

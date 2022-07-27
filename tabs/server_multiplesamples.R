@@ -17,7 +17,24 @@ output$Statistics <- renderPlot({
     plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
 })  
 
+output$downPlotStatistics <- renderUI({
+  if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup))) {
+    downloadButton("PlotStatistics", "Download PNG")
+  }
+}) 
 
+output$PlotStatistics <- downloadHandler(
+  filename =  function() {
+    paste0("metadataStatistics_", input$statisticsStat, "_", input$statisticsGroup, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL))
+    dev.off()
+  }
+)
 
 output$diverGroup <- renderUI({
   selectGroupDE("diverGroup", dataFilt())
@@ -31,14 +48,52 @@ output$Diversity <- renderPlot({
   plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
 })  
 
+output$downPlotDiversity <- renderUI({
+  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex))) {
+    downloadButton("PlotDiversity", "Download PNG")
+  }
+}) 
+
+output$PlotDiversity <- downloadHandler(
+  filename =  function() {
+    paste0("diversity_", input$diverLevel, "_", input$diverGroup, "_", input$diverIndex, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL))
+    dev.off()
+  }
+)
+
 output$RenyiDiversity <- renderPlot({
   validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
   validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
   plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL)    
 })  
 
+output$downPlotRenyi <- renderUI({
+  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))) {
+    downloadButton("PlotRenyi", "Download PNG")
+  }
+}) 
+
+output$PlotRenyi <- downloadHandler(
+  filename =  function() {
+    paste0("renyi_", input$diverLevel, "_", input$diverGroup, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL))
+    dev.off()
+  }
+)
+
 output$countIntervalsGroup <- renderUI({
-  selectGroup("countIntervalsGroup", dataFilt())
+  selectGroupDE("countIntervalsGroup", dataFilt())
 })
 # plot count intervals
 output$CountInt <- renderPlot({
@@ -47,6 +102,24 @@ output$CountInt <- renderPlot({
   plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
 }) 
 
+output$downPlotCountInt <- renderUI({
+  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup))) {
+    downloadButton("PlotCountInt", "Download PNG")
+  }
+}) 
+
+output$PlotCountInt <- downloadHandler(
+  filename =  function() {
+    paste0("countIntervals_", input$countIntervalsLevel, "_", input$countIntervalsGroup, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL))
+    dev.off()
+  }
+)
 
 ##### Similarity analysis #####
 # render VennUI for selecting type of Venn Diagram
@@ -66,6 +139,25 @@ output$plotEulerr <- renderPlot({
   plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
 })
 
+output$downPlotEulerr <- renderUI({
+  if (!is.null(input$vennLevel) & !(is.null(input$vennSamples))) {
+    downloadButton("PlotEulerr", "Download PNG")
+  }
+}) 
+
+output$PlotEulerr <- downloadHandler(
+  filename =  function() {
+    paste0("eulerr_", input$vennLevel, "_", input$vennSamples, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples))
+    dev.off()
+  }
+)
+
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
@@ -83,12 +175,31 @@ output$Scatter <- renderPlot({
   plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
 })
 
+output$downPlotScatter <- renderUI({
+  if (!is.null(input$scatterUISample) & !(is.null(input$scatterLevel)) & !(is.null(input$scatterScale))) {
+    downloadButton("PlotScatter", "Download PNG")
+  }
+}) 
+
+output$PlotScatter <- downloadHandler(
+  filename =  function() {
+    paste0("scatter_", input$scatterUISample, "_", input$scatterLevel, "_", input$scatterScale, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
+    dev.off()
+  }
+)
+
 output$GrpColMDS <- renderUI({
     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), " "))
     validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), " "))
     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), " "))
     validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), " "))
-    selectGroup("grpCol4MDS", dataFilt())
+    selectGroupDE("grpCol4MDS", dataFilt())
 })
 # plot dissimilarity
 output$plotDissimilarityHM <- renderPlot({
@@ -97,6 +208,26 @@ output$plotDissimilarityHM <- renderPlot({
     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
     plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
 })    
+
+output$downPlotDisHM <- renderUI({
+  if (!is.null(input$dissimilarityLevel) & !(is.null(input$dissimilarityIndex)) & !(is.null(input$dissimilarityClustering))) {
+    downloadButton("PlotDisHM", "Download PNG")
+  }
+}) 
+
+output$PlotDisHM <- downloadHandler(
+  filename =  function() {
+    paste0("dissimilarityHeatmap_", input$dissimilarityLevel, "_", input$dissimilarityIndex, "_", input$dissimilarityClustering, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL))
+    dev.off()
+  }
+)
+
 # plot MDS
 output$plotMDS <- renderPlot({
     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), " "))
@@ -107,6 +238,28 @@ output$plotMDS <- renderPlot({
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
     plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
 })
+
+output$downPlotMDS <- renderUI({
+  if (!is.null(input$dissimilarityLevel) & !(is.null(input$dissimilarityIndex)) & !(is.null(input$grpCol4MDS)) & !(is.null(input$dissimilarityMethod))) {
+    downloadButton("PlotMDS", "Download PNG")
+  }
+}) 
+
+output$PlotMDS <- downloadHandler(
+  filename =  function() {
+    paste0("dissimilarity", input$dissimilarityMethod, "_", input$dissimilarityLevel, "_", input$dissimilarityIndex, "_", input$grpCol4MDS, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
+    grid.newpage()
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
+    dev.off()
+  }
+)
+
+
 # include md formula distance function
 output$distFuncsMD <- renderUI({
     shiny::withMathJax(includeMarkdown("markdown/distanceFuncs.md"))
@@ -123,7 +276,10 @@ output$diffColGroup <- renderUI({
 
 output$diffGroup <- renderUI({
   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-  idx <- sapply(sdata, function(i) unique(i))
+  to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+  to_keep <- names(to_keep)[which(to_keep < 1)]
+  idx <- sapply(sdata, function(i) unique(i))[to_keep]
+  
   choices <- list()
   for(i in 1:length(idx)){
     choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
@@ -152,6 +308,25 @@ output$Volcano <- plotly::renderPlotly({
   plotly::ggplotly(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
 
+output$downPlotVolcano <- renderUI({
+  if (!is.null(input$diffLevel) & !(is.null(input$diffGroup)) & !(is.null(input$diffFC)) & !(is.null(input$diffPV))) {
+    downloadButton("PlotVolcano", "Download PNG")
+  }
+}) 
+
+output$PlotVolcano <- downloadHandler(
+  filename =  function() {
+    paste0("volcano_", input$diffLevel, "_", input$diffGroup, "_", input$diffFC, "_", input$diffPV, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
+    dev.off()
+  }
+)
+
 output$plotPCA <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select distance method")) 
@@ -160,6 +335,24 @@ output$plotPCA <- plotly::renderPlotly({
   plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
 })
 
+output$downPlotPCA <- renderUI({
+  if (!is.null(input$diffLevel) & !(is.null(input$PCAMethod)) & !(is.null(input$PCAdimMethod)) & !(is.null(input$diffColGroup))) {
+    downloadButton("PlotPCA", "Download PNG")
+  }
+}) 
+
+output$PlotPCA <- downloadHandler(
+  filename =  function() {
+    paste0(input$PCAdimMethod, "_", input$diffLevel, "_", input$PCAMethod, "_", input$diffColGroup, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    grid.newpage()
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
+    dev.off()
+  }
+)
 
 # render select group UI
 output$PertGroupUI <- renderUI({
@@ -227,7 +420,26 @@ output$downloadPertTab <- downloadHandler(
   }, contentType = "text/csv"
 ) 
 
+output$downPlotPert <- renderUI({
+  if (!(is.null(input$pertDist)) & !(is.null(input$pertOrder))) {
+    downloadButton("PlotPert", "Download PNG")
+  }
+}) 
 
+output$PlotPert <- downloadHandler(
+  filename =  function() {
+    paste0("perturbation", "_", input$pertDist, "_", input$pertOrder, ".png")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    png(file, height=2400, width=4800, res=300)
+    sampleinfo <- mData(dataFilt())
+    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+    grid.newpage()
+    grid.draw(plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL))
+    dev.off()
+  }
+)
 
 # 
 # # render 2by2 comparison
