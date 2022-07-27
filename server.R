@@ -93,11 +93,11 @@ source("tabs/server_singlesample.R", local = TRUE)
 #  multiple comparison section
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 source("tabs/server_multiplesamples.R", local = TRUE)
-    RepSeqDown <- eventReactive(input$down, {
-
-    out <- sampleRepSeqExp(x = dataFilt(), sample.size = isolate(input$libsizechoice), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
-    return(out)
-    })
+    # RepSeqDown <- eventReactive(input$doDown, {
+    # 
+    # out <- sampleRepSeqExp(x = RepSeqDT(), sample.size = isolate(input$downSampleSize), rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
+    # return(out)
+    # })
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 #  statististical analysis section
 #-------------------------------------------------------------------------------------------------------------------------------------------#

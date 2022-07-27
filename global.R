@@ -79,7 +79,7 @@ selectGroup <- function(ID, x) {
     choices <- colnames(sdata)
     selectizeInput(
         ID,
-        "Select group",
+        "Select a group",
         choices = choices,
         options = list(onInitialize = I('function() { this.setValue(""); }'))
     )
@@ -92,7 +92,7 @@ selectGroupDE <- function(ID, x){
   choices <- colnames(sdata)[which(idx < 1)]
   selectizeInput(
     ID,
-    "Select group",
+    "Select a group",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
@@ -103,7 +103,7 @@ selectGroupStat <- function(ID, x){
   choices <- colnames(sdata)
   selectizeInput(
     ID,
-    "Select stat",
+    "Select a stat",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )

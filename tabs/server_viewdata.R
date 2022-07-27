@@ -217,7 +217,7 @@ downSampling <- reactive({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     if(input$doDown==TRUE){
-        downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize)
+        downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
     }
     return(downsampleddata)
 })
@@ -225,7 +225,7 @@ downSampling <- reactive({
 output$downsampleddata <- renderDataTable({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
-    return(datatable(RepSeq::History(downSampling()), 
+    return(datatable(RepSeq::History(downSampling()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
@@ -236,6 +236,27 @@ output$downloaddownSampling <- downloadHandler(
         saveRDS(downSampling(), file)
     }, 
 ) 
+
+# new libsize after downsampling # library sizes
+observeEvent(input$doDown, {
+    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+    output$histdownlibsizes <- renderPlot({
+        cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
+            ggtitle("Orignial data - Clonotype count distribution")+
+            theme_light()+
+            theme( panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+        cts2 <- RepSeq::assay(downSampling())
+        p2 <- histSums(cts2[, sum(count), by=clone][,V1], xlab="clonotype counts", ylab="Number of clonotypes") +
+            ggtitle("Downsampled data - Clonotype count distribution") +
+            theme_light()+
+            theme( panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+
+        gridExtra::grid.arrange(p1, p2, ncol=2)
+    })
+})
 
 shannonNormed <- reactive({
     validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))

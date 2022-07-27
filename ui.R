@@ -188,18 +188,29 @@ bodyTabs <-
                                                                         choices = list(TRUE, FALSE),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ),
-                                             column(width = 3,
-                                                numericInput(inputId = "downSampleSize",
-                                                             label = "Set a sample size",
-                                                             value = 10000,
-                                                             min = 0,
-                                                             max = 100000000)
+                                                  column(width = 3,
+                                                         sliderInput(inputId = "downSampleSize",
+                                                                     label = "Set a sample size",
+                                                                     value = 10000,
+                                                                     min = 0,
+                                                                     max = 1000000)
+                                         ),
+                                         column(width = 3,
+                                                sliderInput(inputId = "downseed",
+                                                             label = "Set seed",
+                                                             value = 1234,
+                                                             min = 1,
+                                                             max = 9999,
+                                                             width = NULL)
                                          )),
                                          h4("Normalized table"),
                                          dataTableOutput("downsampleddata"),
                                          busyIndicator(wait = 500),
                                          hr(),
-                                         downloadButton("downloaddownSampling", "Download RDS")
+                                         downloadButton("downloaddownSampling", "Download RDS"),
+                                         h4("Results"),
+                                         plotOutput("histdownlibsizes"),
+                                         busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Shannon-based normalization",
                                          fluidRow(

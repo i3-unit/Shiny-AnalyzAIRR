@@ -153,33 +153,35 @@ DiffTab<-
             #fluidRow(
                 #tabBox(width=12,
                  #      tabPanel("",#"Perform differential analysis",
-                                fluidRow(
-                                    column(width = 5,
-                                           selectizeInput(
-                                               "diffLevel",
-                                               "Select level",
-                                               choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
-                                               options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
+                                    fluidRow(
+                                        column(width = 3,
+                                               selectizeInput(
+                                                   "diffLevel",
+                                                   "Select level",
+                                                   choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                   options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                               )
+                                        ),
+                                        column(width = 3,
+                                               uiOutput("diffGroup")
+                                        ),
+                                        column(width = 3,
+                                               sliderInput(inputId = "diffFC",
+                                                           label = "Set fold-change threshold",
+                                                           value = 1,
+                                                           min = 0,
+                                                           max = 10)
+                                        ),
+                                        column(width = 3,
+                                               sliderInput(inputId = "diffPV",
+                                                           label = "Set pvalue threshold",
+                                                           value = 0.05,
+                                                           min = 0,
+                                                           max = 1)
+                                        )
                                     ),
-                                    column(width = 5,
-                                           uiOutput("diffColGroup")
-                                    ),
-                                    column(width = 5,
-                                           sliderInput(inputId = "diffFC",
-                                                       label = "Set fold-change threshold",
-                                                       value = 1,
-                                                       min = 0,
-                                                       max = 10)
-                                    ),
-                                    column(width = 5,
-                                           sliderInput(inputId = "diffPV",
-                                                       label = "Set pvalue threshold",
-                                                       value = 0.05,
-                                                       min = 0,
-                                                       max = 1)
-                                    ),
-                                    column(width = 5,
+                                    fluidRow(
+                                        column(width = 3,
                                            selectizeInput(
                                                "PCAMethod",
                                                "Select distance method",
@@ -188,23 +190,23 @@ DiffTab<-
                                                               "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
+                                        ),
+                                        column(width = 3,
+                                               selectizeInput(
+                                                   "PCAdimMethod",
+                                                   "Select dimension reduction method",
+                                                   choices = list("PCA", "MDS"),
+                                                   options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                               )
+                                        ),
+                                        column(width = 3,
+                                               uiOutput("diffColGroup")
+                                        )
                                     ),
-                                    column(width = 5,
-                                           selectizeInput(
-                                               "PCAdimMethod",
-                                               "Select dimension reduction method",
-                                               choices = list("PCA", "MDS"),
-                                               options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
-                                    ),
-                                    column(width = 5,
-                                           uiOutput("diffGroup")
-                                    )
-                                ),
-                                splitLayout(cellWidths = c("50%", "50%"), plotOutput("Volcano"), plotOutput("plotPCA")),
-                                busyIndicator(wait = 500),
-                                dataTableOutput("tableDiffExpGroup"),
-                                busyIndicator(wait = 500)
+                                    splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotly::plotlyOutput("plotPCA")),
+                                    busyIndicator(wait = 500),
+                                    dataTableOutput("tableDiffExpGroup"),
+                                    busyIndicator(wait = 500)
                  #      )
                 #)
             #)
@@ -215,9 +217,9 @@ DiffTab<-
 
 PertTab<- 
     tabItem(tabName = "showPertTab",
-            fluidRow(
-                tabBox(width=12,
-                       tabPanel("Compute perturbation scores",
+            # fluidRow(
+            #     tabBox(width=12,
+            #            tabPanel("Compute perturbation scores",
                                 fluidRow(
                                     column(width = 3,
                                            uiOutput("PertGroupUI")
@@ -235,8 +237,9 @@ PertTab<-
                                 plotOutput("plotPerturbation"),
                                 busyIndicator(wait = 500),
                                 h4("Perturbation values:"),
+                                downloadButton("downloadPertTab", "Export table"),
                                 dataTableOutput("PertTab")
-                       )
-                       )
-            )
+            #            )
+            #            )
+            # )
     )

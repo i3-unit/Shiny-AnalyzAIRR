@@ -51,7 +51,7 @@ output$CountInt <- renderPlot({
 ##### Similarity analysis #####
 # render VennUI for selecting type of Venn Diagram
 output$vennUISample <- renderUI({
-  choices <- rownames(mData(dat()))
+  choices <- rownames(mData(dataFilt()))
   selectizeInput("vennSamples",
                  "Select samples",  #modified by VMH
                  choices = choices,
@@ -88,14 +88,14 @@ output$GrpColMDS <- renderUI({
     validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), " "))
     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), " "))
     validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), " "))
-    selectGroup("grpCol4MDS", dat())
+    selectGroup("grpCol4MDS", dataFilt())
 })
 # plot dissimilarity
 output$plotDissimilarityHM <- renderPlot({
     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select level"))
     validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select dissimilarity index"))
     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
-    plotDissimilarityMatrix(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
+    plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
 })    
 # plot MDS
 output$plotMDS <- renderPlot({
@@ -105,7 +105,7 @@ output$plotMDS <- renderPlot({
     validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select dissimilarity method"))
     validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select group"))
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotDimReduction(x = dat(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
+    plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
 })
 # include md formula distance function
 output$distFuncsMD <- renderUI({
@@ -129,9 +129,9 @@ output$diffGroup <- renderUI({
     choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
   }
   selectizeInput("diffGroup",
-                 "Select group and features",  
+                 "Select a group and features",  
                  choices = choices,
-                 options = list(onInitialize = I('function() { this.setValue(""); }')),
+                 options = list(minItems=3, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)
 })
 
@@ -139,23 +139,25 @@ output$tableDiffExpGroup <- DT::renderDataTable({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select level"))
   validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and features")) 
+  validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 features")) 
   diffExpGroup(x = dataFilt(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup)
 })
 
-output$Volcano <- renderPlot({
+output$Volcano <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "select fold-change threshold")) 
   validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "select pvalue threshold")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and features")) 
-  plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0)
+  validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 features")) 
+  plotly::ggplotly(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
 
-output$plotPCA <- renderPlot({
+output$plotPCA <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select distance method")) 
   validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select dimension reduction method")) 
   validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
-  plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
+  plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
 })
 
 
@@ -167,7 +169,7 @@ output$PertGroupUI <- renderUI({
 output$CtrlGroupUI <- renderUI({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   selectizeInput("CtrlGroup",
-                 "Select control group",
+                 "Select a control group",
                  choices = levels(mData(dataFilt())[, input$PertGroupSelected]),
                  options = list(onInitialize = I('function() { this.setValue(""); }')),
                  multiple = F
@@ -178,7 +180,7 @@ output$PertDistUI <- renderUI({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   selectizeInput("pertDist",
-                 "Select distance",
+                 "Select a distance",
                  choices = list("manhattan", "euclidean"),
                  options = list(onInitialize = I('function() { this.setValue(""); }')),
                  multiple = F
@@ -189,6 +191,8 @@ dataPert <- reactive({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
+  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
   pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
@@ -215,6 +219,13 @@ output$plotPerturbation <- renderPlot({
 output$PertTab <- renderDataTable({
   return(datatable(dataPert(), options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)) %>% formatRound(c(1: ncol(dataPert())), 2))
 })
+
+output$downloadPertTab <- downloadHandler(
+  "RepSeq_pertubationScore.csv",
+  content = function(file) {
+    write.table(dataPert(), file, row.names = F, sep = '\t')
+  }, contentType = "text/csv"
+) 
 
 
 
