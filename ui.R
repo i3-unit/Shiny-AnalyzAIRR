@@ -95,83 +95,113 @@ bodyTabs <-
         tabItem(tabName = "showFiltTab",
                 fluidRow(tabBox(width = 12,
                                 tabPanel("Filter out a repertoire level count",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                 selectizeInput("filterCountLevel",
                                                                "Select a level",
                                                                choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ), 
-                                         column(width = 3,
-                                                numericInput(inputId = "filterCountN",
-                                                             label = "Set a count threshold",
-                                                             value = 1,
-                                                             min = 1,
-                                                             max = 1000)
+                                                 ), 
+                                                 column(width = 2,
+                                                        numericInput(inputId = "filterCountN",
+                                                                     label = "Set a count threshold",
+                                                                     value = 1,
+                                                                     min = 1,
+                                                                     max = 1000)
+                                                 ),
+                                                 column(width = 2,
+                                                        uiOutput("filterCountGroup")
+                                                 ),
+                                                column(width = 6,
+                                                       div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                           circleButton(inputId = "filtercountHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                       tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                )
                                          ),
-                                         column(width = 3,
-                                                uiOutput("filterCountGroup")
-                                         )),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataFilterCount", "Download RDS"),
                                          dataTableOutput("filtercounts"),
                                          busyIndicator(wait = 500)
                                          ),
                                 tabPanel("Extract shared sequences",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                          selectizeInput("publicLevel",
                                                                         "Select a level",
                                                                         choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ), 
-                                         column(width = 3,
-                                                numericInput(inputId = "publicProp",
-                                                             label = "Set a proportion",
-                                                             value = 0,
-                                                             min = 0,
-                                                             max = 1)
+                                                 ), 
+                                                 column(width = 2,
+                                                        numericInput(inputId = "publicProp",
+                                                                     label = "Set a proportion",
+                                                                     value = 0,
+                                                                     min = 0,
+                                                                     max = 1)
+                                                 ),
+                                                 column(width = 2,
+                                                        uiOutput("publicGroup")
+                                                 ),
+                                                 column(width = 6,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                            circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                 )
                                          ),
-                                         column(width = 3,
-                                                uiOutput("publicGroup")
-                                         )),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataPublic", "Download RDS"),
                                          dataTableOutput("publicdata"),
                                          busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Extract private sequences",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                          selectizeInput("privateLevel",
                                                                         "Select a level",
                                                                         choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ), 
-                                         column(width = 3,
-                                                selectizeInput("privateSingletons",
-                                                               "Private singletons",
-                                                               choices = list(TRUE, FALSE),
-                                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         )),
+                                                 ), 
+                                                 column(width = 2,
+                                                        selectizeInput("privateSingletons",
+                                                                       "Private singletons",
+                                                                       choices = list(TRUE, FALSE),
+                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 ),
+                                                 column(width = 8,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                            circleButton(inputId = "privateHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                 )
+                                         ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataPrivate", "Download RDS"),
                                          dataTableOutput("privatedata"),
                                          busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Filter out productive or unproductive sequences",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                     selectizeInput("productive",
                                                                    "Filter out sequences",
                                                                     choices = list("Productive", "Unproductive"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         )),
+                                                    ),
+                                                  column(width = 10,
+                                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                             circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                  )
+                                         ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
                                          dataTableOutput("productivedata"),
                                          busyIndicator(wait = 500)
                                 ),
                                 tabPanel("Drop a sample",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                          uiOutput("dropSampleNames")
-                                         )),
+                                                  ),
+                                                  column(width = 10,
+                                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                             circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                  )
+                                         ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataDropedSamples", "Download RDS"),
                                          dataTableOutput("dropeddata"),
@@ -182,27 +212,33 @@ bodyTabs <-
         tabItem(tabName = "showNormTab",
                 fluidRow(tabBox(width = 12,
                                 tabPanel("Down-sampling",
-                                         fluidRow(column(width = 3,
+                                         fluidRow(column(width = 2,
                                                          selectizeInput("doDown",
                                                                         "Perform a down-sampling normalization",
                                                                         choices = list("Yes", "No"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ),
-                                                  column(width = 3,
+                                                  ),
+                                                  column(width = 2,
                                                          sliderInput(inputId = "downSampleSize",
                                                                      label = "Set a sample size",
                                                                      value = 10000,
                                                                      min = 0,
                                                                      max = 1000000)
+                                                 ),
+                                                 column(width = 2,
+                                                        sliderInput(inputId = "downseed",
+                                                                     label = "Set a seed",
+                                                                     value = 1234,
+                                                                     min = 1,
+                                                                     max = 9999,
+                                                                     width = NULL)
+                                                 ),
+                                                 column(width = 6,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                            circleButton(inputId = "downHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                 )
                                          ),
-                                         column(width = 3,
-                                                sliderInput(inputId = "downseed",
-                                                             label = "Set a seed",
-                                                             value = 1234,
-                                                             min = 1,
-                                                             max = 9999,
-                                                             width = NULL)
-                                         )),
                                          h4("Normalized table"),
                                          downloadButton("downloaddownSampling", "Download RDS"),
                                          dataTableOutput("downsampleddata"),
@@ -223,11 +259,16 @@ bodyTabs <-
                                 ),
                                 tabPanel("Shannon-based normalization",
                                          fluidRow(
-                                             column(width = 3,
+                                             column(width = 2,
                                                          selectizeInput("doNorm",
                                                                         "Perform a shannon normalization",
                                                                         choices = list("Yes", "No"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         ),
+                                         column(width = 6,
+                                                div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                    circleButton(inputId = "shannonHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                          )
                                          ),
                                          h4("Normalized table"),

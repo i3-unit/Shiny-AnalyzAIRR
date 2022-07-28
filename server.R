@@ -4,6 +4,7 @@ shinyServer(function(input, output, session) {
     output$about<- renderUI({ includeHTML("www/about.html") })
     # render session information
     output$session <- renderPrint({ sessionInfo() })
+    
     # upload aligned & annotated CSV data 
     output$canUpload <- reactive(
         return(!(is.null(input$chain) || input$source == ""))
@@ -122,6 +123,8 @@ source("tabs/server_exploratorystats.R", local = TRUE)
             easyClose = T
         ))
     )
+    
+    
     # reset analysis
     observeEvent(input$resetApp, {
         session$reload()

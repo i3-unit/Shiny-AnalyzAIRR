@@ -29,6 +29,19 @@ output$PlotStatsBasic <- downloadHandler(
     }
 )
 
+output$basicStatsHelp <- renderText({
+    createHelp(?plotStatistics)
+})
+
+observeEvent(input$basicstatsHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("basicStatsHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 output$dataCountFeatures <- renderDataTable({
     validate(need(!(is.null(input$countLevel) || input$countLevel == ""), "select level"))
     validate(need(!(is.null(input$countScale) || input$countScale == ""), "select scale"))
@@ -40,6 +53,19 @@ output$downloadCountFeatures <- downloadHandler(
         write.table(countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
+
+output$countFeaturesHelp <- renderText({
+    createHelp(?countFeatures)
+})
+
+observeEvent(input$countfeaturesHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("countFeaturesHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
 
 output$plotRare <- renderUI({
     selectGroup("plotRare", dataFilt())
@@ -65,6 +91,19 @@ output$PlotRare <- downloadHandler(
         grid.draw(plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL))
         dev.off()
     }
+)
+
+output$RareHelp <- renderText({
+    createHelp(?plotRarefaction)
+})
+
+observeEvent(input$rareHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("RareHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
 )
 
 output$dataRare <- renderDataTable({
@@ -102,6 +141,18 @@ output$PlotDiv <- downloadHandler(
     }
 )
 
+output$basicDivHelp <- renderText({
+    createHelp(?plotDiversity)
+})
+
+observeEvent(input$basicdivHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("basicDivHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
 
 output$dataDiv <- renderDataTable({
     validate(need(!(is.null(input$divLevel) || input$divLevel == ""), "select level"))
@@ -134,6 +185,19 @@ output$PlotRenyi2 <- downloadHandler(
         grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
         dev.off()
     }
+)
+
+output$basicRenyiHelp <- renderText({
+    createHelp(?plotRenyiIndex)
+})
+
+observeEvent(input$basicrenHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("basicRenyiHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
 )
 
 output$dataRenyi <- renderDataTable({
@@ -174,6 +238,19 @@ output$PlotCountIntervals2 <- downloadHandler(
     }
 )
 
+output$basicCountIntHelp <- renderText({
+    createHelp(?plotCountIntervals)
+})
+
+observeEvent(input$basiccountintHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("basicCountIntHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 # plot VJ distribution
 output$rankDistrib <- renderPlot({
     validate(need(!(is.null(input$rankDistribGroupMeth) || input$rankDistribGroupMeth == ""), "select scale"))
@@ -198,3 +275,19 @@ output$PlotrankDistrib <- downloadHandler(
         dev.off()
     }
 )
+
+
+output$rankDistribHelp <- renderText({
+    createHelp(?plotRankDistrib)
+})
+
+observeEvent(input$rankdistribHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("rankDistribHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
+

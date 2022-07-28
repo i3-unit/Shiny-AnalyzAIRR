@@ -27,6 +27,18 @@ output$PlotIndCountIntervals <- downloadHandler(
     }
 )
 
+output$IndCountIntHelp <- renderText({
+    createHelp(?plotIndCountIntervals)
+})
+
+observeEvent(input$indcountintHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("IndCountIntHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
 
 # plot V and J gene usages
 output$geneUsage <- renderPlot({
@@ -51,6 +63,19 @@ output$PlotgeneUsage <- downloadHandler(
         grid.draw(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
         dev.off()
     }
+)
+
+output$geneUsageHelp <- renderText({
+    createHelp(?plotGeneUsage)
+})
+
+observeEvent(input$geneusageHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("geneUsageHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
 )
 
 # plot V and J gene usages
@@ -80,6 +105,19 @@ output$PlotVJUsage <- downloadHandler(
     }
 )
 
+output$VJUsageHelp <- renderText({
+    createHelp(?plotVJusage)
+})
+
+observeEvent(input$vjusageHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("VJUsageHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 ##### Plot stacked spectratype #####
 
 #render UI download button for individual spectratype
@@ -107,6 +145,20 @@ output$Spectra <- downloadHandler(
         dev.off()
     }
 )
+
+output$spectraHelp <- renderText({
+    createHelp(?plotSpectratyping)
+})
+
+observeEvent(input$spectHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("spectraHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 ##### Plot individual spectratype #####
 
 #render UI download button for individual spectratype
@@ -143,4 +195,15 @@ output$Spectrabis <- downloadHandler(
     }
 )
 
-    
+output$SpectrabisHelp <- renderText({
+    createHelp(?plotSpectratypingV)
+})
+
+observeEvent(input$spectbisHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("SpectrabisHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)   

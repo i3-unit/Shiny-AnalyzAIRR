@@ -17,6 +17,19 @@ output$Statistics <- renderPlot({
     plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
 })  
 
+output$StatisticsHelp <- renderText({
+  createHelp(?plotStatistics)
+})
+
+observeEvent(input$statsHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("StatisticsHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 output$downPlotStatistics <- renderUI({
   if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup))) {
     downloadButton("PlotStatistics", "Download PDF")
@@ -65,6 +78,19 @@ output$PlotDiversity <- downloadHandler(
   }
 )
 
+output$DiversityHelp <- renderText({
+  createHelp(?plotDiversity)
+})
+
+observeEvent(input$DivHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("DiversityHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 output$RenyiDiversity <- renderPlot({
   validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
   validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
@@ -87,6 +113,19 @@ output$PlotRenyi <- downloadHandler(
     grid.draw(plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL))
     dev.off()
   }
+)
+
+output$RenyiHelp <- renderText({
+  createHelp(?plotRenyiIndex)
+})
+
+observeEvent(input$RenHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("RenyiHelp"),
+               size = "l",
+               easyClose = T
+             ))
 )
 
 output$countIntervalsGroup <- renderUI({
@@ -117,6 +156,19 @@ output$PlotCountInt <- downloadHandler(
   }
 )
 
+output$CountIntHelp <- renderText({
+  createHelp(?plotCountIntervals)
+})
+
+observeEvent(input$CIHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("CountIntHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 ##### Similarity analysis #####
 # render VennUI for selecting type of Venn Diagram
 output$vennUISample <- renderUI({
@@ -129,9 +181,11 @@ output$vennUISample <- renderUI({
 })
 
 output$plotEulerr <- renderPlot({
-  validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select level"))
+  validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select a level"))
   validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
   validate(need(length(input$vennSamples)>1, "select a second sample"))
+  validate(need(!(is.null(input$vennSeed) || input$vennSeed ==""), "select a seed"))
+  set.seed(input$vennSeed)
   plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
 })
 
@@ -152,6 +206,20 @@ output$PlotEulerr <- downloadHandler(
     dev.off()
   }
 )
+
+output$EulerrHelp <- renderText({
+  createHelp(?plotEulerr)
+})
+
+observeEvent(input$eulerHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("EulerrHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
@@ -188,6 +256,19 @@ output$PlotScatter <- downloadHandler(
   }
 )
 
+output$ScatterHelp <- renderText({
+  createHelp(?plotScatter)
+})
+
+observeEvent(input$scatterHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("ScatterHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 output$GrpColMDS <- renderUI({
     selectGroupDE("grpCol4MDS", dataFilt())
 })
@@ -215,6 +296,19 @@ output$PlotDisHM <- downloadHandler(
     plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
     dev.off()
   }
+)
+
+output$DisHMHelp <- renderText({
+  createHelp(?plotDissimilarityMatrix)
+})
+
+observeEvent(input$disHMHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("DisHMHelp"),
+               size = "l",
+               easyClose = T
+             ))
 )
 
 # plot MDS
@@ -245,6 +339,19 @@ output$PlotMDS <- downloadHandler(
     grid.draw(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
     dev.off()
   }
+)
+
+output$MDSHelp <- renderText({
+  createHelp(?plotDimReduction)
+})
+
+observeEvent(input$mdsHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("MDSHelp"),
+               size = "l",
+               easyClose = T
+             ))
 )
 
 
@@ -280,9 +387,9 @@ output$diffGroup <- renderUI({
 })
 
 output$tableDiffExpGroup <- DT::renderDataTable({
-  validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select level"))
-  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
-  validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and subgroups")) 
+  validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select a level"))
+  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select a group")) 
+  validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select a group and subgroups")) 
   validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups")) 
   diffExpGroup(x = dataFilt(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup)
 })
@@ -322,6 +429,19 @@ output$PlotVolcano <- downloadHandler(
   }
 )
 
+output$VolcanoHelp <- renderText({
+  createHelp(?plotVolcano)
+})
+
+observeEvent(input$volcanoHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("VolcanoHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 output$plotPCA <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select distance method")) 
@@ -347,6 +467,20 @@ output$PlotPCA <- downloadHandler(
     dev.off()
   }
 )
+
+output$PCAHelp <- renderText({
+  createHelp(?plotDimReduction)
+})
+
+observeEvent(input$pcaHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("PCAHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 
 # render select group UI
 output$PertGroupUI <- renderUI({
@@ -440,6 +574,19 @@ output$PlotPert <- downloadHandler(
     plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
     dev.off()
   }
+)
+
+output$PertHelp <- renderText({
+  createHelp(?plotPerturbationScore)
+})
+
+observeEvent(input$pertHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("PertHelp"),
+               size = "l",
+               easyClose = T
+             ))
 )
 
 # 

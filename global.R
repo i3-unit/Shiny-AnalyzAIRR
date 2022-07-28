@@ -14,6 +14,7 @@ library(rstatix)
 library(ggrepel)
 library(shinyjs)
 library(shinythemes)
+library(shinyWidgets)
 
 #------------------------------------------------------------------------------#
 # options
@@ -89,7 +90,7 @@ selectList <- function(ID, x) {
   choices <- names(RepSeq::oData(x))
   selectizeInput(
     ID,
-    "Select a list",
+    "Select a table",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
@@ -114,10 +115,17 @@ selectGroupStat <- function(ID, x){
   choices <- colnames(sdata)
   selectizeInput(
     ID,
-    "Select a stat",
+    "Select a statistic",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
+}
+
+createHelp <- function(fn){
+    temp = tools::Rd2HTML(gbRd::Rd_fun(fn),out = tempfile("docs"))
+    content = readr::read_file(temp)
+    file.remove(temp)
+    content
 }
 
 # For plotRenyiProfile, prend str en transforme en liste de valeurs de alpha
@@ -145,7 +153,16 @@ printHtml <- function(obj){
 
 # Plot histograms
 histSums<- function(dat=NULL, xlab="",ylab=""){
-  p<-ggplot(data.frame(sums=dat), aes(x=sums))+ggplot2::geom_histogram(position = "identity")+xlab(xlab)+ylab(ylab)+scale_x_log10(labels=scales::comma)+theme_RepSeq()
+  p<-ggplot2::ggplot(data.frame(sums=dat), aes(x=sums))+
+    ggplot2::geom_histogram(position = "identity")+
+    ggplot2::xlab(xlab)+
+    ggplot2::ylab(ylab)+
+    ggplot2::scale_x_log10(labels=scales::comma)+
+    RepSeq::theme_RepSeq()+
+    theme( axis.title.x = ggplot2::element_text(size=15),
+           axis.title.y = ggplot2::element_text(size=15),
+           axis.text.x = ggplot2::element_text(size=15),
+           axis.text.y = ggplot2::element_text(size=15))
   return(p)
 }
 
@@ -206,3 +223,15 @@ summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3
   
   return(p2)
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -102,6 +102,19 @@ output$downloaddataFilterCount <- downloadHandler(
     }, 
 ) 
 
+output$FilterCountHelp <- renderText({
+    createHelp(?filterCount)
+})
+
+observeEvent(input$filtercountHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("FilterCountHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 output$publicGroup <- renderUI({
     sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
     to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
@@ -144,6 +157,19 @@ output$downloaddataPublic <- downloadHandler(
     }, 
 ) 
 
+output$PublicHelp <- renderText({
+    createHelp(?getPublic)
+})
+
+observeEvent(input$publicHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("PublicHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 dataPrivate <- reactive({
     validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
@@ -164,6 +190,19 @@ output$downloaddataPrivate <- downloadHandler(
         saveRDS(dataPrivate(), file)
     }, 
 ) 
+
+output$PrivateHelp <- renderText({
+    createHelp(?getPrivate)
+})
+
+observeEvent(input$privateHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("PrivateHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
 
 dataProductiveOrUnproductive <- reactive({
     validate(need(!(is.null(input$productive) || input$productive == ""), "select if productive"))
@@ -195,6 +234,21 @@ output$downloaddataProductiveOrUnproductive <- downloadHandler(
     }, 
 ) 
 
+output$ProdHelp <- renderText({
+    createHelp(?getProductive)
+    createHelp(?getUnproductive)
+    
+})
+
+observeEvent(input$prodHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("ProdHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 output$dropSampleNames <- renderUI({
     choices <- rownames(mData(RepSeqDT()))
     selectizeInput("dropSampleNames",
@@ -225,6 +279,20 @@ output$downloaddataDropedSamples <- downloadHandler(
     }, 
 ) 
 
+output$DropSamplesHelp <- renderText({
+    createHelp(?dropSamples)
+    
+})
+
+observeEvent(input$dropHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("DropSamplesHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 #### Normalization ####
 
 
@@ -252,27 +320,41 @@ output$downloaddownSampling <- downloadHandler(
     }, 
 ) 
 
+output$DownHelp <- renderText({
+    createHelp(?sampleRepSeqExp)
+    
+})
+
+observeEvent(input$downHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("DownHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 # new libsize after downsampling # library sizes
 observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
         validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- RepSeq::assay(RepSeqDT())
-        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
-            theme_light()+
-            theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
-        cts2 <- RepSeq::assay(downSampling())
-        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
-            ggtitle("Downsampled data") +
-            theme_light()+
+            theme_RepSeq()+
             theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
-                  axis.text.y = ggplot2::element_text(size=15),
-                  panel.grid.minor = ggplot2::element_blank(),
-                  panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+                  axis.text.y = ggplot2::element_text(size=15))
+        cts2 <- RepSeq::assay(downSampling())
+        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
+            ggtitle("Downsampled data") +
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
 
         gridExtra::grid.arrange(p1, p2, ncol=2)
     })
@@ -292,21 +374,21 @@ output$Plothistdownlibsizes <- downloadHandler(
     content = function(file) {
         pdf(file, height=12, width=24)
         cts1 <- RepSeq::assay(RepSeqDT())
-        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
-            theme_light()+
-            theme( panel.grid.minor = ggplot2::element_blank(),
-                   panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+            theme_RepSeq()+
+            theme( axis.title.x = ggplot2::element_text(size=15),
+                   axis.title.y = ggplot2::element_text(size=15),
+                   axis.text.x = ggplot2::element_text(size=15),
+                   axis.text.y = ggplot2::element_text(size=15))
         cts2 <- RepSeq::assay(downSampling())
-        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab=paste0(input$DownLevel, " counts"), ylab=paste0(input$DownLevel, " of clonotypes")) +
+        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Downsampled data") +
-            theme_light()+
+            theme_RepSeq()+
             theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
-                  axis.text.y = ggplot2::element_text(size=15),
-                  panel.grid.minor = ggplot2::element_blank(),
-                  panel.grid.major = ggplot2::element_line(colour = "gray89",linetype="dashed",size=0.1))
+                  axis.text.y = ggplot2::element_text(size=15))
         grid.draw(gridExtra::grid.arrange(p1, p2, ncol=2))
         dev.off()
     }
@@ -336,6 +418,20 @@ output$downloadshannonNormed <- downloadHandler(
         saveRDS(shannonNormed(), file)
     }, 
 ) 
+
+output$ShannonHelp <- renderText({
+    createHelp(?sampleRepSeqExp)
+    
+})
+
+observeEvent(input$downHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("ShannonHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
 
 
 dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$filterCountGroup, 
