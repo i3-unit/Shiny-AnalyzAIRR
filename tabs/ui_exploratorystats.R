@@ -8,7 +8,7 @@ basicstats <-
                                uiOutput("plotStats")
                         ),
                         column(width = 10,
-                               div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                               div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                    circleButton(inputId = "basicstatsHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                         )
@@ -34,7 +34,7 @@ basicstats <-
                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
                              column(width = 8,
-                                    div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                    div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                         circleButton(inputId = "countfeaturesHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                     tags$head(tags$style(".modal-dialog{ width:1200px}"))
                              )
@@ -59,7 +59,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                             uiOutput("plotRare")
                                      ),
                                      column(width = 10,
-                                            div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                            div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                                 circleButton(inputId = "rareHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                             tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                      )
@@ -90,7 +90,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   selected = "clone")
                                        ),
                                        column(width = 8,
-                                              div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                              div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                                   circleButton(inputId = "basicdivHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                        )
@@ -114,7 +114,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   selected = "clone")
                                        ),
                                        column(width = 10,
-                                              div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                              div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                                   circleButton(inputId = "basicrenHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                        )
@@ -146,7 +146,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                                   selected = "clone")
                                        ),
                                        column(width = 10,
-                                              div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                              div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                                   circleButton(inputId = "basiccountintHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                        )
@@ -172,7 +172,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                               )
                                        ),
                                        column(width = 8,
-                                              div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                              div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                                   circleButton(inputId = "rankdistribHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                        )

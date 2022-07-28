@@ -164,7 +164,7 @@ bodyTabs <-
                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ),
                                                  column(width = 8,
-                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                                             circleButton(inputId = "privateHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -181,11 +181,12 @@ bodyTabs <-
                                                                     choices = list("Productive", "Unproductive"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                     ),
-                                                  column(width = 10,
-                                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                                             circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                    column(width = 10,
+                                                         div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
+                                                             circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm"),
+                                                             circleButton(inputId = "unprodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                          tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                                  )
+                                                    )
                                          ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
@@ -197,7 +198,7 @@ bodyTabs <-
                                                          uiOutput("dropSampleNames")
                                                   ),
                                                   column(width = 10,
-                                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                         div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                                              circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                          tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                   )
@@ -264,12 +265,12 @@ bodyTabs <-
                                                                         "Perform a shannon normalization",
                                                                         choices = list("Yes", "No"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ),
-                                         column(width = 6,
-                                                div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                                    circleButton(inputId = "shannonHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                         )
+                                             ),
+                                             column(width = 10,
+                                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
+                                                        circleButton(inputId = "shannonHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                             )
                                          ),
                                          h4("Normalized table"),
                                          downloadButton("downloadshannonNormed", "Download RDS"),

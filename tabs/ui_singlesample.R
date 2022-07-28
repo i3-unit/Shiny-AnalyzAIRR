@@ -10,7 +10,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                 selected = "clone")
                             ),
                             column(width = 10,
-                                   div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                   div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                        circleButton(inputId = "indcountintHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
@@ -28,7 +28,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                 selected = "V")
                              ),
                             column(width = 10,
-                                   div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                   div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                        circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
@@ -50,7 +50,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                  min = 0, max = 1)
                             ),
                             column(width = 8,
-                                   div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                   div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                        circleButton(inputId = "vjusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
@@ -68,7 +68,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                   min = 0, max = 1)
                               ),
                               column(width = 10,
-                                     div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                     div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                          circleButton(inputId = "spectHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                      tags$head(tags$style(".modal-dialog{ width:1200px}"))
                               )
@@ -86,7 +86,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                   min = 0, max = 1)
                               ),
                               column(width = 10,
-                                     div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                     div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                          circleButton(inputId = "spectbisHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                      tags$head(tags$style(".modal-dialog{ width:1200px}"))
                               )

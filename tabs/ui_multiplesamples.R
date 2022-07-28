@@ -11,7 +11,7 @@ CompBasicTab<-
                                uiOutput("statisticsGroup")
                         ),
                         column(width = 8,
-                               div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                               div(style="display:block;margin-left: 96.255%;padding-bottom: 10px;",
                                    circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                         )
@@ -66,7 +66,7 @@ CompBasicTab<-
                                     uiOutput("countIntervalsGroup")
                              ),
                              column(width = 8,
-                                    div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                    div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                         circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                     tags$head(tags$style(".modal-dialog{ width:1200px}"))
                              )

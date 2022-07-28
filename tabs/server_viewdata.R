@@ -236,14 +236,24 @@ output$downloaddataProductiveOrUnproductive <- downloadHandler(
 
 output$ProdHelp <- renderText({
     createHelp(?getProductive)
-    createHelp(?getUnproductive)
-    
 })
 
 observeEvent(input$prodHelp,
              showModal(modalDialog(
                  title = paste("Help page"),
                  htmlOutput("ProdHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+output$UnProdHelp <- renderText({
+    createHelp(?getUnproductive)
+})
+
+observeEvent(input$unprodHelp,
+             showModal(modalDialog(
+                 title = paste("Help page"),
+                 htmlOutput("UnProdHelp"),
                  size = "l",
                  easyClose = T
              ))
@@ -420,11 +430,11 @@ output$downloadshannonNormed <- downloadHandler(
 ) 
 
 output$ShannonHelp <- renderText({
-    createHelp(?sampleRepSeqExp)
+    createHelp(?ShannonNorm)
     
 })
 
-observeEvent(input$downHelp,
+observeEvent(input$shannonHelp,
              showModal(modalDialog(
                  title = paste("Help page"),
                  htmlOutput("ShannonHelp"),
