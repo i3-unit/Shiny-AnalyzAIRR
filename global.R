@@ -154,7 +154,7 @@ printHtml <- function(obj){
 # Plot histograms
 histSums<- function(dat=NULL, xlab="",ylab=""){
   p<-ggplot2::ggplot(data.frame(sums=dat), aes(x=sums))+
-    ggplot2::geom_histogram(position = "identity", fill="white", colour="grey")+
+    ggplot2::geom_histogram(position = "identity", fill="white", colour="black")+
     ggplot2::xlab(xlab)+
     ggplot2::ylab(ylab)+
     ggplot2::scale_x_log10(labels=scales::comma)+

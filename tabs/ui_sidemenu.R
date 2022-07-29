@@ -42,19 +42,6 @@ sideMenu <- sidebarMenu(id = "sideTabs",
             conditionalPanel(
               condition = "output.canUpload",
               fileInput(
-                "sInfofile",
-                NULL,
-                multiple = T,
-                accept = c(
-                  "txt/tsv",        
-                  "text/tabulation-separated-values,text/plain",
-                  ".txt",
-                  ".tsv"
-                ),
-                buttonLabel = "Choose sample info File(s)",
-                placeholder = "No file(s) selected"
-              ),
-              fileInput(
                 "samplefiles",
                 NULL,
                 multiple = T,
@@ -67,13 +54,25 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                 buttonLabel = "Choose sample File(s)",
                 placeholder = "No file(s) selected"
               ),
-              # radioButtons(
-              #   "putInfofile",
-              #   "Sample info file ?", 
-              #   choiceNames = c("Yes", "No"),
-              #   choiceValues = c("Yes", "No")
-              # ),
-              
+              radioButtons(
+                "putInfofile",
+                "Sample info file ?", 
+                choiceNames = c("Yes", "No"),
+                choiceValues = c("Yes", "No")
+              ),
+              fileInput(
+                "sInfofile",
+                NULL,
+                multiple = T,
+                accept = c(
+                  "txt/tsv",        
+                  "text/tabulation-separated-values,text/plain",
+                  ".txt",
+                  ".tsv"
+                ),
+                buttonLabel = "Choose sample info File(s)",
+                placeholder = "No file(s) selected"
+              ),
               div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
                   downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
             ), tabName = "uploadTXTtab"

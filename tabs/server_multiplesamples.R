@@ -639,7 +639,7 @@ output$PlotPert <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=4, width=10)
+    pdf(file, height=4, width=7)
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
     plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
