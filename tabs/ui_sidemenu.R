@@ -30,7 +30,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
             selectizeInput(
                 "source",
                 'Source',
-                choices = list("MiXCR", "immunoseq", "rTCR", "AIRR", "Other"),
+                choices = list("MiXCR", "immunoseq", "AIRR", "Other"),
                 options = list(onInitialize = I('function() { this.setValue(""); }'))
             ),
             radioButtons(
