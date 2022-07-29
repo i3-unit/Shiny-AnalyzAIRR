@@ -103,7 +103,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         cts<- RepSeq::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples"))
         dev.off()
@@ -111,7 +111,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     )
     
     output$histlibsizesp2 <- renderPlot({
-      validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select level"))
+      validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select a level"))
       
       cts<- RepSeq::assay(dataFilt())
       p2<-histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel))
@@ -127,11 +127,11 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     
     output$Plothistlibsizesp2 <- downloadHandler(
       filename =  function() {
-        paste0("histlibsizes_summary_", input$summaryLevel,".pdf")
+        paste0("histlibsizes_summary_", eval(input$summaryLevel),".pdf")
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         cts<- RepSeq::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel)))
         dev.off()
@@ -154,14 +154,14 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         cts<- RepSeq::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples"))
         dev.off()
       }
     )
     output$histtxtlibsizesp2 <- renderPlot({
-      validate(need(!(is.null(input$summaryTXTLevel) || input$summaryTXTLevel == ""), "select level"))
+      validate(need(!(is.null(input$summaryTXTLevel) || input$summaryTXTLevel == ""), "select a level"))
       cts<- RepSeq::assay(dataFilt())
       p2<-histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel))
       
@@ -176,13 +176,13 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     
     output$Plothisttxtlibsizesp2 <- downloadHandler(
       filename =  function() {
-        paste0("histlibsizes_summary_", input$summaryLevel,".pdf")
+        paste0("histlibsizes_summary_", eval(input$summaryTXTLevel),".pdf")
       },
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         cts<- RepSeq::assay(dataFilt())
-        grid.draw(histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel)))
+        grid.draw(histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel)))
         dev.off()
       }
     )

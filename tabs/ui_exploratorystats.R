@@ -39,7 +39,6 @@ basicstats <-
                                     tags$head(tags$style(".modal-dialog{ width:1200px}"))
                              )
                          ),
-                         hr(),
                          downloadButton("downloadCountFeatures", "Export table"),
                          dataTableOutput("dataCountFeatures"),
                          busyIndicator(wait = 500)
@@ -65,10 +64,13 @@ divstats<- tabItem(tabName = "showDivTab",
                                      )
                                 ),
                                 uiOutput("downPlotRare"),
-                                plotOutput("plotrarefaction"), 
+                                plotly::plotlyOutput("plotrarefaction"), 
                                 busyIndicator(wait = 50),
-                                h4(textOutput("dataselected")),
                                 hr(),
+                                h4("Results"),
+                                div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
+                                    circleButton(inputId = "raretabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                 downloadButton("downloaddataRare", "Export table"),
                                 dataTableOutput("dataRare"),
                                 busyIndicator(wait = 500)
@@ -80,14 +82,14 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   "divIndex",
                                                   "Select an index",
                                                   choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
-                                                  selected = "chao1")
+                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 2,
                                               selectizeInput(
                                                   "divLevel",
                                                   "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
-                                                  selected = "clone")
+                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 8,
                                               div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
@@ -98,8 +100,11 @@ divstats<- tabItem(tabName = "showDivTab",
                                    uiOutput("downPlotDiv"),
                                    plotOutput("plotDiv"), 
                                    busyIndicator(wait = 500),
-                                   h4(textOutput("Diversity table")),
                                    hr(),
+                                   h4("Results"),
+                                   div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
+                                       circleButton(inputId = "divtabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                   tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                    downloadButton("downloaddataDiv", "Export table"),
                                    dataTableOutput("dataDiv"),
                                    busyIndicator(wait = 500)
@@ -111,7 +116,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                                   "renyiLevel",
                                                   "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
-                                                  selected = "clone")
+                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 10,
                                               div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
@@ -120,10 +125,13 @@ divstats<- tabItem(tabName = "showDivTab",
                                        )
                                    ),
                                    uiOutput("downPlotRenyi2"),
-                                   plotOutput("plotRenyi"),
+                                   plotly::plotlyOutput("plotRenyi"),
                                    busyIndicator(wait = 500),
-                                   h4(textOutput("Renyi diversity table")),
-                                   hr(),
+                                   hr(),                                
+                                   h4("Results"),
+                                   div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
+                                       circleButton(inputId = "rentabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                   tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                    downloadButton("downloaddataRenyi", "Export table"),
                                    dataTableOutput("dataRenyi"),
                                    busyIndicator(wait = 500)
@@ -143,7 +151,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                                   "countIntLevel",
                                                   "Select a level",
                                                   choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
-                                                  selected = "clone")
+                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 10,
                                               div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
@@ -158,18 +166,16 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                           tabPanel("Per decreasing rank", 
                                    fluidRow(
                                        column(width = 2, 
-                                              selectInput("rankDistribGroupMeth", 
+                                              selectizeInput("rankDistribGroupMeth", 
                                                           "Select a method",
-                                                          choices = list("count" = "count", "frequency" = "frequency"), 
-                                                          selected = "count"   
-                                              )
+                                                          choices = list("count" = "count", "frequency" = "frequency"),
+                                                          options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 2, 
-                                              selectInput("rankDistribLevel", 
+                                              selectizeInput("rankDistribLevel", 
                                                           "Select a level",
-                                                          choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"), 
-                                                          selected = "clone" 
-                                              )
+                                                          choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                          options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 8,
                                               div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",

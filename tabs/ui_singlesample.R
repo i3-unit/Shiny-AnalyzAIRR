@@ -7,7 +7,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                    selectizeInput("indLevel",
                                                 "Select a level",
                                                 choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
-                                                selected = "clone")
+                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                             ),
                             column(width = 10,
                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
@@ -25,7 +25,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                    selectizeInput("geneUsageLevel",
                                                 "Select a level",
                                                 choices = list("V", "J"),
-                                                selected = "V")
+                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
                             column(width = 10,
                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
@@ -34,14 +34,14 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                             )
                    ),
                    uiOutput("downPlotgeneUsage"),
-                   plotOutput("geneUsage"),
+                   plotly::plotlyOutput("geneUsage"),
                    busyIndicator(wait = 500),
                    h4("V-J Combination usage"),
                    fluidRow(column(width = 2,
                                    selectizeInput("VJLevel",
                                                 "Select a level",
                                                 choices = list("clone", "clonotype"),
-                                                selected = "clone")
+                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
                             ),
                             column(width = 2,
                                     sliderInput("VJProp",
@@ -74,7 +74,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                               )
                      ),
                       uiOutput("downSpectra"),
-                      plotOutput("spectraPlot"),
+                      plotly::plotlyOutput("spectraPlot"),
                       busyIndicator(wait = 500),
                       value = "stackedspectraTypetab"
                     ),

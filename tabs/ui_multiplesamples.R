@@ -194,8 +194,8 @@ SimTab<-
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
-                                splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
-                                splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
+                                splitLayout(cellWidths = c("60%", "40%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
+                                splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotly::plotlyOutput("plotMDS")),
                                 busyIndicator(wait = 500),
                                 # withMathJax(),
                                 # htmlOutput("distFuncsMD"),
@@ -277,6 +277,11 @@ DiffTab<-
                                     splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotVolcano"), uiOutput("downPlotPCA")),
                                     splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotly::plotlyOutput("plotPCA")),
                                     busyIndicator(wait = 500),
+                                    hr(),
+                                    h4('Results'),
+                                    div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
+                                        circleButton(inputId = "difftabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                    tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                     downloadButton("downloadtableDiffExpGroup", "Export table"),
                                     dataTableOutput("tableDiffExpGroup"),
                                     busyIndicator(wait = 500)
@@ -315,9 +320,14 @@ PertTab<-
                                 uiOutput("downPlotPert"),
                                 plotOutput("plotPerturbation"),
                                 busyIndicator(wait = 500),
-                                h4("Perturbation values:"),
+                                h4("Perturbation values"),
+                                div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
+                                    circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                 downloadButton("downloadPertTab", "Export table"),
-                                dataTableOutput("PertTab")
+                                dataTableOutput("PertTab"),
+                                busyIndicator(wait = 500)
+            
             #            )
             #            )
             # )

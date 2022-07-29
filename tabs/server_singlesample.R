@@ -21,7 +21,7 @@ output$PlotIndCountIntervals <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         grid.draw(plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
         dev.off()
     }
@@ -41,11 +41,11 @@ observeEvent(input$indcountintHelp,
 )
 
 # plot V and J gene usages
-output$geneUsage <- renderPlot({
+output$geneUsage <- plotly::renderPlotly({
     sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "Choose a scale"))
-    validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
-    plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)
+    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
+    validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
 })
 output$downPlotgeneUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {
@@ -59,7 +59,7 @@ output$PlotgeneUsage <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=3.5, width=7)
         grid.draw(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
         dev.off()
     }
@@ -81,9 +81,9 @@ observeEvent(input$geneusageHelp,
 # plot V and J gene usages
 output$VJUsage <- renderPlot({
     sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "Choose a scale"))
-    validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "Select a level"))
+    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
+    validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "select a level"))
+    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "select a level"))
     plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
 })
 
@@ -99,7 +99,7 @@ output$PlotVJUsage <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
         dev.off()
     }
@@ -127,11 +127,11 @@ output$downSpectra <- renderUI({
     }
 }) 
 # plot overlay spectratype 
-output$spectraPlot <- renderPlot({
+output$spectraPlot <- plotly::renderPlotly({
     sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "Choose a proportion"))    
-    plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)
+    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
+    validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "select a proportion"))    
+    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
 })
 # download button for individual spectratype
 output$Spectra <- downloadHandler(
@@ -140,7 +140,7 @@ output$Spectra <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         grid.draw(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
         dev.off()
     }
@@ -170,8 +170,8 @@ output$downSpectrabis <- renderUI({
 # render plot individual spectratype
 output$spectraPlotbis <- renderPlot({
     sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "Choose a scale"))
-    validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "Choose a proportion"))
+    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
+    validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "select a proportion"))
     plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
     },  width="auto", 
         height <- function() {
@@ -189,7 +189,7 @@ output$Spectrabis <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         grid.draw(plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
         dev.off()  
     }

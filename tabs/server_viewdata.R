@@ -39,7 +39,7 @@ output$metadataTable <- renderDataTable(
 )
 
 output$downloadOtherdata <- downloadHandler(
-    paste0("RepSeqOtherdata", input$otherDataList, ".csv"),
+    paste0("RepSeqOtherdata", eval(input$otherDataList), ".csv"),
     content = function(file) {
         if(!(is.null(input$otherDataList)))
             write.table(RepSeq::oData(dataFilt())[[input$otherDataList]], file, row.names = F, sep = '\t')
@@ -78,7 +78,7 @@ output$filterCountGroup <- renderUI({
 })
 
 dataFilterCount <- reactive({
-    validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
+    validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
     validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
     validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
@@ -87,7 +87,7 @@ dataFilterCount <- reactive({
 })
 
 output$filtercounts <- renderDataTable({
-    validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select level"))
+    validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
     validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup"))
     validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
@@ -133,18 +133,18 @@ output$publicGroup <- renderUI({
 })
 
 dataPublic <- reactive({
-    validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
+    validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup")) 
+    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup")) 
     validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup, prop = input$publicProp)
     return(publicdata)
 })
 
 output$publicdata <- renderDataTable({
-    validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select level"))
+    validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
     validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select group and a subgroup"))
+    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup"))
     validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     return(datatable(RepSeq::History(dataPublic()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
@@ -171,14 +171,14 @@ observeEvent(input$publicHelp,
 )
 
 dataPrivate <- reactive({
-    validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select level"))
+    validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select a level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
     privatedata <- getPrivate(x = RepSeqDT(), level = input$privateLevel, singletons = input$privateSingletons)
     return(privatedata)
 })
 
 output$privatedata <- renderDataTable({
-    validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select level"))
+    validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select a level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
     return(datatable(RepSeq::History(dataPrivate()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
@@ -307,7 +307,7 @@ observeEvent(input$dropHelp,
 
 
 downSampling <- reactive({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     if(input$doDown=="Yes"){
         downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
@@ -316,7 +316,7 @@ downSampling <- reactive({
 })
 
 output$downsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     return(datatable(RepSeq::History(downSampling()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
@@ -347,7 +347,7 @@ observeEvent(input$downHelp,
 # new libsize after downsampling # library sizes
 observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
-        validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform down-sampling normalization ?"))
+        validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- RepSeq::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
@@ -378,11 +378,11 @@ output$downhistdownlibsizes <- renderUI({
 
 output$Plothistdownlibsizes <- downloadHandler(
     filename =  function() {
-        paste0("histdownlibsizes_", input$DownLevel, ".pdf")
+        paste0("histdownlibsizes_", eval(input$DownLevel), ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=12, width=24)
+        pdf(file, height=4, width=6)
         cts1 <- RepSeq::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
@@ -405,7 +405,7 @@ output$Plothistdownlibsizes <- downloadHandler(
 )
 
 shannonNormed <- reactive({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))
+    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
 
     if(input$doNorm=="Yes"){
         shannonsampleddata <- ShannonNorm(x = RepSeqDT())
@@ -416,7 +416,7 @@ shannonNormed <- reactive({
 
 
 output$shannonsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform shannon normalization ?"))
+    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
     return(datatable(RepSeq::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })

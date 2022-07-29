@@ -60,7 +60,7 @@ alphaInput <- function(level) {
 # return
 #
 sampleError <- function(ID) {
-  validate(need(!(is.null(ID) || ID == ""), "select sample"))
+  validate(need(!(is.null(ID) || ID == ""), "select a sample"))
   
 }
 
@@ -69,7 +69,7 @@ selectSample <- function(ID, sampleNames) {
   #x RepSeqExperiment object
   #id string
   selectizeInput(ID,
-                 label = "Choose a sample",
+                 label = "Select a sample",
                  choices = sampleNames,
                  options = list(onInitialize = I('function() { this.setValue(""); }')))
 }

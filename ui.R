@@ -53,7 +53,7 @@ bodyTabs <-
              busyIndicator(wait = 50),
         ),
         tabItem(tabName = "uploadTXTtab",
-            h4("Data overview"),
+            h2("Data overview"),
             htmlOutput("summaryTXT"),
             busyIndicator(wait = 50),
             uiOutput("downPlothisttxtlibsizesp1"),

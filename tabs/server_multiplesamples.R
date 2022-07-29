@@ -12,8 +12,8 @@ output$statisticsGroup <- renderUI({
 
 # plot statistics
 output$Statistics <- renderPlot({
-    validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "select stat"))
-    validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "select group"))
+    validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "select a statistic"))
+    validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "select a group"))
     plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
 })  
 
@@ -42,7 +42,7 @@ output$PlotStatistics <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL))
     dev.off()
   }
@@ -54,9 +54,9 @@ output$diverGroup <- renderUI({
 
 # plot diversity
 output$Diversity <- renderPlot({
-  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
-  validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "select index"))
-  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
+  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select a level"))
+  validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "select an index"))
+  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select a group"))
   plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
 })  
 
@@ -72,7 +72,7 @@ output$PlotDiversity <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL))
     dev.off()
   }
@@ -92,8 +92,8 @@ observeEvent(input$DivHelp,
 )
 
 output$RenyiDiversity <- renderPlot({
-  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select level"))
-  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select group"))
+  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select a level"))
+  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select a group"))
   plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL)    
 })  
 
@@ -109,7 +109,7 @@ output$PlotRenyi <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL))
     dev.off()
   }
@@ -133,8 +133,8 @@ output$countIntervalsGroup <- renderUI({
 })
 # plot count intervals
 output$CountInt <- renderPlot({
-  validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "select level"))
-  validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "select group"))
+  validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "select a level"))
+  validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "select a group"))
   plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
 }) 
 
@@ -150,7 +150,7 @@ output$PlotCountInt <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL))
     dev.off()
   }
@@ -201,7 +201,7 @@ output$PlotEulerr <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples))
     dev.off()
   }
@@ -231,8 +231,8 @@ output$scatterUISample <- renderUI({
 })
 
 output$Scatter <- renderPlot({
-  validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "select level"))
-  validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "select scale"))
+  validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "select a level"))
+  validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "select a scale"))
   validate(need(!(is.null(input$scatterUISample) || input$scatterUISample ==""), "select samples"))
   validate(need(length(input$scatterUISample)>1, "select a second sample"))
   plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
@@ -250,7 +250,7 @@ output$PlotScatter <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
     dev.off()
   }
@@ -274,9 +274,9 @@ output$GrpColMDS <- renderUI({
 })
 # plot dissimilarity
 output$plotDissimilarityHM <- renderPlot({
-    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select level"))
-    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select dissimilarity index"))
-    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
+    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
+    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
+    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
     plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
 })    
 
@@ -292,7 +292,7 @@ output$PlotDisHM <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=8, width=12)
     plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
     dev.off()
   }
@@ -312,14 +312,14 @@ observeEvent(input$disHMHelp,
 )
 
 # plot MDS
-output$plotMDS <- renderPlot({
-    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), " "))
-    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), " "))
-    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select dissimilarity clustering"))
-    validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select dissimilarity method"))
-    validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select group"))
+output$plotMDS <- plotly::renderPlotly({
+    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
+    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
+    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
+    validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select a dimension reduction method"))
+    validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select a group"))
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
+    plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
 })
 
 output$downPlotMDS <- renderUI({
@@ -334,7 +334,7 @@ output$PlotMDS <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
     grid.draw(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
     dev.off()
@@ -401,12 +401,24 @@ output$downloadtableDiffExpGroup <- downloadHandler(
   }, contentType = "text/csv"
 ) 
 
+output$DiffExpTabHelp <- renderText({
+  createHelp(?diffExpGroup)
+})
+
+observeEvent(input$difftabHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("DiffExpTabHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
 
 output$Volcano <- plotly::renderPlotly({
-  validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
-  validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "select fold-change threshold")) 
-  validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "select pvalue threshold")) 
-  validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select group and subgroups")) 
+  validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select a level"))
+  validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "select a fold-change threshold")) 
+  validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "select a pvalue threshold")) 
+  validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select a group and subgroups")) 
   validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups")) 
   plotly::ggplotly(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
@@ -423,7 +435,7 @@ output$PlotVolcano <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
     dev.off()
   }
@@ -444,9 +456,9 @@ observeEvent(input$volcanoHelp,
 
 output$plotPCA <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
-  validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select distance method")) 
-  validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select dimension reduction method")) 
-  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select group")) 
+  validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select a distance method")) 
+  validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select a dimension reduction method")) 
+  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select a group")) 
   plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
 })
 
@@ -462,7 +474,7 @@ output$PlotPCA <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=4, width=6)
     grid.draw(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
     dev.off()
   }
@@ -480,6 +492,8 @@ observeEvent(input$pcaHelp,
                easyClose = T
              ))
 )
+
+
 
 
 # render select group UI
@@ -519,6 +533,19 @@ dataPert <- reactive({
   return(pertscore)
 })
 
+output$PertTabHelp <- renderText({
+  createHelp(?perturbationScore)
+})
+
+observeEvent(input$perttabHelp,
+             showModal(modalDialog(
+               title = paste("Help page"),
+               htmlOutput("PertTabHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 output$pertOrder <- renderUI({
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
@@ -535,10 +562,10 @@ output$pertOrder <- renderUI({
 })
 
 output$plotPerturbation <- renderPlot({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
-  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
-  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), "select a group"))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "select a control group"))
+  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "select a distance method"))
+  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "select an order sample by"))
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
   plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
@@ -568,7 +595,7 @@ output$PlotPert <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=12, width=24)
+    pdf(file, height=8, width=12)
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
     plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
