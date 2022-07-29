@@ -23,7 +23,7 @@ output$StatisticsHelp <- renderText({
 
 observeEvent(input$statsHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("StatisticsHelp"),
                size = "l",
                easyClose = T
@@ -84,33 +84,36 @@ output$DiversityHelp <- renderText({
 
 observeEvent(input$DivHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("DiversityHelp"),
                size = "l",
                easyClose = T
              ))
 )
+output$multrenGroup <- renderUI({
+  selectGroupDE("multrenGroup", dataFilt())
+})
 
 output$RenyiDiversity <- renderPlot({
-  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select a level"))
-  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select a group"))
-  plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL)    
+  validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "select a level"))
+  validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "select a group"))
+  plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
 })  
 
 output$downPlotRenyi <- renderUI({
-  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))) {
+  if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup))) {
     downloadButton("PlotRenyi", "Download PDF")
   }
 }) 
 
 output$PlotRenyi <- downloadHandler(
   filename =  function() {
-    paste0("renyi_", input$diverLevel, "_", input$diverGroup, ".pdf")
+    paste0("renyi_", input$multrenLevel, "_", input$multrenGroup, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$diverLevel, colorBy = input$diverGroup, grouped = TRUE, label_colors = NULL))
+    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL))
     dev.off()
   }
 )
@@ -121,7 +124,7 @@ output$RenyiHelp <- renderText({
 
 observeEvent(input$RenHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("RenyiHelp"),
                size = "l",
                easyClose = T
@@ -162,12 +165,53 @@ output$CountIntHelp <- renderText({
 
 observeEvent(input$CIHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("CountIntHelp"),
                size = "l",
                easyClose = T
              ))
 )
+output$multRankGroup <- renderUI({
+  selectGroup("multRankGroup", dataFilt())
+})
+output$multRank <- renderPlot({
+  validate(need(!(is.null(input$multRankLevel) || input$multRankLevel == ""), "select a level"))
+  validate(need(!(is.null(input$multRankScale) || input$multRankScale == ""), "select a scale"))
+  validate(need(!(is.null(input$multRankGroup) || input$multRankGroup == ""), "select a group"))
+  plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = FALSE, label_colors = NULL)    
+}) 
+
+output$downPlotMultRank <- renderUI({
+  if (!is.null(input$multRankLevel) & !(is.null(input$multRankScale)) & !(is.null(input$multRankGroup))) {
+    downloadButton("PlotMultRank", "Download PDF")
+  }
+}) 
+
+output$PlotMultRank <- downloadHandler(
+  filename =  function() {
+    paste0("rankDistrib_", input$multRankLevel, "_", input$multRankScale,"_",input$multRankGroup, ".pdf")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    pdf(file, height=4, width=6)
+    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = FALSE, label_colors = NULL))
+    dev.off()
+  }
+)
+
+output$MultRankHelp <- renderText({
+  createHelp(?plotRankDistrib)
+})
+
+observeEvent(input$mrankHelp,
+             showModal(modalDialog(
+               title = paste("Help"),
+               htmlOutput("MultRankHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 
 ##### Similarity analysis #####
 # render VennUI for selecting type of Venn Diagram
@@ -213,7 +257,7 @@ output$EulerrHelp <- renderText({
 
 observeEvent(input$eulerHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("EulerrHelp"),
                size = "l",
                easyClose = T
@@ -230,12 +274,12 @@ output$scatterUISample <- renderUI({
                  multiple = T)
 })
 
-output$Scatter <- renderPlot({
+output$Scatter <- plotly::renderPlotly({
   validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "select a level"))
   validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "select a scale"))
   validate(need(!(is.null(input$scatterUISample) || input$scatterUISample ==""), "select samples"))
   validate(need(length(input$scatterUISample)>1, "select a second sample"))
-  plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
+  plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
 })
 
 output$downPlotScatter <- renderUI({
@@ -262,7 +306,7 @@ output$ScatterHelp <- renderText({
 
 observeEvent(input$scatterHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("ScatterHelp"),
                size = "l",
                easyClose = T
@@ -304,7 +348,7 @@ output$DisHMHelp <- renderText({
 
 observeEvent(input$disHMHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("DisHMHelp"),
                size = "l",
                easyClose = T
@@ -312,14 +356,14 @@ observeEvent(input$disHMHelp,
 )
 
 # plot MDS
-output$plotMDS <- plotly::renderPlotly({
+output$plotMDS <- renderPlot({
     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
     validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
     validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select a dimension reduction method"))
     validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select a group"))
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
+    plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
 })
 
 output$downPlotMDS <- renderUI({
@@ -347,7 +391,7 @@ output$MDSHelp <- renderText({
 
 observeEvent(input$mdsHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("MDSHelp"),
                size = "l",
                easyClose = T
@@ -407,7 +451,7 @@ output$DiffExpTabHelp <- renderText({
 
 observeEvent(input$difftabHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("DiffExpTabHelp"),
                size = "l",
                easyClose = T
@@ -447,19 +491,19 @@ output$VolcanoHelp <- renderText({
 
 observeEvent(input$volcanoHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("VolcanoHelp"),
                size = "l",
                easyClose = T
              ))
 )
 
-output$plotPCA <- plotly::renderPlotly({
+output$plotPCA <- renderPlot({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select a distance method")) 
   validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select a dimension reduction method")) 
   validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select a group")) 
-  plotly::ggplotly(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
+  plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
 })
 
 output$downPlotPCA <- renderUI({
@@ -486,7 +530,7 @@ output$PCAHelp <- renderText({
 
 observeEvent(input$pcaHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("PCAHelp"),
                size = "l",
                easyClose = T
@@ -539,7 +583,7 @@ output$PertTabHelp <- renderText({
 
 observeEvent(input$perttabHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("PertTabHelp"),
                size = "l",
                easyClose = T
@@ -595,7 +639,7 @@ output$PlotPert <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=8, width=12)
+    pdf(file, height=4, width=10)
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
     plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
@@ -609,7 +653,7 @@ output$PertHelp <- renderText({
 
 observeEvent(input$pertHelp,
              showModal(modalDialog(
-               title = paste("Help page"),
+               title = paste("Help"),
                htmlOutput("PertHelp"),
                size = "l",
                easyClose = T

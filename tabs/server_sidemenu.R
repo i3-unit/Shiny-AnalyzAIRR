@@ -41,7 +41,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                 icon = icon("user", verify_fa = FALSE),
                 selectSample("singleSample", rownames(RepSeq::mData(dataFilt()))),
                 radioButtons("singleScale", "Choose a scale",
-                    choices = c("count", "frequency"), #VMH replaced "percent" with "frequency"
+                    choices = c("count", "frequency"), 
                     selected = character(0),
                     inline = T)
             ), "singleSampleTab")

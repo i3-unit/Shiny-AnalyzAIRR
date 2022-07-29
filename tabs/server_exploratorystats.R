@@ -35,7 +35,7 @@ output$basicStatsHelp <- renderText({
 
 observeEvent(input$basicstatsHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("basicStatsHelp"),
                  size = "l",
                  easyClose = T
@@ -60,7 +60,7 @@ output$countFeaturesHelp <- renderText({
 
 observeEvent(input$countfeaturesHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("countFeaturesHelp"),
                  size = "l",
                  easyClose = T
@@ -99,7 +99,7 @@ output$RareHelp <- renderText({
 
 observeEvent(input$rareHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("RareHelp"),
                  size = "l",
                  easyClose = T
@@ -123,7 +123,7 @@ output$dataRareHelp <- renderText({
 
 observeEvent(input$raretabHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("dataRareHelp"),
                  size = "l",
                  easyClose = T
@@ -160,7 +160,7 @@ output$basicDivHelp <- renderText({
 
 observeEvent(input$basicdivHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("basicDivHelp"),
                  size = "l",
                  easyClose = T
@@ -184,7 +184,7 @@ output$divTabHelp <- renderText({
 
 observeEvent(input$divtabHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("divTabHelp"),
                  size = "l",
                  easyClose = T
@@ -219,7 +219,7 @@ output$basicRenyiHelp <- renderText({
 
 observeEvent(input$basicrenHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("basicRenyiHelp"),
                  size = "l",
                  easyClose = T
@@ -243,7 +243,7 @@ output$renyiTabHelp <- renderText({
 
 observeEvent(input$rentabHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("renyiTabHelp"),
                  size = "l",
                  easyClose = T
@@ -279,7 +279,7 @@ output$basicCountIntHelp <- renderText({
 
 observeEvent(input$basiccountintHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("basicCountIntHelp"),
                  size = "l",
                  easyClose = T
@@ -317,7 +317,7 @@ output$rankDistribHelp <- renderText({
 
 observeEvent(input$rankdistribHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("rankDistribHelp"),
                  size = "l",
                  easyClose = T

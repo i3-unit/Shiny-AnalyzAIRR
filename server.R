@@ -13,6 +13,7 @@ shinyServer(function(input, output, session) {
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
     # load RDS 
     RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile), {
+        #validate(need(!(is.null(input$sInfofile) && input$putInfofile == "Yes") || (is.null(input$sInfofile) && input$putInfofile == "No"), ""))
         if (!is.null(input$RDSfile)) {
         RepSeqDT <- readRDS(input$RDSfile$datapath)
         } else if(input$source != "Other"){
@@ -25,18 +26,19 @@ shinyServer(function(input, output, session) {
             tempFile <- input$samplefiles$datapath
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
             file.rename(tempFile, inFiles)
+            
             RepSeqDT <- RepSeq::readAIRRSet(fileList = inFiles, 
-                                            fileFormat = input$source, 
-                                            chain = input$chain, 
-                                            sampleinfo = sInfo,
-                                            keep.ambiguous = TRUE,
-                                            keep.unproductive = TRUE,
-                                            filter.singletons = FALSE,
-                                            aa.th = 8,
-                                            outFiltered = TRUE,
-                                            raretab = FALSE,
-                                            cores = 1L)
-            file.remove(inFiles)
+                                                fileFormat = input$source, 
+                                                chain = input$chain, 
+                                                sampleinfo = sInfo,
+                                                keep.ambiguous = TRUE,
+                                                keep.unproductive = TRUE,
+                                                filter.singletons = FALSE,
+                                                aa.th = 8,
+                                                outFiltered = TRUE,
+                                                raretab = FALSE,
+                                                cores = 1L)
+                file.remove(inFiles)
         } else if(input$source == "Other"){
           sInfo <- NULL
           if (!is.null(input$sInfofile)) { 
@@ -58,6 +60,7 @@ shinyServer(function(input, output, session) {
                                             raretab = FALSE,
                                             cores = 1L)
           file.remove(inFiles)
+        
           
         }
         return(RepSeqDT)

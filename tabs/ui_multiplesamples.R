@@ -11,7 +11,7 @@ CompBasicTab<-
                                uiOutput("statisticsGroup")
                         ),
                         column(width = 8,
-                               div(style="display:block;margin-left: 96.255%;padding-bottom: 10px;",
+                               div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                    circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                         )
@@ -20,60 +20,104 @@ CompBasicTab<-
                     plotOutput("Statistics"),
                     busyIndicator(wait = 500)
                 ),
-                tabPanel("Repertoire diversity",
-                         fluidRow(
-                             column(width = 2,
-                                    selectizeInput("diverLevel",
-                                                   "Select a level",
-                                                   choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
-                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
-                             ), 
-                             column(width = 2,
-                                    selectizeInput("diverIndex",
-                                                   "Select an index",
-                                                   choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
-                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
+                navbarMenu("Repertoire diversity",
+                    tabPanel("Diversity indices",
+                             fluidRow(
+                                 column(width = 2,
+                                        selectizeInput("diverLevel",
+                                                       "Select a level",
+                                                       choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                 ), 
+                                 column(width = 2,
+                                        selectizeInput("diverIndex",
+                                                       "Select an index",
+                                                       choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                 ),
+                                 column(width = 2,
+                                        uiOutput("diverGroup")
+                                 ),
+                                 column(width = 6,
+                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                            circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                 )
                              ),
-                             column(width = 2,
-                                    uiOutput("diverGroup")
-                             ),
-                             column(width = 6,
-                                    div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                        circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                             )
-                         ),
-                         uiOutput("downPlotDiversity"),
-                         plotOutput("Diversity"),
-                         busyIndicator(wait = 500),
-                         hr(),
-                         div(style="display:block;margin-left: 97.5%;padding-bottom: 10px;",
-                             circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                         tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                         uiOutput("downPlotRenyi"),
-                         plotOutput("RenyiDiversity"),
-                         busyIndicator(wait = 500)
+                             uiOutput("downPlotDiversity"),
+                             plotOutput("Diversity"),
+                             busyIndicator(wait = 500)),
+                      tabPanel("Renyi diversity",
+                               fluidRow(
+                                   column(width = 2,
+                                          selectizeInput("multrenLevel",
+                                                         "Select a level",
+                                                         choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                   ),
+                                   column(width = 2,
+                                          uiOutput("multrenGroup")
+                                   ),
+                                   column(width = 8,
+                                          div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                                              circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                          tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                   )
+                               ),
+                             uiOutput("downPlotRenyi"),
+                             plotOutput("RenyiDiversity"),
+                             busyIndicator(wait = 500)
+                    )
                 ),
-                tabPanel("Clonal distribution",
-                         fluidRow(
-                             column(width = 2,
-                                    selectizeInput("countIntervalsLevel",
-                                                   "Select a level",
-                                                   choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
-                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
-                             ), 
-                             column(width = 2,
-                                    uiOutput("countIntervalsGroup")
+                navbarMenu("Repertoire diversity",
+                    tabPanel("Count intervals",
+                             fluidRow(
+                                 column(width = 2,
+                                        selectizeInput("countIntervalsLevel",
+                                                       "Select a level",
+                                                       choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                 ), 
+                                 column(width = 2,
+                                        uiOutput("countIntervalsGroup")
+                                 ),
+                                 column(width = 8,
+                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                                            circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                 )
                              ),
-                             column(width = 8,
-                                    div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                        circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                             )
-                         ),
-                         uiOutput("downPlotCountInt"),
-                         plotOutput("CountInt"),
-                         busyIndicator(wait = 500)
+                             uiOutput("downPlotCountInt"),
+                             plotOutput("CountInt"),
+                             busyIndicator(wait = 500)
+                    ),
+                    tabPanel("Rank distribution",
+                             fluidRow(
+                                 column(width = 2,
+                                        selectizeInput("multRankLevel",
+                                                       "Select a level",
+                                                       choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                 ), 
+                                 column(width = 2,
+                                        selectizeInput("multRankScale",
+                                                       "Select a scale",
+                                                       choices = list("count", "frequency"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                 ), 
+                                 column(width = 2,
+                                        uiOutput("multRankGroup")
+                                 ),
+                                 column(width = 6,
+                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                            circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                 )
+                             ),
+                             uiOutput("downPlotMultRank"),
+                             plotOutput("multRank"),
+                             busyIndicator(wait = 500)
+                    )
                 )
             )
         )
@@ -88,7 +132,7 @@ SimTab<-
                                column(width = 2,
                                    selectizeInput("vennLevel",
                                        "Select a level",
-                                       choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                       choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                        options = list(onInitialize = I('function() { this.setValue(""); }'))
                                    )
                                ),
@@ -119,7 +163,7 @@ SimTab<-
                                     column(width = 2,
                                            selectizeInput("scatterLevel",
                                                           "Select a level",
-                                                          choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                          choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
@@ -141,7 +185,7 @@ SimTab<-
                                     
                                 ),
                                 uiOutput("downPlotScatter"),
-                                plotOutput("Scatter"),
+                                plotly::plotlyOutput("Scatter"),
                                 busyIndicator(wait = 500)
                        ),
                        tabPanel("Dissimilarity indices",
@@ -151,7 +195,7 @@ SimTab<-
                                            selectizeInput(
                                                "dissimilarityLevel",
                                                "Select a level",
-                                               choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                               choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
@@ -195,10 +239,8 @@ SimTab<-
                                     )
                                 ),
                                 splitLayout(cellWidths = c("60%", "40%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
-                                splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotly::plotlyOutput("plotMDS")),
+                                splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
                                 busyIndicator(wait = 500),
-                                # withMathJax(),
-                                # htmlOutput("distFuncsMD"),
                                 value = "dissimilarityHM"
                        )
                 )
@@ -218,7 +260,7 @@ DiffTab<-
                                                selectizeInput(
                                                    "diffLevel",
                                                    "Select a level",
-                                                   choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                   choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                )
                                         ),
@@ -275,7 +317,7 @@ DiffTab<-
                                         )
                                     ),
                                     splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotVolcano"), uiOutput("downPlotPCA")),
-                                    splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotly::plotlyOutput("plotPCA")),
+                                    splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotOutput("plotPCA")),
                                     busyIndicator(wait = 500),
                                     hr(),
                                     h4('Results'),
@@ -295,9 +337,6 @@ DiffTab<-
 
 PertTab<- 
     tabItem(tabName = "showPertTab",
-            # fluidRow(
-            #     tabBox(width=12,
-            #            tabPanel("Compute perturbation scores",
                                 fluidRow(
                                     column(width = 2,
                                            uiOutput("PertGroupUI")
@@ -327,8 +366,4 @@ PertTab<-
                                 downloadButton("downloadPertTab", "Export table"),
                                 dataTableOutput("PertTab"),
                                 busyIndicator(wait = 500)
-            
-            #            )
-            #            )
-            # )
     )

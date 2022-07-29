@@ -43,7 +43,7 @@ bodyTabs <-
                     column(width = 3,
                         selectizeInput("summaryLevel",
                                           "Select a level",
-                                       choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                       choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                        options = list(onInitialize = I('function() { this.setValue(""); }'))
                           )
                  )
@@ -63,7 +63,7 @@ bodyTabs <-
                 column(width = 3,
                        selectizeInput("summaryTXTLevel",
                                       "Select a level",
-                                      choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                      choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
                        )
                 )
@@ -98,18 +98,18 @@ bodyTabs <-
                                          fluidRow(column(width = 2,
                                                 selectizeInput("filterCountLevel",
                                                                "Select a level",
-                                                               choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                               choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 ),
+                                                 column(width = 2,
+                                                       uiOutput("filterCountGroup")
                                                  ), 
                                                  column(width = 2,
-                                                        numericInput(inputId = "filterCountN",
+                                                        sliderInput(inputId = "filterCountN",
                                                                      label = "Set a count threshold",
                                                                      value = 1,
                                                                      min = 1,
                                                                      max = 1000)
-                                                 ),
-                                                 column(width = 2,
-                                                        uiOutput("filterCountGroup")
                                                  ),
                                                 column(width = 6,
                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
@@ -121,26 +121,52 @@ bodyTabs <-
                                          downloadButton("downloaddataFilterCount", "Download RDS"),
                                          dataTableOutput("filtercounts"),
                                          busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Filter out productive or unproductive sequences",
+                                         fluidRow(column(width = 2,
+                                                         selectizeInput("productive",
+                                                                        "Filter out sequences",
+                                                                        choices = list("Productive", "Unproductive"),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
                                          ),
+                                         column(width = 10,
+                                                div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
+                                                    circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                         )
+                                         ),
+                                         h4("Filtered table"),
+                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
+                                         dataTableOutput("productivedata"),
+                                         busyIndicator(wait = 500)
+                                ),
+                                tabPanel("Drop a sample",
+                                         fluidRow(column(width = 2,
+                                                         uiOutput("dropSampleNames")
+                                         ),
+                                         column(width = 10,
+                                                div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
+                                                    circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                         )
+                                         ),
+                                         h4("Filtered table"),
+                                         downloadButton("downloaddataDropedSamples", "Download RDS"),
+                                         dataTableOutput("dropeddata"),
+                                         busyIndicator(wait = 500)
+                                ),
                                 tabPanel("Extract shared sequences",
                                          fluidRow(column(width = 2,
                                                          selectizeInput("publicLevel",
                                                                         "Select a level",
-                                                                        choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                                        choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
                                                  column(width = 2,
-                                                        numericInput(inputId = "publicProp",
-                                                                     label = "Set a proportion",
-                                                                     value = 0,
-                                                                     min = 0,
-                                                                     max = 1)
-                                                 ),
-                                                 column(width = 2,
                                                         uiOutput("publicGroup")
                                                  ),
-                                                 column(width = 6,
-                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                 column(width = 8,
+                                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                                             circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -154,7 +180,7 @@ bodyTabs <-
                                          fluidRow(column(width = 2,
                                                          selectizeInput("privateLevel",
                                                                         "Select a level",
-                                                                        choices = list("clone", "clonotype", "CDR3aa", "CDR3nt"),
+                                                                        choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
                                                  column(width = 2,
@@ -174,38 +200,32 @@ bodyTabs <-
                                          dataTableOutput("privatedata"),
                                          busyIndicator(wait = 500)
                                 ),
-                                tabPanel("Filter out productive or unproductive sequences",
+                                tabPanel("Extract top sequences",
                                          fluidRow(column(width = 2,
-                                                    selectizeInput("productive",
-                                                                   "Filter out sequences",
-                                                                    choices = list("Productive", "Unproductive"),
-                                                                    options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                                    ),
-                                                    column(width = 10,
-                                                         div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                             circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm"),
-                                                             circleButton(inputId = "unprodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                                    )
+                                                         selectizeInput("topSeqLevel",
+                                                                        "Select a level",
+                                                                        choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 ), 
+                                                 column(width = 2,
+                                                        uiOutput("topSeqGroup")
+                                                 ), 
+                                                 column(width = 2,
+                                                        sliderInput(inputId = "topSeqProp",
+                                                                    label = "Set a proportion",
+                                                                    value = 0.1,
+                                                                    min = 0,
+                                                                    max = 1)
+                                                 ),
+                                                 column(width = 6,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                            circleButton(inputId = "topseqHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                 )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
-                                         dataTableOutput("productivedata"),
-                                         busyIndicator(wait = 500)
-                                ),
-                                tabPanel("Drop a sample",
-                                         fluidRow(column(width = 2,
-                                                         uiOutput("dropSampleNames")
-                                                  ),
-                                                  column(width = 10,
-                                                         div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                             circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                                  )
-                                         ),
-                                         h4("Filtered table"),
-                                         downloadButton("downloaddataDropedSamples", "Download RDS"),
-                                         dataTableOutput("dropeddata"),
+                                         downloadButton("downloaddataTopSeq", "Download RDS"),
+                                         dataTableOutput("topseqdata"),
                                          busyIndicator(wait = 500)
                                 )
                                 ))
@@ -250,7 +270,7 @@ bodyTabs <-
                                                          selectizeInput(
                                                              "DownLevel",
                                                              "Select a level",
-                                                             choices = list("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                             choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                          )
                                          )),
@@ -275,6 +295,19 @@ bodyTabs <-
                                          h4("Normalized table"),
                                          downloadButton("downloadshannonNormed", "Download RDS"),
                                          dataTableOutput("shannonsampleddata"),
+                                         busyIndicator(wait = 500),
+                                         hr(),
+                                         h4("Results"),
+                                         fluidRow(column(width = 3,
+                                                         selectizeInput(
+                                                             "NormLevel",
+                                                             "Select a level",
+                                                             choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                             options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                                         )
+                                         )),
+                                         uiOutput("downhistshannonlibsizes"),
+                                         plotOutput("histshannonlibsizes"),
                                          busyIndicator(wait = 500)
                                          
                                 )

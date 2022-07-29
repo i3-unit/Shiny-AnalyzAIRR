@@ -23,7 +23,7 @@ basicstats <-
                                     selectizeInput(
                                         "countLevel",
                                         "Select a level",
-                                        choices = list("clone", "V", "J", "VJ", "CDR3aa", "clonotype", "CDR3nt"),
+                                        choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
                              column(width = 2,
@@ -88,7 +88,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                               selectizeInput(
                                                   "divLevel",
                                                   "Select a level",
-                                                  choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
+                                                  choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 8,
@@ -115,7 +115,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                               selectizeInput(
                                                   "renyiLevel",
                                                   "Select a level",
-                                                  choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
+                                                  choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 10,
@@ -150,7 +150,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                               selectizeInput(
                                                   "countIntLevel",
                                                   "Select a level",
-                                                  choices = list("clone", "clonotype", "V", "J", "VJ", "CDR3nt", "CDR3aa"),
+                                                  choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 10,
@@ -174,7 +174,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        column(width = 2, 
                                               selectizeInput("rankDistribLevel", 
                                                           "Select a level",
-                                                          choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                          choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 8,

@@ -29,47 +29,54 @@ sideMenu <- sidebarMenu(id = "sideTabs",
             icon = icon("folder-open", verify_fa = FALSE),
             selectizeInput(
                 "source",
-                'Source ?',
+                'Source',
                 choices = list("MiXCR", "immunoseq", "rTCR", "AIRR", "Other"),
                 options = list(onInitialize = I('function() { this.setValue(""); }'))
             ),
-            checkboxGroupInput(
+            radioButtons(
                 "chain",
-                "Chain ?",
-                choiceNames = c("alpha", "beta", "gamma", "delta", "IGH", "IGK", "IGL"),
+                "Chain", 
+                choiceNames = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL"),
                 choiceValues = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL")
             ),
-            fileInput(
+            conditionalPanel(
+              condition = "output.canUpload",
+              fileInput(
                 "sInfofile",
                 NULL,
                 multiple = T,
                 accept = c(
-                    "txt/tsv",        
-                    "text/tabulation-separated-values,text/plain",
-                    ".txt",
-                    ".tsv"
+                  "txt/tsv",        
+                  "text/tabulation-separated-values,text/plain",
+                  ".txt",
+                  ".tsv"
                 ),
                 buttonLabel = "Choose sample info File(s)",
                 placeholder = "No file(s) selected"
-            ),
-            conditionalPanel(
-                condition = "output.canUpload",
-                fileInput(
-                    "samplefiles",
-                    NULL,
-                    multiple = T,
-                    accept = c(
-                        "txt/tsv",        
-                        "text/tabulation-separated-values,text/plain",
-                        ".txt",
-                        ".tsv"
-                    ),
-                    buttonLabel = "Choose sample File(s)",
-                    placeholder = "No file(s) selected"
-                )
-            ), tabName = "uploadTXTtab",
-            div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
-                downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
+              ),
+              fileInput(
+                "samplefiles",
+                NULL,
+                multiple = T,
+                accept = c(
+                  "txt/tsv",        
+                  "text/tabulation-separated-values,text/plain",
+                  ".txt",
+                  ".tsv"
+                ),
+                buttonLabel = "Choose sample File(s)",
+                placeholder = "No file(s) selected"
+              ),
+              # radioButtons(
+              #   "putInfofile",
+              #   "Sample info file ?", 
+              #   choiceNames = c("Yes", "No"),
+              #   choiceValues = c("Yes", "No")
+              # ),
+              
+              div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
+                  downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
+            ), tabName = "uploadTXTtab"
         ), tabName = "uploadTXTtab"
   ),
   menuItemOutput("showDataTab"),

@@ -33,7 +33,7 @@ output$IndCountIntHelp <- renderText({
 
 observeEvent(input$indcountintHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("IndCountIntHelp"),
                  size = "l",
                  easyClose = T
@@ -45,7 +45,7 @@ output$geneUsage <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"))
 })
 output$downPlotgeneUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {
@@ -71,7 +71,7 @@ output$geneUsageHelp <- renderText({
 
 observeEvent(input$geneusageHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("geneUsageHelp"),
                  size = "l",
                  easyClose = T
@@ -111,7 +111,7 @@ output$VJUsageHelp <- renderText({
 
 observeEvent(input$vjusageHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("VJUsageHelp"),
                  size = "l",
                  easyClose = T
@@ -152,7 +152,7 @@ output$spectraHelp <- renderText({
 
 observeEvent(input$spectHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("spectraHelp"),
                  size = "l",
                  easyClose = T
@@ -201,7 +201,7 @@ output$SpectrabisHelp <- renderText({
 
 observeEvent(input$spectbisHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("SpectrabisHelp"),
                  size = "l",
                  easyClose = T

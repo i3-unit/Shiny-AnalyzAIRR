@@ -6,7 +6,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                    fluidRow(column(width = 2,
                                    selectizeInput("indLevel",
                                                 "Select a level",
-                                                choices = list("clone", "clonotype", "CDR3nt", "CDR3aa"),
+                                                choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
                             ),
                             column(width = 10,

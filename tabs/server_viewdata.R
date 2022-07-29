@@ -108,7 +108,7 @@ output$FilterCountHelp <- renderText({
 
 observeEvent(input$filtercountHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("FilterCountHelp"),
                  size = "l",
                  easyClose = T
@@ -134,16 +134,14 @@ output$publicGroup <- renderUI({
 
 dataPublic <- reactive({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
-    validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
     validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup")) 
     validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
-    publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup, prop = input$publicProp)
+    publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup)
     return(publicdata)
 })
 
 output$publicdata <- renderDataTable({
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
-    validate(need(!(is.null(input$publicProp) || input$publicProp == ""), "select a number of count")) 
     validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup"))
     validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     return(datatable(RepSeq::History(dataPublic()), 
@@ -163,7 +161,7 @@ output$PublicHelp <- renderText({
 
 observeEvent(input$publicHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("PublicHelp"),
                  size = "l",
                  easyClose = T
@@ -197,7 +195,7 @@ output$PrivateHelp <- renderText({
 
 observeEvent(input$privateHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("PrivateHelp"),
                  size = "l",
                  easyClose = T
@@ -240,20 +238,8 @@ output$ProdHelp <- renderText({
 
 observeEvent(input$prodHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("ProdHelp"),
-                 size = "l",
-                 easyClose = T
-             ))
-)
-output$UnProdHelp <- renderText({
-    createHelp(?getUnproductive)
-})
-
-observeEvent(input$unprodHelp,
-             showModal(modalDialog(
-                 title = paste("Help page"),
-                 htmlOutput("UnProdHelp"),
                  size = "l",
                  easyClose = T
              ))
@@ -296,8 +282,63 @@ output$DropSamplesHelp <- renderText({
 
 observeEvent(input$dropHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("DropSamplesHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
+output$topSeqGroup <- renderUI({
+    sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+    to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+    to_keep <- names(to_keep)[which(to_keep < 1)]
+    idx <- sapply(sdata, function(i) unique(i))[to_keep]
+    
+    choices <- list()
+    for(i in 1:length(idx)){
+        choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
+    }
+    selectizeInput("topSeqGroup",
+                   "Select a group and a subgroup",  
+                   choices = choices,
+                   options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
+                   multiple = T)
+})
+
+dataTopSeq <- reactive({
+    validate(need(!(is.null(input$topSeqLevel) || input$topSeqLevel == ""), "select a level"))
+    validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
+    validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
+    validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
+    topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
+    return(topseqdata)
+})
+
+output$topseqdata <- renderDataTable({
+    validate(need(!(is.null(input$topSeqLevel) || input$topSeqLevel == ""), "select a level"))
+    validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
+    validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
+    validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
+    return(datatable(RepSeq::History(dataTopSeq()), 
+                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+})
+
+output$downloaddataTopSeq <- downloadHandler(
+    "RepSeqData_topseq.rds",
+    content = function(file) {
+        saveRDS(dataTopSeq(), file)
+    }, 
+) 
+
+output$TopSeqHelp <- renderText({
+    createHelp(?getTopSequences)
+})
+
+observeEvent(input$topseqHelp,
+             showModal(modalDialog(
+                 title = paste("Help"),
+                 htmlOutput("TopSeqHelp"),
                  size = "l",
                  easyClose = T
              ))
@@ -337,7 +378,7 @@ output$DownHelp <- renderText({
 
 observeEvent(input$downHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("DownHelp"),
                  size = "l",
                  easyClose = T
@@ -382,7 +423,7 @@ output$Plothistdownlibsizes <- downloadHandler(
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
-        pdf(file, height=4, width=6)
+        pdf(file, height=3.5, width=7)
         cts1 <- RepSeq::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
@@ -436,11 +477,71 @@ output$ShannonHelp <- renderText({
 
 observeEvent(input$shannonHelp,
              showModal(modalDialog(
-                 title = paste("Help page"),
+                 title = paste("Help"),
                  htmlOutput("ShannonHelp"),
                  size = "l",
                  easyClose = T
              ))
+)
+
+observeEvent(c(input$doNorm, input$NormLevel), {
+    output$histshannonlibsizes <- renderPlot({
+        validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
+        validate(need(!(is.null(input$NormLevel) || input$NormLevel == ""), "select a level"))
+        cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Orignial data")+
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        cts2 <- RepSeq::assay(shannonNormed())
+        p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Shannon normalized data") +
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        
+        gridExtra::grid.arrange(p1, p2, ncol=2)
+    })
+})
+
+output$downhistshannonlibsizes <- renderUI({
+    if (!is.null(input$doNorm) & !is.null(input$NormLevel)) {
+        downloadButton("Plothistshannonlibsizes", "Download PDF")
+    }
+}) 
+
+output$Plothistshannonlibsizes <- downloadHandler(
+    filename =  function() {
+        paste0("histshannonlibsizes_", eval(input$NormLevel), ".pdf")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+        pdf(file, height=3.5, width=7)
+        cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Orignial data")+
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        cts2 <- RepSeq::assay(shannonNormed())
+        p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Shannon normalized data") +
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        
+        grid.draw(gridExtra::grid.arrange(p1, p2, ncol=2))
+        dev.off()
+    }
 )
 
 
@@ -449,24 +550,31 @@ dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$fi
                             input$privateLevel, input$privateSingletons, 
                             input$productive, 
                             input$dropSampleNames,
+                            input$topSeqLevel, input$topSeqProp, input$topSeqGroup,
                             input$doNorm,
                             input$doDown), {
     if(!(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
        !(is.null(input$filterCountN) || input$filterCountN == "") && 
-       !(is.null(input$filterCountGroup) || input$filterCountGroup == "")){
+       !(is.null(input$filterCountGroup) || input$filterCountGroup == "") &&
+       length(input$filterCountGroup)==2){
         return(dataFilterCount())
     } else if(!(is.null(input$publicLevel) || input$publicLevel == "") &&
               !(is.null(input$publicProp) || input$publicProp == "") &&
-              !(is.null(input$publicGroup) || input$publicGroup == "")){
+              !(is.null(input$publicGroup) || input$publicGroup == "") &&
+              length(input$publicGroup)==2){
         return(dataPublic())
     } else if(!(is.null(input$privateLevel) || input$privateLevel == "") &&
               !(is.null(input$privateSingletons) || input$privateSingletons == "")){
         return(dataPrivate())
-    }
-    else if(input$productive == "Productive"){
+    }else if(input$productive == "Productive"){
         return(dataProductiveOrUnproductive())
     } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
         return(dataDropedSamples())
+    } else if(!(is.null(input$topSeqLevel) || input$topSeqLevel == "") && 
+              !(is.null(input$topSeqProp) || input$topSeqProp == "") && 
+              !(is.null(input$topSeqGroup) || input$topSeqGroup == "") &&
+              length(input$topSeqGroup)==2){
+        return(dataTopSeq())
     } else if(input$doNorm == "Yes"){
         return(shannonNormed())
     } else if(input$doDown == "Yes"){
