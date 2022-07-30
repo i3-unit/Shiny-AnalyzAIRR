@@ -10,7 +10,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
     ),
     convertMenuItem(
         menuItem(
-            text = "Upload RDS file",
+            text = "Upload RepSeqExperiment",
             icon = icon("upload", verify_fa = FALSE),
             fileInput(
                 "RDSfile",
@@ -18,14 +18,14 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                 multiple = T,
                 accept = c("rds",
                            ".rds"),
-                buttonLabel = "Choose RDS",
+                buttonLabel = "Choose RDS file",
                 placeholder = "No file selected"
             ), tabName = "uploadRDStab"
         ), tabName = "uploadRDStab"
     ),
     convertMenuItem(
         menuItem(
-            text = "Upload text files",
+            text = "Upload alignment files",
             icon = icon("folder-open", verify_fa = FALSE),
             selectizeInput(
                 "source",
@@ -51,12 +51,12 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                   ".txt",
                   ".tsv"
                 ),
-                buttonLabel = "Choose sample File(s)",
-                placeholder = "No file(s) selected"
+                buttonLabel = "Choose alignment file(s)",
+                placeholder = "No file selected"
               ),
               radioButtons(
                 "putInfofile",
-                "Sample info file ?", 
+                "Metadata file ?", 
                 choiceNames = c("Yes", "No"),
                 choiceValues = c("Yes", "No")
               ),
@@ -70,8 +70,8 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                   ".txt",
                   ".tsv"
                 ),
-                buttonLabel = "Choose sample info File(s)",
-                placeholder = "No file(s) selected"
+                buttonLabel = "Choose metadata file",
+                placeholder = "No file selected"
               ),
               div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
                   downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
@@ -88,4 +88,4 @@ sideMenu <- sidebarMenu(id = "sideTabs",
     selected = F,
     text = "Session Info",
     icon = icon('info-circle', verify_fa = FALSE), tabName = "sessionTab")
-)
+  )

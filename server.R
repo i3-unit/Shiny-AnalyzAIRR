@@ -2,6 +2,7 @@
 shinyServer(function(input, output, session) {
     # render about
     output$about<- renderUI({ includeHTML("www/about.html") })
+    
     # render session information
     output$session <- renderPrint({ sessionInfo() })
     

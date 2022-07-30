@@ -334,8 +334,8 @@ bodyTabs <-
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
-    mydashboardHeader(title = "Shiny-pAIRRis", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
-    dashboardSidebar(width = "17%", sideMenu),
+    mydashboardHeader(title = "Shiny AnalyzAIRR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
+    dashboardSidebar(width = "19%", sideMenu),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 
         bodyTabs

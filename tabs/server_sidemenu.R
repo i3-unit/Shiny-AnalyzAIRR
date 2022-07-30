@@ -66,7 +66,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
 
     # down load RDS freshly created 
     output$downloadRDS <- renderMenu({
-        menuItem("Download RDS file",
+        menuItem("Download RepSeqexperiment",
             icon = icon("download", verify_fa = FALSE),
             tabName = "DownloadRDS")
     })
