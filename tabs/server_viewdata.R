@@ -86,27 +86,31 @@ output$filterCountGroup <- renderUI({
     selectizeInput("filterCountGroup",
                    "Select a group and a subgroup",  
                    choices = choices,
+                   selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
 })
 
-dataFilterCount <- reactive({
+
+
+dataFilterCount <- eventReactive(input$doFilterCount, {
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
-    validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
+    #validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
+    #validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
     filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
     return(filtercounts)
 })
-
-output$filtercounts <- renderDataTable({
-    validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
-    validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup"))
-    validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
-    return(datatable(RepSeq::History(dataFilterCount()), 
-                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
-})
+observeEvent(input$doFilterCount,
+    output$filtercounts <- renderDataTable({
+        validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
+        validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
+        #validate(need(!(input$filterCountGroup == ""), "select a group and a subgroup"))
+        #validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
+        return(datatable(RepSeq::History(dataFilterCount()), 
+                         options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+    })
+)
 
 output$downloaddataFilterCount <- downloadHandler(
     "RepSeqData_filteredcount.rds",
@@ -141,25 +145,28 @@ output$publicGroup <- renderUI({
     selectizeInput("publicGroup",
                    "Select a group and a subgroup",  
                    choices = choices,
+                   selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
 })
 
-dataPublic <- reactive({
+dataPublic <- eventReactive(input$doPublic,{
     validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup")) 
-    validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
+    # validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup")) 
+    # validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
     publicdata <- getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup)
     return(publicdata)
 })
 
-output$publicdata <- renderDataTable({
-    validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
-    validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup"))
-    validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
-    return(datatable(RepSeq::History(dataPublic()), 
-                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
-})
+observeEvent(input$doPublic,
+    output$publicdata <- renderDataTable({
+        validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
+        # validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup"))
+        # validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
+        return(datatable(RepSeq::History(dataPublic()), 
+                         options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+    })
+)
 
 output$downloaddataPublic <- downloadHandler(
     "RepSeqData_publicdata.rds",
@@ -315,27 +322,30 @@ output$topSeqGroup <- renderUI({
     selectizeInput("topSeqGroup",
                    "Select a group and a subgroup",  
                    choices = choices,
+                   selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                    multiple = T)
 })
 
-dataTopSeq <- reactive({
+dataTopSeq <- eventReactive(input$doTopSeq,{
     validate(need(!(is.null(input$topSeqLevel) || input$topSeqLevel == ""), "select a level"))
     validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
-    validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
-    validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
+    # validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
+    # validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
     topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
     return(topseqdata)
 })
 
-output$topseqdata <- renderDataTable({
-    validate(need(!(is.null(input$topSeqLevel) || input$topSeqLevel == ""), "select a level"))
-    validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
-    validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
-    validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
-    return(datatable(RepSeq::History(dataTopSeq()), 
-                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
-})
+observeEvent(input$doTopSeq,
+    output$topseqdata <- renderDataTable({
+        validate(need(!(is.null(input$topSeqLevel) || input$topSeqLevel == ""), "select a level"))
+        validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
+        # validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
+        # validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
+        return(datatable(RepSeq::History(dataTopSeq()), 
+                         options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+    })
+)
 
 output$downloaddataTopSeq <- downloadHandler(
     "RepSeqData_topseq.rds",
@@ -558,23 +568,21 @@ output$Plothistshannonlibsizes <- downloadHandler(
 )
 
 
-dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$filterCountGroup, 
-                            input$publicLevel, input$publicProp, input$publicGroup,
+dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$filterCountN,
+                            input$doPublic, input$publicLevel, input$publicProp,
                             input$privateLevel, input$privateSingletons, 
                             input$productive, 
                             input$dropSampleNames,
-                            input$topSeqLevel, input$topSeqProp, input$topSeqGroup,
+                            input$doTopSeq, input$topSeqLevel, input$topSeqProp,
                             input$doNorm,
                             input$doDown), {
-    if(!(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
-       !(is.null(input$filterCountN) || input$filterCountN == "") && 
-       !(is.null(input$filterCountGroup) || input$filterCountGroup == "") &&
-       length(input$filterCountGroup)==2){
+    if(input$doFilterCount==1 && 
+       !(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
+       !(is.null(input$filterCountN) || input$filterCountN == "")){
         return(dataFilterCount())
-    } else if(!(is.null(input$publicLevel) || input$publicLevel == "") &&
-              !(is.null(input$publicProp) || input$publicProp == "") &&
-              !(is.null(input$publicGroup) || input$publicGroup == "") &&
-              length(input$publicGroup)==2){
+    } else if(input$doPublic==1 &&
+              !(is.null(input$publicLevel) || input$publicLevel == "") &&
+              !(is.null(input$publicProp) || input$publicProp == "")){
         return(dataPublic())
     } else if(!(is.null(input$privateLevel) || input$privateLevel == "") &&
               !(is.null(input$privateSingletons) || input$privateSingletons == "")){
@@ -583,10 +591,9 @@ dataFilt <- eventReactive(c(input$filterCountLevel, input$filterCountN, input$fi
         return(dataProductiveOrUnproductive())
     } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
         return(dataDropedSamples())
-    } else if(!(is.null(input$topSeqLevel) || input$topSeqLevel == "") && 
-              !(is.null(input$topSeqProp) || input$topSeqProp == "") && 
-              !(is.null(input$topSeqGroup) || input$topSeqGroup == "") &&
-              length(input$topSeqGroup)==2){
+    } else if(input$doTopSeq==1 &&
+              !(is.null(input$topSeqLevel) || input$topSeqLevel == "") && 
+              !(is.null(input$topSeqProp) || input$topSeqProp == "")){
         return(dataTopSeq())
     } else if(input$doNorm == "Yes"){
         return(shannonNormed())

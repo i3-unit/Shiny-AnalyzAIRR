@@ -114,11 +114,14 @@ bodyTabs <-
                                                                      min = 1,
                                                                      max = 1000)
                                                  ),
-                                                column(width = 6,
-                                                       div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                 column(width = 2, 
+                                                       actionButton("doFilterCount", "run")
+                                                 ),
+                                                 column(width = 4,
+                                                       div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
                                                            circleButton(inputId = "filtercountHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                                )
+                                                 )
                                          ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataFilterCount", "Download RDS"),
@@ -168,8 +171,11 @@ bodyTabs <-
                                                  column(width = 2,
                                                         uiOutput("publicGroup")
                                                  ),
-                                                 column(width = 8,
-                                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                                                 column(width = 2, 
+                                                        actionButton("doPublic", "run")
+                                                 ),
+                                                 column(width = 6,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                                             circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -220,8 +226,11 @@ bodyTabs <-
                                                                     min = 0,
                                                                     max = 1)
                                                  ),
-                                                 column(width = 6,
-                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                 column(width = 2, 
+                                                        actionButton("doTopSeq", "run")
+                                                 ),
+                                                 column(width = 4,
+                                                        div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
                                                             circleButton(inputId = "topseqHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
