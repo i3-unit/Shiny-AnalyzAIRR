@@ -115,7 +115,8 @@ bodyTabs <-
                                                                      max = 1000)
                                                  ),
                                                  column(width = 2, 
-                                                       actionButton("doFilterCount", "run")
+                                                        style = "margin-top: 25px;",
+                                                        actionButton("doFilterCount", "run")
                                                  ),
                                                  column(width = 4,
                                                        div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
@@ -172,6 +173,7 @@ bodyTabs <-
                                                         uiOutput("publicGroup")
                                                  ),
                                                  column(width = 2, 
+                                                        style = "margin-top: 25px;",
                                                         actionButton("doPublic", "run")
                                                  ),
                                                  column(width = 6,
@@ -227,6 +229,7 @@ bodyTabs <-
                                                                     max = 1)
                                                  ),
                                                  column(width = 2, 
+                                                        style = "margin-top: 25px;",
                                                         actionButton("doTopSeq", "run")
                                                  ),
                                                  column(width = 4,
