@@ -92,8 +92,6 @@ bodyTabs <-
                                 tabPanel("History",
                                          downloadButton("downloadHistory", "Export table"),
                                          dataTableOutput("historyTable"))))
-            
-            
         ),
         tabItem(tabName = "showFiltTab",
                 fluidRow(tabBox(width = 12,
