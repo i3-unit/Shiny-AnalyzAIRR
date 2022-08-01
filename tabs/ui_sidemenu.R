@@ -4,7 +4,7 @@
 sideMenu <- sidebarMenu(id = "sideTabs",
     menuItem(
         selected = T,
-        text = "About",
+        text = "Getting started",
         icon = icon("info", verify_fa = FALSE),
         tabName = "aboutTab"
     ),
@@ -83,9 +83,11 @@ sideMenu <- sidebarMenu(id = "sideTabs",
   menuItemOutput("singleSampleTab"),
   menuItemOutput("multipleSampleTab"),
   shinyjs::useShinyjs(),
-  #menuItemOutput("downloadRDS"),
-    menuItem(
-    selected = F,
-    text = "Session Info",
-    icon = icon('info-circle', verify_fa = FALSE), tabName = "sessionTab")
-  )
+  menuItem(
+  selected = F,
+  text = "Session Info",
+  icon = icon('info-circle', verify_fa = FALSE), tabName = "sessionTab")
+)
+
+
+

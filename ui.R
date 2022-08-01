@@ -73,7 +73,10 @@ bodyTabs <-
             busyIndicator(wait = 50),
         ),
         tabItem(tabName = "showInfoTab",
-                fluidRow(tabBox(width = 12,
+                fluidRow(div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                             circleButton(inputId = "dataextractionHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                         tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                    tabBox(width = 12,
                                 tabPanel("Assay",
                                          downloadButton("downloadAssay", "Export table"),
                                          dataTableOutput("assayTable")),
@@ -334,8 +337,9 @@ bodyTabs <-
 # Generate dashboard
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
-    mydashboardHeader(title = "Shiny AnalyzAIRR", titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
-    dashboardSidebar(width = "19%", sideMenu),
+    mydashboardHeader(title = "Shiny AnalyzAIRR", titleWidth = "19%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
+    dashboardSidebar(width = "19%", sideMenu,
+                     div(style="position: absolute; bottom: 0;", hr(), tags$i(class="fa fa-user"), "V. Mhanna, G. Pires,", "N. Tchitchek, D. Klatzmann, A. Six, E. Mariotti", br(), "Sorbonne Université, INSERM, Immunology-Immunopathology-Immunotherapy (i3), Paris, France", br(), tags$i(class="fa fa-user"), "H. P. Pham", br(), "Paren Biotechnologies")),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 
         bodyTabs

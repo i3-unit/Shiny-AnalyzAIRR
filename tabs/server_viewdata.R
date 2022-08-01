@@ -59,6 +59,19 @@ output$downloadHistory <- downloadHandler(
     }, contentType = "text/csv"
 ) 
 
+output$dataExtractionHelp <- renderText({
+    createHelp(?RepSeq::assay)
+})
+
+observeEvent(input$dataextractionHelp,
+             showModal(modalDialog(
+                 title = paste("Help"),
+                 htmlOutput("dataExtractionHelp"),
+                 size = "l",
+                 easyClose = T
+             ))
+)
+
 #### Filtering ####
 output$filterCountGroup <- renderUI({
     sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
