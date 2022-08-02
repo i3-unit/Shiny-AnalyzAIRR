@@ -15,7 +15,7 @@ library(ggrepel)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
-
+graphics.off()
 #------------------------------------------------------------------------------#
 # options
 #------------------------------------------------------------------------------#

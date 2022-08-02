@@ -172,13 +172,13 @@ observeEvent(input$CIHelp,
              ))
 )
 output$multRankGroup <- renderUI({
-  selectGroup("multRankGroup", dataFilt())
+  selectGroupDE("multRankGroup", dataFilt())
 })
 output$multRank <- renderPlot({
   validate(need(!(is.null(input$multRankLevel) || input$multRankLevel == ""), "select a level"))
   validate(need(!(is.null(input$multRankScale) || input$multRankScale == ""), "select a scale"))
   validate(need(!(is.null(input$multRankGroup) || input$multRankGroup == ""), "select a group"))
-  plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = FALSE, label_colors = NULL)    
+  plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = TRUE, label_colors = NULL)    
 }) 
 
 output$downPlotMultRank <- renderUI({
@@ -194,7 +194,7 @@ output$PlotMultRank <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = FALSE, label_colors = NULL))
+    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = TRUE, label_colors = NULL))
     dev.off()
   }
 )
@@ -336,6 +336,7 @@ output$PlotDisHM <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
+    graphics.off()
     pdf(file, height=8, width=12)
     plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
     dev.off()
@@ -639,6 +640,7 @@ output$PlotPert <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
+    graphics.off()
     pdf(file, height=4, width=7)
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
