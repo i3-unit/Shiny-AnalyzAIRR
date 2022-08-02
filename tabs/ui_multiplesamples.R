@@ -69,7 +69,7 @@ CompBasicTab<-
                              busyIndicator(wait = 500)
                     )
                 ),
-                navbarMenu("Repertoire diversity",
+                navbarMenu("Clonal distribution",
                     tabPanel("Count intervals",
                              fluidRow(
                                  column(width = 2,

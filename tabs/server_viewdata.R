@@ -84,7 +84,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   "Select a group and a subgroup",  
+                   "Select a group and a subgroup (optional)",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -143,7 +143,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   "Select a group and a subgroup",  
+                   "Select a group and a subgroup (optional)",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -320,7 +320,7 @@ output$topSeqGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("topSeqGroup",
-                   "Select a group and a subgroup",  
+                   "Select a group and a subgroup (optional)",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
