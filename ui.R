@@ -79,30 +79,35 @@ bodyTabs <-
                     tabBox(width = 12,
                                 tabPanel("Assay",
                                          downloadButton("downloadAssay", "Export table"),
-                                         dataTableOutput("assayTable")),
+                                         dataTableOutput("assayTable"),
+                                         busyIndicator(wait = 500)),
                                 tabPanel("Metadata",
                                          downloadButton("downloadMetadata", "Export table"),
-                                         dataTableOutput("infoTable")),
+                                         dataTableOutput("infoTable"),
+                                         busyIndicator(wait = 500)),
                                 tabPanel("Other data",
                                          fluidRow(column(width = 3,
                                                          uiOutput("otherDataList")
                                          )),
                                          downloadButton("downloadOtherdata", "Export table"),
-                                         dataTableOutput("metadataTable")),
+                                         dataTableOutput("metadataTable"),
+                                         busyIndicator(wait = 500)),
                                 tabPanel("History",
                                          downloadButton("downloadHistory", "Export table"),
-                                         dataTableOutput("historyTable"))))
+                                         dataTableOutput("historyTable"),
+                                         busyIndicator(wait = 500))))
         ),
         tabItem(tabName = "showFiltTab",
                 fluidRow(tabBox(width = 12,
                                 tabPanel("Filter out a repertoire level count",
-                                         fluidRow(column(width = 2,
-                                                selectizeInput("filterCountLevel",
-                                                               "Select a level",
-                                                               choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
-                                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         fluidRow(
+                                                column(width = 2,
+                                                       selectizeInput("filterCountLevel",
+                                                                      "Select a level",
+                                                                      choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ),
-                                                 column(width = 2,
+                                                 column(width = 3,
                                                        uiOutput("filterCountGroup")
                                                  ), 
                                                  column(width = 2,
@@ -116,8 +121,8 @@ bodyTabs <-
                                                         style = "margin-top: 25px;",
                                                         actionButton("doFilterCount", "run")
                                                  ),
-                                                 column(width = 4,
-                                                       div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
+                                                 column(width = 3,
+                                                       div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
                                                            circleButton(inputId = "filtercountHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -127,18 +132,16 @@ bodyTabs <-
                                          dataTableOutput("filtercounts"),
                                          busyIndicator(wait = 500)
                                 ),
-                                tabPanel("Filter out productive or unproductive sequences",
-                                         fluidRow(column(width = 2,
-                                                         selectizeInput("productive",
-                                                                        "Filter out sequences",
-                                                                        choices = list("Productive", "Unproductive"),
-                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                         ),
-                                         column(width = 10,
-                                                div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                    circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                         )
+                                tabPanel("Filter out unproductive sequences",
+                                         fluidRow(
+                                             column(width = 2, 
+                                                    style = "margin-top: 25px;",
+                                                    actionButton("doProductive", "run")),
+                                             column(width = 10,
+                                                  div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
+                                                        circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                  tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                             )
                                          ),
                                          h4("Filtered table"),
                                          downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
@@ -167,15 +170,15 @@ bodyTabs <-
                                                                         choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
-                                                 column(width = 2,
+                                                 column(width = 3,
                                                         uiOutput("publicGroup")
                                                  ),
                                                  column(width = 2, 
                                                         style = "margin-top: 25px;",
                                                         actionButton("doPublic", "run")
                                                  ),
-                                                 column(width = 6,
-                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                 column(width = 5,
+                                                        div(style="display:block;margin-left: 93.85%;padding-bottom: 10px;",
                                                             circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -216,7 +219,7 @@ bodyTabs <-
                                                                         choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
-                                                 column(width = 2,
+                                                 column(width = 3,
                                                         uiOutput("topSeqGroup")
                                                  ), 
                                                  column(width = 2,
@@ -230,8 +233,8 @@ bodyTabs <-
                                                         style = "margin-top: 25px;",
                                                         actionButton("doTopSeq", "run")
                                                  ),
-                                                 column(width = 4,
-                                                        div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
+                                                 column(width = 3,
+                                                        div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
                                                             circleButton(inputId = "topseqHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -266,9 +269,14 @@ bodyTabs <-
                                                                      min = 1,
                                                                      max = 9999,
                                                                      width = NULL)
+                                                 ),column(width = 2,
+                                                          selectizeInput("downReplace",
+                                                                         "Select if replacement",
+                                                                         choices = list(TRUE, FALSE),
+                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ),
-                                                 column(width = 6,
-                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                                 column(width = 4,
+                                                        div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
                                                             circleButton(inputId = "downHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )

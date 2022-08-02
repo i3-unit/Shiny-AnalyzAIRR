@@ -45,7 +45,8 @@ output$geneUsage <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"))
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"), 
+                     tooltip = c("x", "y"))
 })
 output$downPlotgeneUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {

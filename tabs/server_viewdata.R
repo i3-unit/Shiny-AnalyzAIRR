@@ -222,32 +222,21 @@ observeEvent(input$privateHelp,
              ))
 )
 
-dataProductiveOrUnproductive <- reactive({
-    validate(need(!(is.null(input$productive) || input$productive == ""), "select if productive"))
-    
-    if(input$productive=="Productive"){
-        productivedata <- getProductive(x = RepSeqDT())
-    } else {
-        productivedata <- getUnproductive(x = RepSeqDT())
-    }
-   
+dataProductiveOrUnproductive <- eventReactive(input$doProductive, {
+    productivedata <- getProductive(x = RepSeqDT())
     return(productivedata)
 })
 
-output$productivedata <- renderDataTable({
-    validate(need(!(is.null(input$productive) || input$productive == ""), "select if productive"))
-    return(datatable(RepSeq::History(dataProductiveOrUnproductive()), 
-                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
-})
+observeEvent(input$doProductive,
+    output$productivedata <- renderDataTable({
+        return(datatable(RepSeq::History(dataProductiveOrUnproductive()), 
+                         options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+    })
+)
 
 output$downloaddataProductiveOrUnproductive <- downloadHandler(
-    if(input$productive=="Productive"){
-        "RepSeqData_productive.rds"
-    } else{
-        "RepSeqData_unproductive.rds"
-    }
-    
-    ,content = function(file) {
+    "RepSeqData_productive.rds",
+    content = function(file) {
         saveRDS(dataProductiveOrUnproductive(), file)
     }, 
 ) 
@@ -373,8 +362,9 @@ observeEvent(input$topseqHelp,
 downSampling <- reactive({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
+    validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
     if(input$doDown=="Yes"){
-        downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = TRUE, verbose = FALSE)
+        downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = input$downReplace, verbose = FALSE)
     }
     return(downsampleddata)
 })
@@ -382,6 +372,7 @@ downSampling <- reactive({
 output$downsampleddata <- renderDataTable({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
+    validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
     return(datatable(RepSeq::History(downSampling()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -571,11 +562,11 @@ output$Plothistshannonlibsizes <- downloadHandler(
 dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$filterCountN,
                             input$doPublic, input$publicLevel, input$publicProp,
                             input$privateLevel, input$privateSingletons, 
-                            input$productive, 
+                            input$doProductive, 
                             input$dropSampleNames,
                             input$doTopSeq, input$topSeqLevel, input$topSeqProp,
                             input$doNorm,
-                            input$doDown), {
+                            input$doDown, input$downReplace), {
     if(input$doFilterCount==1 && 
        !(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
        !(is.null(input$filterCountN) || input$filterCountN == "")){
@@ -587,7 +578,7 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
     } else if(!(is.null(input$privateLevel) || input$privateLevel == "") &&
               !(is.null(input$privateSingletons) || input$privateSingletons == "")){
         return(dataPrivate())
-    }else if(input$productive == "Productive"){
+    }else if(input$doProductive == 1){
         return(dataProductiveOrUnproductive())
     } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
         return(dataDropedSamples())
@@ -597,7 +588,8 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
         return(dataTopSeq())
     } else if(input$doNorm == "Yes"){
         return(shannonNormed())
-    } else if(input$doDown == "Yes"){
+    } else if(input$doDown == "Yes" && 
+              !(is.null(input$downReplace) || input$downReplace == "")){
         return(downSampling())
     } else {
         return(RepSeqDT())
