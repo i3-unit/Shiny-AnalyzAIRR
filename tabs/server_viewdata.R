@@ -362,7 +362,7 @@ observeEvent(input$topseqHelp,
 downSampling <- reactive({
     validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
-    validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
+    validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "Replacement"))
     if(input$doDown=="Yes"){
         downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = input$downReplace, verbose = FALSE)
     }
