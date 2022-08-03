@@ -22,19 +22,19 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
             navbarMenu("Gene usage",
                 tabPanel("V/J usage",
                    fluidRow(column(width = 2,
-                                   selectizeInput("geneUsageLevel",
+                                   selectizeInput("indgeneUsageLevel",
                                                 "Select a level",
                                                 choices = list("V", "J"),
                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
                             column(width = 10,
                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                       circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                       circleButton(inputId = "indgeneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
                    ),
-                   uiOutput("downPlotgeneUsage"),
-                   plotly::plotlyOutput("geneUsage"),
+                   uiOutput("downPlotIndgeneUsage"),
+                   plotly::plotlyOutput("indgeneUsage"),
                    busyIndicator(wait = 500)
                  ),
                 tabPanel("V-J combination usage",

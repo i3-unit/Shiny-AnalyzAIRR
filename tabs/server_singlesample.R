@@ -41,39 +41,39 @@ observeEvent(input$indcountintHelp,
 )
 
 # plot V and J gene usages
-output$geneUsage <- plotly::renderPlotly({
+output$indgeneUsage <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
-    validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"), 
+    validate(need(!(is.null(input$indgeneUsageLevel) ||  input$indgeneUsageLevel == ""), "select a level"))
+    plotly::ggplotly(plotIndGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$indgeneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"), 
                      tooltip = c("x", "y"))
 })
-output$downPlotgeneUsage <- renderUI({
-    if (!is.null(input$singleSample) & !(is.null(input$geneUsageLevel)) & !(is.null(input$singleScale))) {
-        downloadButton("PlotgeneUsage", "Download PDF")
+output$downPlotIndgeneUsage <- renderUI({
+    if (!is.null(input$singleSample) & !(is.null(input$indgeneUsageLevel)) & !(is.null(input$singleScale))) {
+        downloadButton("PlotIndgeneUsage", "Download PDF")
     }
 }) 
 
-output$PlotgeneUsage <- downloadHandler(
+output$PlotIndgeneUsage <- downloadHandler(
     filename =  function() {
-        paste0("geneUsage_", input$singleSample, "_", input$geneUsageLevel, "_", input$singleScale, ".pdf")
+        paste0("IndGeneUsage_", input$singleSample, "_", input$indgeneUsageLevel, "_", input$singleScale, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=3.5, width=7)
-        grid.draw(plotGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$geneUsageLevel, scale = input$singleScale))
+        grid.draw(plotIndGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$indgeneUsageLevel, scale = input$singleScale))
         dev.off()
     }
 )
 
-output$geneUsageHelp <- renderText({
-    createHelp(?plotGeneUsage)
+output$indgeneUsageHelp <- renderText({
+    createHelp(?plotIndGeneUsage)
 })
 
-observeEvent(input$geneusageHelp,
+observeEvent(input$indgeneusageHelp,
              showModal(modalDialog(
                  title = paste("Help"),
-                 htmlOutput("geneUsageHelp"),
+                 htmlOutput("indgeneUsageHelp"),
                  size = "l",
                  easyClose = T
              ))

@@ -58,7 +58,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                             tabName = "showSimTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Differential analysis",
                             tabName = "showDiffTab", icon = icon("angle-double-right", verify_fa = FALSE)),
-                menuSubItem("Pertubation score",
+                menuSubItem("Spectratyping comparison",
                             tabName = "showPertTab", icon = icon("angle-double-right", verify_fa = FALSE))
             ), tabName = "multipleSampleTab"
         )

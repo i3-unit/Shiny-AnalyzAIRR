@@ -15,6 +15,7 @@ library(ggrepel)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
+library(InteractiveComplexHeatmap)
 graphics.off()
 #------------------------------------------------------------------------------#
 # options

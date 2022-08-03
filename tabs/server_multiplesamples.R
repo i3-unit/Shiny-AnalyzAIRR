@@ -212,6 +212,48 @@ observeEvent(input$mrankHelp,
              ))
 )
 
+output$geneUsageGroup <- renderUI({
+  selectGroupDE("geneUsageGroup", dataFilt())
+})
+# plot V and J gene usages
+output$geneUsage <- plotly::renderPlotly({
+  validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "select a scale"))
+  validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
+  validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "select a group"))
+  plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+theme(legend.position = "none"), 
+                   tooltip = c("x", "y"))
+})
+output$downPlotgeneUsage <- renderUI({
+  if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale))) {
+    downloadButton("PlotgeneUsage", "Download PDF")
+  }
+}) 
+
+output$PlotgeneUsage <- downloadHandler(
+  filename =  function() {
+    paste0("geneUsage_", input$geneUsageGroup, "_", input$geneUsageLevel, "_", input$geneUsageScale, ".pdf")
+  },
+  # content is a function with argument file. content writes the plot to the device
+  content = function(file) {
+    pdf(file, height=5, width=10)
+    grid.draw(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL))
+    dev.off()
+  }
+)
+
+output$geneUsageHelp <- renderText({
+  createHelp(?plotGeneUsage)
+})
+
+observeEvent(input$geneusageHelp,
+             showModal(modalDialog(
+               title = paste("Help"),
+               htmlOutput("geneUsageHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
 
 ##### Similarity analysis #####
 # render VennUI for selecting type of Venn Diagram
@@ -317,12 +359,23 @@ output$GrpColMDS <- renderUI({
     selectGroupDE("grpCol4MDS", dataFilt())
 })
 # plot dissimilarity
-output$plotDissimilarityHM <- renderPlot({
-    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
-    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
-    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
-    plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
-})    
+# output$plotDissimilarityHM <- renderPlot({
+#     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
+#     validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
+#     validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
+#     hm1 <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
+#     ht1 <- ComplexHeatmap::draw(hm1)
+#     makeInteractiveComplexHeatmap(input, output, session, ht1, "ht1")
+# })    
+
+observeEvent(input$doHm1, {
+  validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
+  validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
+  validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
+  hm1 <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
+  ht1 <- ComplexHeatmap::draw(hm1)
+  makeInteractiveComplexHeatmap(input, output, session, ht1, "ht1")
+})   
 
 output$downPlotDisHM <- renderUI({
   if (!is.null(input$dissimilarityLevel) & !(is.null(input$dissimilarityIndex)) & !(is.null(input$dissimilarityClustering))) {
@@ -336,9 +389,9 @@ output$PlotDisHM <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    graphics.off()
     pdf(file, height=8, width=12)
-    plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
+    hm <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
+    ComplexHeatmap::draw(hm)
     dev.off()
   }
 )
@@ -539,8 +592,6 @@ observeEvent(input$pcaHelp,
 )
 
 
-
-
 # render select group UI
 output$PertGroupUI <- renderUI({
   selectGroupDE("PertGroupSelected", dataFilt())
@@ -557,8 +608,8 @@ output$CtrlGroupUI <- renderUI({
 })
 # render selection distance
 output$PertDistUI <- renderUI({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  #validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  #validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   selectizeInput("pertDist",
                  "Select a distance",
                  choices = list("manhattan", "euclidean"),
@@ -592,9 +643,9 @@ observeEvent(input$perttabHelp,
 )
 
 output$pertOrder <- renderUI({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
-  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+  #validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  #validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  #validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
   idx <- sapply(sdata, function(i) nlevels(i)/length(i))
   choices <- colnames(sdata)[which(idx < 1)]
@@ -606,18 +657,32 @@ output$pertOrder <- renderUI({
   )
 })
 
-output$plotPerturbation <- renderPlot({
+# output$plotPerturbation <- renderPlot({
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), "select a group"))
+#   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "select a control group"))
+#   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "select a distance method"))
+#   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "select an order sample by"))
+#   sampleinfo <- mData(dataFilt())
+#   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+#   plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+# })
+
+observeEvent(input$doHm, {
   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), "select a group"))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "select a control group"))
   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "select a distance method"))
   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "select an order sample by"))
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+  hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+  ht <- ComplexHeatmap::draw(hm)
+  makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
 })
+
 
 # data output
 output$PertTab <- renderDataTable({
+  validate(need(input$doHm==1, ""))
   return(datatable(dataPert(), options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)) %>% formatRound(c(1: ncol(dataPert())), 2))
 })
 
@@ -640,11 +705,12 @@ output$PlotPert <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    graphics.off()
+    #graphics.off()
     pdf(file, height=4, width=7)
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-    plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+    hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+    ComplexHeatmap::draw(hm)
     dev.off()
   }
 )

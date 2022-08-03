@@ -65,7 +65,7 @@ CompBasicTab<-
                                    )
                                ),
                              uiOutput("downPlotRenyi"),
-                             plotOutput("RenyiDiversity"),
+                             plotOutput("RenyiDiversity", height = "800px"),
                              busyIndicator(wait = 500)
                     )
                 ),
@@ -118,6 +118,31 @@ CompBasicTab<-
                              plotOutput("multRank"),
                              busyIndicator(wait = 500)
                     )
+                ),
+                tabPanel("V/J usage",
+                         fluidRow(column(width = 2,
+                                         selectizeInput("geneUsageLevel",
+                                                        "Select a level",
+                                                        choices = list("V", "J"),
+                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                         ),column(width = 2,
+                                  selectizeInput("geneUsageScale",
+                                                 "Select a scale",
+                                                 choices = list("count", "frequency"),
+                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
+                         ), 
+                         column(width = 2,
+                                uiOutput("geneUsageGroup")
+                         ),
+                         column(width = 6,
+                                div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                    circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                         )
+                         ),
+                         uiOutput("downPlotgeneUsage"),
+                         plotly::plotlyOutput("geneUsage"),
+                         busyIndicator(wait = 500)
                 )
             )
         )
@@ -214,8 +239,12 @@ SimTab<-
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 6,
-                                           div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                    column(width = 2, 
+                                           style = "margin-top: 25px;",
+                                           actionButton("doHm1", "run")
+                                    ),
+                                    column(width = 4,
+                                           div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                                circleButton(inputId = "disHMHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
@@ -238,8 +267,16 @@ SimTab<-
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
-                                splitLayout(cellWidths = c("60%", "40%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
-                                splitLayout(cellWidths = c("60%", "40%"), plotOutput("plotDissimilarityHM"), plotOutput("plotMDS")),
+                                splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
+                                splitLayout(cellWidths = c("50%", "50%"), InteractiveComplexHeatmapOutput("ht1", 
+                                                                                                          width1 = 700, 
+                                                                                                          width2 = 600, 
+                                                                                                          width3 = 0, 
+                                                                                                          title3 = " ", 
+                                                                                                          output_ui = NULL, 
+                                                                                                          height1 = 600, 
+                                                                                                          height2 = 400, 
+                                                                                                          layout = "1|2|3"), plotOutput("plotMDS")),
                                 busyIndicator(wait = 500),
                                 value = "dissimilarityHM"
                        )
@@ -342,22 +379,26 @@ PertTab<-
                                            uiOutput("PertGroupUI")
                                     ),
                                     column(width = 2,
-                                           uiOutput("CtrlGroupUI")
-                                    ),
-                                    column(width = 2,
                                            uiOutput("PertDistUI")
                                     ),
                                     column(width = 2,
                                            uiOutput("pertOrder")
                                     ),
-                                    column(width = 4,
-                                           div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                    column(width = 2,
+                                           uiOutput("CtrlGroupUI")
+                                    ),
+                                    column(width = 2, 
+                                           style = "margin-top: 25px;",
+                                           actionButton("doHm", "run")
+                                    ),
+                                    column(width = 2,
+                                           div(style="display:block;margin-left: 88.75%;padding-bottom: 10px;",
                                                circleButton(inputId = "pertHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
                                 uiOutput("downPlotPert"),
-                                plotOutput("plotPerturbation"),
+                                InteractiveComplexHeatmapOutput("ht", width1 = 800, width2 = 600, width3 = 0, title3 = " ", output_ui = NULL, height1=600, height2 = 400),
                                 busyIndicator(wait = 500),
                                 h4("Perturbation values"),
                                 div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
