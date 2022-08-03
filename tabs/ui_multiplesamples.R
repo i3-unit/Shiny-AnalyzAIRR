@@ -278,6 +278,7 @@ SimTab<-
                                                                                                           height2 = 400, 
                                                                                                           layout = "1|2|3"), plotOutput("plotMDS")),
                                 busyIndicator(wait = 500),
+                                textOutput("NB_diss"),
                                 value = "dissimilarityHM"
                        )
                 )
@@ -400,6 +401,7 @@ PertTab<-
                                 uiOutput("downPlotPert"),
                                 InteractiveComplexHeatmapOutput("ht", width1 = 800, width2 = 600, width3 = 0, title3 = " ", output_ui = NULL, height1=600, height2 = 400),
                                 busyIndicator(wait = 500),
+                                textOutput("NB_pert"),
                                 h4("Perturbation values"),
                                 div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
                                     circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),

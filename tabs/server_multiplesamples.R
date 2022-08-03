@@ -409,6 +409,10 @@ observeEvent(input$disHMHelp,
              ))
 )
 
+output$NB_diss <- renderText({
+  "NB: Do not use the interactivate sub-heatmap mode."
+})
+
 # plot MDS
 output$plotMDS <- renderPlot({
     validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
@@ -727,6 +731,10 @@ observeEvent(input$pertHelp,
                easyClose = T
              ))
 )
+
+output$NB_pert <- renderText({
+  "NB: Do not use the interactivate sub-heatmap mode."
+})
 
 # 
 # # render 2by2 comparison
