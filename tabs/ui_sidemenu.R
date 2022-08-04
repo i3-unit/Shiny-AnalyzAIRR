@@ -5,7 +5,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
     menuItem(
         selected = T,
         text = "Getting started",
-        icon = icon("info", verify_fa = FALSE),
+        icon = icon("info", verify_fa = FALSE, style="margin-left: 5px;"),
         tabName = "aboutTab"
     ),
     convertMenuItem(

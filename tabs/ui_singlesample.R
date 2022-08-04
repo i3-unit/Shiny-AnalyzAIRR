@@ -57,7 +57,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                             )
                    ),
                    uiOutput("downPlotVJUsage"),
-                   plotOutput("VJUsage"),
+                   plotOutput("VJUsage", height = "700px"),
                    busyIndicator(wait = 500)
             )
           ),
