@@ -12,7 +12,7 @@ CompBasicTab<-
                         ),
                         column(width = 8,
                                div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                   circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                   circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                         )
                     ),
@@ -40,7 +40,7 @@ CompBasicTab<-
                                  ),
                                  column(width = 6,
                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                            circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                            circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                  )
                              ),
@@ -60,7 +60,7 @@ CompBasicTab<-
                                    ),
                                    column(width = 8,
                                           div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                              circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                              circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                           tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                    )
                                ),
@@ -83,7 +83,7 @@ CompBasicTab<-
                                  ),
                                  column(width = 8,
                                         div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                            circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                            circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                  )
                              ),
@@ -110,7 +110,7 @@ CompBasicTab<-
                                  ),
                                  column(width = 6,
                                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                            circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                            circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                  )
                              ),
@@ -136,7 +136,7 @@ CompBasicTab<-
                          ),
                          column(width = 6,
                                 div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                    circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                    circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                 tags$head(tags$style(".modal-dialog{ width:1200px}"))
                          )
                          ),
@@ -174,7 +174,7 @@ SimTab<-
                                ),
                                column(width = 6,
                                       div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                          circleButton(inputId = "eulerHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                          circleButton(inputId = "eulerHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                       tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                )
 
@@ -204,7 +204,7 @@ SimTab<-
                                     ),
                                     column(width = 6,
                                            div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                               circleButton(inputId = "scatterHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                               circleButton(inputId = "scatterHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                     
@@ -213,8 +213,8 @@ SimTab<-
                                 plotly::plotlyOutput("Scatter"),
                                 busyIndicator(wait = 500)
                        ),
-                       tabPanel("Dissimilarity indices",
-                                h4("Heatmap parameters"),
+                       navbarMenu("Dissimilarity indices",
+                            tabPanel("Hierarchical clustering",
                                 fluidRow(
                                     column(width = 2,
                                            selectizeInput(
@@ -241,45 +241,67 @@ SimTab<-
                                     ),
                                     column(width = 2, 
                                            style = "margin-top: 25px;",
+                                           tags$head(
+                                               tags$style(HTML('#doHm1{background-color:white; border-color: #022F5A;}'))
+                                           ),
                                            actionButton("doHm1", "run")
                                     ),
                                     column(width = 4,
                                            div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
-                                               circleButton(inputId = "disHMHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                               circleButton(inputId = "disHMHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
-                                h4("MDS/PCA parameters"),
+                                uiOutput("downPlotDisHM"),
+                                InteractiveComplexHeatmapOutput("ht1", 
+                                                                width1 = 700, 
+                                                                width2 = 600, 
+                                                                width3 = 0, 
+                                                                title3 = " ", 
+                                                                output_ui = NULL, 
+                                                                height1 = 600, 
+                                                                height2 = 400),  
+                                busyIndicator(wait = 500),
+                                htmlOutput("NB_diss")
+                            ),
+                            tabPanel("Dimensionality reduction",
                                 fluidRow(
-                                    
+                                    column(width = 2,
+                                           selectizeInput(
+                                               "MDSLevel",
+                                               "Select a level",
+                                               choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                               options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                           )
+                                    ),
+                                    column(width = 2,
+                                           selectizeInput("MDSMethod", "Select a dissimlarity method",
+                                                          choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
+                                                                         "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
+                                                                         "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
+                                                          options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                           )
+                                    ),
                                     column(width = 3,
                                            selectizeInput("dissimilarityMethod", "Select a dimension reduction method",
                                                           choices = list("MDS", "PCA"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 3,
+                                    column(width = 2,
                                            uiOutput("GrpColMDS")
                                     ),
-                                    column(width = 6,
-                                           div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                               circleButton(inputId = "mdsHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                    column(width = 3,
+                                           div(style="display:block;margin-left: 90%;padding-bottom: 10px;",
+                                               circleButton(inputId = "mdsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
-                                splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotDisHM"), uiOutput("downPlotMDS")),
-                                splitLayout(cellWidths = c("50%", "50%"), InteractiveComplexHeatmapOutput("ht1", 
-                                                                                                          width1 = 700, 
-                                                                                                          width2 = 600, 
-                                                                                                          width3 = 0, 
-                                                                                                          title3 = " ", 
-                                                                                                          output_ui = NULL, 
-                                                                                                          height1 = 600, 
-                                                                                                          height2 = 400, 
-                                                                                                          layout = "1|2|3"), plotOutput("plotMDS")),
+                                uiOutput("downPlotMDS"),
+                                plotOutput("plotMDS", height = "700px"),
                                 busyIndicator(wait = 500),
-                                textOutput("NB_diss"),
                                 value = "dissimilarityHM"
+                            )
                        )
                 )
             )
@@ -289,10 +311,10 @@ SimTab<-
 
 DiffTab<- 
     tabItem(tabName = "showDiffTab",
-            #fluidRow(
-                #tabBox(width=12,
-                 #      tabPanel("",#"Perform differential analysis",
-                                    h4("Volcano plot parameters"),
+            fluidRow(
+                tabBox(width=12,
+                       navbarMenu("Analysis",
+                           tabPanel("Volcano plot",
                                     fluidRow(
                                         column(width = 2,
                                                selectizeInput(
@@ -304,6 +326,9 @@ DiffTab<-
                                         ),
                                         column(width = 2,
                                                uiOutput("diffGroup")
+                                        ),
+                                        column(width = 2,
+                                               uiOutput("diffColGroup")
                                         ),
                                         column(width = 2,
                                                sliderInput(inputId = "diffFC",
@@ -319,55 +344,69 @@ DiffTab<-
                                                            min = 0,
                                                            max = 1)
                                         ),
-                                        column(width = 4,
-                                               div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                                   circleButton(inputId = "volcanoHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                        column(width = 2,
+                                               div(style="display:block;margin-left: 84.5%;padding-bottom: 10px;",
+                                                   circleButton(inputId = "volcanoHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                         )
                                     ),
-                                    h4("PCA/MDS parameters"),
-                                    fluidRow(
-                                        column(width = 3,
-                                           selectizeInput(
-                                               "PCAMethod",
-                                               "Select a distance method",
-                                               choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
-                                                              "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
-                                                              "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
-                                               options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
-                                        ),
-                                        column(width = 3,
-                                               selectizeInput(
-                                                   "PCAdimMethod",
-                                                   "Select a dimension reduction method",
-                                                   choices = list("PCA", "MDS"),
-                                                   options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                               )
-                                        ),
-                                        column(width = 3,
-                                               uiOutput("diffColGroup")
-                                        ),
-                                        column(width = 3,
-                                               div(style="display:block;margin-left: 93%;padding-bottom: 10px;",
-                                                   circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
-                                               tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                        )
-                                    ),
-                                    splitLayout(cellWidths = c("50%", "50%"), uiOutput("downPlotVolcano"), uiOutput("downPlotPCA")),
-                                    splitLayout(cellWidths = c("50%", "50%"), plotly::plotlyOutput("Volcano"), plotOutput("plotPCA")),
+                                    uiOutput("downPlotVolcano"),
+                                    plotly::plotlyOutput("Volcano"),
                                     busyIndicator(wait = 500),
                                     hr(),
-                                    h4('Results'),
-                                    div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
-                                        circleButton(inputId = "difftabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                    h4('Table of values'),
+                                    div(style="display:block;margin-left: 97.5%;padding-bottom: 10px;",
+                                        circleButton(inputId = "difftabHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                    downloadButton("downloadtableDiffExpGroup", "Export table"),
+                                    downloadButton("downloadtableDiffExpGroup", "Export table", style="background-color:white; border-color: #022F5A;"),
                                     dataTableOutput("tableDiffExpGroup"),
                                     busyIndicator(wait = 500)
-                 #      )
-                #)
-            #)
+                           ),
+                           tabPanel("Dimensionality reduction",
+                                        fluidRow(
+                                            column(width = 2,
+                                                   selectizeInput(
+                                                       "diffPCALevel",
+                                                       "Select a level",
+                                                       choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                                   )
+                                            ),
+                                            column(width = 2,
+                                                   uiOutput("diffPCAGroup")
+                                            ),
+                                            column(width = 2,
+                                               selectizeInput(
+                                                   "PCAMethod",
+                                                   "Select a distance method",
+                                                   choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
+                                                                  "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
+                                                                  "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
+                                                   options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                               )
+                                            ),
+                                            column(width = 3,
+                                                   selectizeInput(
+                                                       "PCAdimMethod",
+                                                       "Select a dimension reduction method",
+                                                       choices = list("PCA", "MDS"),
+                                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                                   )
+                                            ),
+                                            column(width = 3,
+                                                   div(style="display:block;margin-left: 90%;padding-bottom: 10px;",
+                                                       circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                   tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                            )
+                                        ),
+                                        uiOutput("downPlotPCA"),
+                                        plotOutput("plotPCA", height = "700px"),
+                                        busyIndicator(wait = 500)
+                                        
+                           )
+                )
+               )
+            )
     )
 
 
@@ -380,33 +419,36 @@ PertTab<-
                                            uiOutput("PertGroupUI")
                                     ),
                                     column(width = 2,
+                                           uiOutput("CtrlGroupUI")
+                                    ),
+                                    column(width = 2,
                                            uiOutput("PertDistUI")
                                     ),
                                     column(width = 2,
                                            uiOutput("pertOrder")
                                     ),
-                                    column(width = 2,
-                                           uiOutput("CtrlGroupUI")
-                                    ),
                                     column(width = 2, 
                                            style = "margin-top: 25px;",
+                                           tags$head(
+                                               tags$style(HTML('#doHm{background-color:white; border-color: #022F5A;}'))
+                                           ),
                                            actionButton("doHm", "run")
                                     ),
                                     column(width = 2,
                                            div(style="display:block;margin-left: 88.75%;padding-bottom: 10px;",
-                                               circleButton(inputId = "pertHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                               circleButton(inputId = "pertHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
                                 ),
                                 uiOutput("downPlotPert"),
                                 InteractiveComplexHeatmapOutput("ht", width1 = 800, width2 = 600, width3 = 0, title3 = " ", output_ui = NULL, height1=600, height2 = 400),
                                 busyIndicator(wait = 500),
-                                textOutput("NB_pert"),
+                                htmlOutput("NB_pert"),
                                 h4("Perturbation values"),
                                 div(style="display:block;margin-left: 98.25%;padding-bottom: 10px;",
-                                    circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                    circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                 tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                downloadButton("downloadPertTab", "Export table"),
+                                downloadButton("downloadPertTab", "Export table", style="background-color:white; border-color: #022F5A;"),
                                 dataTableOutput("PertTab"),
                                 busyIndicator(wait = 500)
     )

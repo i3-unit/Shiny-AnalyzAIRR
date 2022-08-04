@@ -94,7 +94,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     }) 
     
     output$downPlothistlibsizesp1 <- renderUI({
-        downloadButton("Plothistlibsizesp1", "Download PDF")
+        downloadButton("Plothistlibsizesp1", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }) 
     
     output$Plothistlibsizesp1 <- downloadHandler(
@@ -121,7 +121,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     
     output$downPlothistlibsizesp2 <- renderUI({
       if (!is.null(input$summaryLevel)) {
-        downloadButton("Plothistlibsizesp2", "Download PDF")
+        downloadButton("Plothistlibsizesp2", "Download PDF", style="background-color:white; border-color: #022F5A;")
       }
     }) 
     
@@ -145,7 +145,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       p1
     }) 
     output$downPlothisttxtlibsizesp1 <- renderUI({
-      downloadButton("Plothisttxtlibsizesp1", "Download PDF")
+      downloadButton("Plothisttxtlibsizesp1", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }) 
     
     output$Plothisttxtlibsizesp1 <- downloadHandler(
@@ -170,7 +170,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     
     output$downPlothisttxtlibsizesp2 <- renderUI({
       if (!is.null(input$summaryLevel)) {
-        downloadButton("Plothisttxtlibsizesp2", "Download PDF")
+        downloadButton("Plothisttxtlibsizesp2", "Download PDF", style="background-color:white; border-color: #022F5A;")
       }
     }) 
     

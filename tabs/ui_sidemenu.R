@@ -74,7 +74,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
                 placeholder = "No file selected"
               ),
               div(style="display:inline-block;margin-left: 25%;padding-bottom: 10px;",
-                  downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey"))
+                  downloadButton("downloadNewRepSeq", "Download RDS", style="color: #333333; background-color: light-grey; border-color: #022F5A;"))
             ), tabName = "uploadTXTtab"
         ), tabName = "uploadTXTtab"
   ),

@@ -13,7 +13,7 @@ output$plotStatistic <- renderPlot({
 
 output$downPlotStatsBasic <- renderUI({
     if (!is.null(input$plotStats)) {
-        downloadButton("PlotStatsBasic", "Download PDF")
+        downloadButton("PlotStatsBasic", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -77,7 +77,7 @@ output$plotrarefaction <- plotly::renderPlotly({
 
 output$downPlotRare <- renderUI({
     if (!is.null(input$plotRare)) {
-        downloadButton("PlotRare", "Download PDF")
+        downloadButton("PlotRare", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -138,7 +138,7 @@ output$plotDiv <- renderPlot({
 })
 output$downPlotDiv <- renderUI({
     if (!is.null(input$plotRare) & !is.null(input$divLevel)) {
-        downloadButton("PlotDiv", "Download PDF")
+        downloadButton("PlotDiv", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -197,7 +197,7 @@ output$plotRenyi <- plotly::renderPlotly({
 })
 output$downPlotRenyi2 <- renderUI({
     if (!is.null(input$renyiLevel)) {
-        downloadButton("PlotRenyi2", "Download PDF")
+        downloadButton("PlotRenyi2", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -257,7 +257,7 @@ output$CountIntervals <- renderPlot({
 
 output$downPlotCountIntervals2 <- renderUI({
     if (!is.null(input$countIntLevel)) {
-        downloadButton("PlotCountIntervals2", "Download PDF")
+        downloadButton("PlotCountIntervals2", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -295,7 +295,7 @@ output$rankDistrib <- renderPlot({
 
 output$downPlotrankDistrib <- renderUI({
     if (!is.null(input$rankDistribLevel) & !is.null(input$rankDistribGroupMeth)) {
-        downloadButton("PlotrankDistrib", "Download PDF")
+        downloadButton("PlotrankDistrib", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 

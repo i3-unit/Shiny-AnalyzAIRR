@@ -11,7 +11,7 @@ output$IndCountIntervals <- renderPlot({
 
 output$downPlotIndCountIntervals <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$indLevel))) {
-        downloadButton("PlotIndCountIntervals", "Download PDF")
+        downloadButton("PlotIndCountIntervals", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -50,7 +50,7 @@ output$indgeneUsage <- plotly::renderPlotly({
 })
 output$downPlotIndgeneUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$indgeneUsageLevel)) & !(is.null(input$singleScale))) {
-        downloadButton("PlotIndgeneUsage", "Download PDF")
+        downloadButton("PlotIndgeneUsage", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -90,7 +90,7 @@ output$VJUsage <- renderPlot({
 
 output$downPlotVJUsage <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !(is.null(input$VJLevel)) & !(is.null(input$VJProp))) {
-        downloadButton("PlotVJUsage", "Download PDF")
+        downloadButton("PlotVJUsage", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -124,7 +124,7 @@ observeEvent(input$vjusageHelp,
 #render UI download button for individual spectratype
 output$downSpectra <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectra", "Download PDF")
+        downloadButton("Spectra", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 # plot overlay spectratype 
@@ -165,7 +165,7 @@ observeEvent(input$spectHelp,
 #render UI download button for individual spectratype
 output$downSpectrabis <- renderUI({
     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectrabis", "Download PDF")
+        downloadButton("Spectrabis", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 # render plot individual spectratype

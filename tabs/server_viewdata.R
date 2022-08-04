@@ -427,7 +427,7 @@ observeEvent(c(input$doDown, input$DownLevel), {
 
 output$downhistdownlibsizes <- renderUI({
     if (!is.null(input$doDown) & !is.null(input$DownLevel)) {
-        downloadButton("Plothistdownlibsizes", "Download PDF")
+        downloadButton("Plothistdownlibsizes", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 
@@ -525,7 +525,7 @@ observeEvent(c(input$doNorm, input$NormLevel), {
 
 output$downhistshannonlibsizes <- renderUI({
     if (!is.null(input$doNorm) & !is.null(input$NormLevel)) {
-        downloadButton("Plothistshannonlibsizes", "Download PDF")
+        downloadButton("Plothistshannonlibsizes", "Download PDF", style="background-color:white; border-color: #022F5A;")
     }
 }) 
 

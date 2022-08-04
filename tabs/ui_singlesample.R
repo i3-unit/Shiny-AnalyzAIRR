@@ -1,5 +1,5 @@
 singleSampleTab <- tabItem(tabName = "singleSampleTab",
-    actionButton("showsampleInfo", "show sample Info"),
+    actionButton("showsampleInfo", "show sample Info", style="background-color:white; border-color: #022F5A;"),
       fluidRow(
         tabBox(width = 12,
           tabPanel("Clonal distribution per count intervals",
@@ -11,7 +11,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                             ),
                             column(width = 10,
                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                       circleButton(inputId = "indcountintHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                       circleButton(inputId = "indcountintHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
                    ),
@@ -29,7 +29,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                              ),
                             column(width = 10,
                                    div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                       circleButton(inputId = "indgeneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                       circleButton(inputId = "indgeneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
                    ),
@@ -52,7 +52,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                             ),
                             column(width = 8,
                                    div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                       circleButton(inputId = "vjusageHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                       circleButton(inputId = "vjusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                             )
                    ),
@@ -71,7 +71,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                               ),
                               column(width = 10,
                                      div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                         circleButton(inputId = "spectHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                         circleButton(inputId = "spectHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                      tags$head(tags$style(".modal-dialog{ width:1200px}"))
                               )
                      ),
@@ -89,7 +89,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                               ),
                               column(width = 10,
                                      div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                         circleButton(inputId = "spectbisHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                         circleButton(inputId = "spectbisHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                      tags$head(tags$style(".modal-dialog{ width:1200px}"))
                               )
                       ),

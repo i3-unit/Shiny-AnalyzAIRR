@@ -32,7 +32,7 @@ observeEvent(input$statsHelp,
 
 output$downPlotStatistics <- renderUI({
   if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup))) {
-    downloadButton("PlotStatistics", "Download PDF")
+    downloadButton("PlotStatistics", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -62,7 +62,7 @@ output$Diversity <- renderPlot({
 
 output$downPlotDiversity <- renderUI({
   if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex))) {
-    downloadButton("PlotDiversity", "Download PDF")
+    downloadButton("PlotDiversity", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -102,7 +102,7 @@ output$RenyiDiversity <- renderPlot({
 
 output$downPlotRenyi <- renderUI({
   if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup))) {
-    downloadButton("PlotRenyi", "Download PDF")
+    downloadButton("PlotRenyi", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -143,7 +143,7 @@ output$CountInt <- renderPlot({
 
 output$downPlotCountInt <- renderUI({
   if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup))) {
-    downloadButton("PlotCountInt", "Download PDF")
+    downloadButton("PlotCountInt", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -183,7 +183,7 @@ output$multRank <- renderPlot({
 
 output$downPlotMultRank <- renderUI({
   if (!is.null(input$multRankLevel) & !(is.null(input$multRankScale)) & !(is.null(input$multRankGroup))) {
-    downloadButton("PlotMultRank", "Download PDF")
+    downloadButton("PlotMultRank", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -221,11 +221,12 @@ output$geneUsage <- plotly::renderPlotly({
   validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
   validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "select a group"))
   plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+theme(legend.position = "none"), 
-                   tooltip = c("x", "y"))
+                   tooltip = c("x", "y")) %>%
+    plotly::layout(boxmode = "group")
 })
 output$downPlotgeneUsage <- renderUI({
   if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale))) {
-    downloadButton("PlotgeneUsage", "Download PDF")
+    downloadButton("PlotgeneUsage", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -277,7 +278,7 @@ output$plotEulerr <- renderPlot({
 
 output$downPlotEulerr <- renderUI({
   if (!is.null(input$vennLevel) & !(is.null(input$vennSamples))) {
-    downloadButton("PlotEulerr", "Download PDF")
+    downloadButton("PlotEulerr", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -326,7 +327,7 @@ output$Scatter <- plotly::renderPlotly({
 
 output$downPlotScatter <- renderUI({
   if (!is.null(input$scatterUISample) & !(is.null(input$scatterLevel)) & !(is.null(input$scatterScale))) {
-    downloadButton("PlotScatter", "Download PDF")
+    downloadButton("PlotScatter", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -373,13 +374,15 @@ observeEvent(input$doHm1, {
   validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
   validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
   hm1 <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
+  hm1@column_names_param$gp$fontsize <- 10
+  hm1@row_names_param$gp$fontsize <- 10
   ht1 <- ComplexHeatmap::draw(hm1)
   makeInteractiveComplexHeatmap(input, output, session, ht1, "ht1")
 })   
 
 output$downPlotDisHM <- renderUI({
   if (!is.null(input$dissimilarityLevel) & !(is.null(input$dissimilarityIndex)) & !(is.null(input$dissimilarityClustering))) {
-    downloadButton("PlotDisHM", "Download PDF")
+    downloadButton("PlotDisHM", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -410,35 +413,34 @@ observeEvent(input$disHMHelp,
 )
 
 output$NB_diss <- renderText({
-  "NB: Do not use the interactivate sub-heatmap mode."
+  "<b>Note: Do not use the interactivate sub-heatmap mode.</b>"
 })
 
 # plot MDS
 output$plotMDS <- renderPlot({
-    validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "select a level"))
-    validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "select a dissimilarity method"))
-    validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "select a dissimilarity clustering"))
+    validate(need(!(is.null(input$MDSLevel) || input$MDSLevel == ""), "select a level"))
+    validate(need(!(is.null(input$MDSMethod) || input$MDSMethod == ""), "select a dissimilarity method"))
     validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select a dimension reduction method"))
     validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select a group"))
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
+    plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
 })
 
 output$downPlotMDS <- renderUI({
-  if (!is.null(input$dissimilarityLevel) & !(is.null(input$dissimilarityIndex)) & !(is.null(input$grpCol4MDS)) & !(is.null(input$dissimilarityMethod))) {
-    downloadButton("PlotMDS", "Download PDF")
+  if (!is.null(input$MDSLevel) & !(is.null(input$MDSMethod)) & !(is.null(input$grpCol4MDS)) & !(is.null(input$dissimilarityMethod))) {
+    downloadButton("PlotMDS", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotMDS <- downloadHandler(
   filename =  function() {
-    paste0("dissimilarity", input$dissimilarityMethod, "_", input$dissimilarityLevel, "_", input$dissimilarityIndex, "_", input$grpCol4MDS, ".pdf")
+    paste0("dissimilarity", input$dissimilarityMethod, "_", input$MDSLevel, "_", input$MDSMethod, "_", input$grpCol4MDS, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    grid.draw(plotDimReduction(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
     dev.off()
   }
 )
@@ -527,7 +529,7 @@ output$Volcano <- plotly::renderPlotly({
 
 output$downPlotVolcano <- renderUI({
   if (!is.null(input$diffLevel) & !(is.null(input$diffGroup)) & !(is.null(input$diffFC)) & !(is.null(input$diffPV))) {
-    downloadButton("PlotVolcano", "Download PDF")
+    downloadButton("PlotVolcano", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -555,29 +557,32 @@ observeEvent(input$volcanoHelp,
                easyClose = T
              ))
 )
+output$diffPCAGroup <- renderUI({
+  selectGroupDE("diffPCAGroup", dataFilt())
+})
 
 output$plotPCA <- renderPlot({
-  validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), " "))
+  validate(need(!(is.null(input$diffPCALevel) || input$diffPCALevel == ""), "select a level"))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select a distance method")) 
   validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select a dimension reduction method")) 
-  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select a group")) 
-  plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
+  validate(need(!(is.null(input$diffPCAGroup) || input$diffPCAGroup == ""), "select a group")) 
+  plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
 })
 
 output$downPlotPCA <- renderUI({
-  if (!is.null(input$diffLevel) & !(is.null(input$PCAMethod)) & !(is.null(input$PCAdimMethod)) & !(is.null(input$diffColGroup))) {
-    downloadButton("PlotPCA", "Download PDF")
+  if (!is.null(input$diffPCALevel) & !(is.null(input$PCAMethod)) & !(is.null(input$PCAdimMethod)) & !(is.null(input$diffPCAGroup))) {
+    downloadButton("PlotPCA", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotPCA <- downloadHandler(
   filename =  function() {
-    paste0(input$PCAdimMethod, "_", input$diffLevel, "_", input$PCAMethod, "_", input$diffColGroup, ".pdf")
+    paste0(input$PCAdimMethod, "_", input$diffPCALevel, "_", input$PCAMethod, "_", input$diffPCAGroup, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotDimReduction(x = dataFilt(), level = input$diffLevel, method = input$PCAMethod, colorBy = input$diffColGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
     dev.off()
   }
 )
@@ -612,8 +617,8 @@ output$CtrlGroupUI <- renderUI({
 })
 # render selection distance
 output$PertDistUI <- renderUI({
-  #validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  #validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   selectizeInput("pertDist",
                  "Select a distance",
                  choices = list("manhattan", "euclidean"),
@@ -647,12 +652,13 @@ observeEvent(input$perttabHelp,
 )
 
 output$pertOrder <- renderUI({
-  #validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  #validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
   #validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
   idx <- sapply(sdata, function(i) nlevels(i)/length(i))
   choices <- colnames(sdata)[which(idx < 1)]
+  
   selectizeInput(
     "pertOrder",
     "Order sample by",
@@ -679,6 +685,8 @@ observeEvent(input$doHm, {
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
   hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+  hm@column_names_param$gp$fontsize <- 10
+  hm@row_names_param$gp$fontsize <- 10
   ht <- ComplexHeatmap::draw(hm)
   makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
 })
@@ -699,7 +707,7 @@ output$downloadPertTab <- downloadHandler(
 
 output$downPlotPert <- renderUI({
   if (!(is.null(input$pertDist)) & !(is.null(input$pertOrder))) {
-    downloadButton("PlotPert", "Download PDF")
+    downloadButton("PlotPert", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
@@ -733,7 +741,7 @@ observeEvent(input$pertHelp,
 )
 
 output$NB_pert <- renderText({
-  "NB: Do not use the interactivate sub-heatmap mode."
+  "<b>Note: Do not use the interactivate sub-heatmap mode.</b>"
 })
 
 # 

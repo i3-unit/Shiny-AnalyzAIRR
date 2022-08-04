@@ -130,7 +130,6 @@ source("tabs/server_exploratorystats.R", local = TRUE)
         ))
     )
     
-    
     # reset analysis
     observeEvent(input$resetApp, {
         session$reload()

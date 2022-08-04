@@ -41,6 +41,12 @@ bodyTabs <-
                 h4(""),
                 fluidRow(
                     column(width = 3,
+                        tags$head(
+                           tags$style(HTML('.selectize-input{background-color:white; border-color: #022F5A;}
+                                            .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A;}
+                                            .btn-file{background-color:white; border-color: #022F5A;}
+                                            .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}'))
+                        ),
                         selectizeInput("summaryLevel",
                                           "Select a level",
                                        choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
@@ -74,26 +80,26 @@ bodyTabs <-
         ),
         tabItem(tabName = "showInfoTab",
                 fluidRow(div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                             circleButton(inputId = "dataextractionHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                             circleButton(inputId = "dataextractionHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                          tags$head(tags$style(".modal-dialog{ width:1200px}")),
                     tabBox(width = 12,
                                 tabPanel("Assay",
-                                         downloadButton("downloadAssay", "Export table"),
+                                         downloadButton("downloadAssay", "Export table", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("assayTable"),
                                          busyIndicator(wait = 500)),
                                 tabPanel("Metadata",
-                                         downloadButton("downloadMetadata", "Export table"),
+                                         downloadButton("downloadMetadata", "Export table", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("infoTable"),
                                          busyIndicator(wait = 500)),
                                 tabPanel("Other data",
                                          fluidRow(column(width = 3,
                                                          uiOutput("otherDataList")
                                          )),
-                                         downloadButton("downloadOtherdata", "Export table"),
+                                         downloadButton("downloadOtherdata", "Export table", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("metadataTable"),
                                          busyIndicator(wait = 500)),
                                 tabPanel("History",
-                                         downloadButton("downloadHistory", "Export table"),
+                                         downloadButton("downloadHistory", "Export table", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("historyTable"),
                                          busyIndicator(wait = 500))))
         ),
@@ -119,16 +125,19 @@ bodyTabs <-
                                                  ),
                                                  column(width = 2, 
                                                         style = "margin-top: 25px;",
+                                                        tags$head(
+                                                            tags$style(HTML('#doFilterCount{background-color:white; border-color: #022F5A;}'))
+                                                        ),
                                                         actionButton("doFilterCount", "run")
                                                  ),
                                                  column(width = 3,
                                                        div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
-                                                           circleButton(inputId = "filtercountHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                           circleButton(inputId = "filtercountHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                        tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataFilterCount", "Download RDS"),
+                                         downloadButton("downloaddataFilterCount", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("filtercounts"),
                                          busyIndicator(wait = 500)
                                 ),
@@ -136,15 +145,18 @@ bodyTabs <-
                                          fluidRow(
                                              column(width = 2, 
                                                     style = "margin-top: 25px;",
+                                                    tags$head(
+                                                        tags$style(HTML('#doProductive{background-color:white; border-color: #022F5A;}'))
+                                                    ),
                                                     actionButton("doProductive", "run")),
                                              column(width = 10,
                                                   div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                        circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        circleButton(inputId = "prodHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                   tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                              )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS"),
+                                         downloadButton("downloaddataProductiveOrUnproductive", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("productivedata"),
                                          busyIndicator(wait = 500)
                                 ),
@@ -154,12 +166,12 @@ bodyTabs <-
                                          ),
                                          column(width = 10,
                                                 div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                    circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                    circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                 tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                          )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataDropedSamples", "Download RDS"),
+                                         downloadButton("downloaddataDropedSamples", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("dropeddata"),
                                          busyIndicator(wait = 500)
                                 ),
@@ -175,16 +187,19 @@ bodyTabs <-
                                                  ),
                                                  column(width = 2, 
                                                         style = "margin-top: 25px;",
+                                                        tags$head(
+                                                            tags$style(HTML('#doPublic{background-color:white; border-color: #022F5A;}'))
+                                                        ),
                                                         actionButton("doPublic", "run")
                                                  ),
                                                  column(width = 5,
                                                         div(style="display:block;margin-left: 93.85%;padding-bottom: 10px;",
-                                                            circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                            circleButton(inputId = "publicHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataPublic", "Download RDS"),
+                                         downloadButton("downloaddataPublic", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("publicdata"),
                                          busyIndicator(wait = 500)
                                 ),
@@ -203,12 +218,12 @@ bodyTabs <-
                                                  ),
                                                  column(width = 8,
                                                         div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
-                                                            circleButton(inputId = "privateHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                            circleButton(inputId = "privateHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataPrivate", "Download RDS"),
+                                         downloadButton("downloaddataPrivate", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("privatedata"),
                                          busyIndicator(wait = 500)
                                 ),
@@ -231,16 +246,19 @@ bodyTabs <-
                                                  ),
                                                  column(width = 2, 
                                                         style = "margin-top: 25px;",
+                                                        tags$head(
+                                                            tags$style(HTML('#doTopSeq{background-color:white; border-color: #022F5A;}'))
+                                                        ),
                                                         actionButton("doTopSeq", "run")
                                                  ),
                                                  column(width = 3,
                                                         div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
-                                                            circleButton(inputId = "topseqHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                            circleButton(inputId = "topseqHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
                                          ),
                                          h4("Filtered table"),
-                                         downloadButton("downloaddataTopSeq", "Download RDS"),
+                                         downloadButton("downloaddataTopSeq", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("topseqdata"),
                                          busyIndicator(wait = 500)
                                 )
@@ -277,12 +295,12 @@ bodyTabs <-
                                                  ),
                                                  column(width = 4,
                                                         div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
-                                                            circleButton(inputId = "downHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                            circleButton(inputId = "downHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
                                          ),
                                          h4("Normalized table"),
-                                         downloadButton("downloaddownSampling", "Download RDS"),
+                                         downloadButton("downloaddownSampling", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("downsampleddata"),
                                          busyIndicator(wait = 500),
                                          hr(),
@@ -309,12 +327,12 @@ bodyTabs <-
                                              ),
                                              column(width = 10,
                                                     div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
-                                                        circleButton(inputId = "shannonHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
+                                                        circleButton(inputId = "shannonHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                     tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                              )
                                          ),
                                          h4("Normalized table"),
-                                         downloadButton("downloadshannonNormed", "Download RDS"),
+                                         downloadButton("downloadshannonNormed", "Download RDS", style="background-color:white; border-color: #022F5A;"),
                                          dataTableOutput("shannonsampleddata"),
                                          busyIndicator(wait = 500),
                                          hr(),
