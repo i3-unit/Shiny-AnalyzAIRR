@@ -47,6 +47,11 @@ brush2v2count <- function(x, level = c("V", "J", "VJ", "clone", "clonotype", "CD
     return(out)
 }
 
+modify_stop_propagation <- function(x) {
+  x$children[[1]]$attribs$onclick = "event.stopPropagation()"
+  x
+}
+
 # Input alpha for Renyi profiles
 #
 # @param level 

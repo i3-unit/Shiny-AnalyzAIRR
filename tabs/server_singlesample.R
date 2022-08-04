@@ -84,8 +84,16 @@ output$VJUsage <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "select a level"))
-    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "select a level"))
-    plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "select a proportion"))
+    if(input$VJProp==0 || input$VJProp==1){
+        hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+        hm2@column_names_param$gp$fontsize <- 10
+        hm2@row_names_param$gp$fontsize <- 10
+        ComplexHeatmap::draw(hm2)
+    } else {
+        plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)    
+    }
+    
 })
 
 output$downPlotVJUsage <- renderUI({
@@ -101,7 +109,12 @@ output$PlotVJUsage <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
+        if(input$VJProp==0 || input$VJProp==1){
+            hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+            ComplexHeatmap::draw(hm2)
+        } else {
+            grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
+        }
         dev.off()
     }
 )

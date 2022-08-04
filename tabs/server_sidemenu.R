@@ -9,13 +9,15 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
         menuItem(tabName = "showDataTab",
             text = "Data manipulation",
             icon = icon("table", verify_fa = FALSE),
+            startExpanded = TRUE,
             menuSubItem("Data extraction",
                 tabName = "showInfoTab", icon = icon("angle-double-right", verify_fa = FALSE)),
             menuSubItem("Filtering",
                 tabName = "showFiltTab", icon = icon("angle-double-right", verify_fa = FALSE)),
             menuSubItem("Normalization",
                 tabName = "showNormTab", icon = icon("angle-double-right", verify_fa = FALSE))
-        ), tabName = "showDataTab"
+        ),
+        tabName = "showDataTab"
     )
     })
     # render statistic menu       
@@ -24,6 +26,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
         menuItem(tabName = "statisticTab",
                text = "Exploratory statistics",
                icon = icon("square-root-alt", lib="font-awesome", verify_fa = FALSE),
+               startExpanded = TRUE,
                menuSubItem("Basic statistics",
                            tabName = "showBasicTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                menuSubItem("Diversity estimation",
@@ -52,6 +55,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
             menuItem(tabName = "multipleSampleTab",
                 text = "Multi-sample analysis",
                 icon = icon("users", lib = "font-awesome", verify_fa = FALSE),
+                startExpanded = TRUE,
                 menuSubItem("Comparison of basic statistics",
                             tabName = "showCompBasicTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Similarity analysis",
