@@ -236,7 +236,7 @@ output$PlotgeneUsage <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=5, width=10)
+    pdf(file, height=5, width=20)
     grid.draw(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL))
     dev.off()
   }
@@ -413,34 +413,33 @@ observeEvent(input$disHMHelp,
 )
 
 output$NB_diss <- renderText({
-  "<b>Note: Do not use the interactivate sub-heatmap mode.</b>"
+  "<b>Note: Do not use the interactivate sub-heatmap mode in the configure sub-heatmap tab.</b>"
 })
 
 # plot MDS
 output$plotMDS <- renderPlot({
     validate(need(!(is.null(input$MDSLevel) || input$MDSLevel == ""), "select a level"))
     validate(need(!(is.null(input$MDSMethod) || input$MDSMethod == ""), "select a dissimilarity method"))
-    validate(need(!(is.null(input$dissimilarityMethod) || input$dissimilarityMethod == ""), "select a dimension reduction method"))
     validate(need(!(is.null(input$grpCol4MDS) || input$grpCol4MDS == ""), "select a group"))
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod)
+    plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = "MDS")
 })
 
 output$downPlotMDS <- renderUI({
-  if (!is.null(input$MDSLevel) & !(is.null(input$MDSMethod)) & !(is.null(input$grpCol4MDS)) & !(is.null(input$dissimilarityMethod))) {
+  if (!is.null(input$MDSLevel) & !(is.null(input$MDSMethod)) & !(is.null(input$grpCol4MDS))) {
     downloadButton("PlotMDS", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotMDS <- downloadHandler(
   filename =  function() {
-    paste0("dissimilarity", input$dissimilarityMethod, "_", input$MDSLevel, "_", input$MDSMethod, "_", input$grpCol4MDS, ".pdf")
+    paste0("dissimilarityMDS", "_", input$MDSLevel, "_", input$MDSMethod, "_", input$grpCol4MDS, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
     group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    grid.draw(plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = input$dissimilarityMethod))
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = "MDS"))
     dev.off()
   }
 )
@@ -564,25 +563,24 @@ output$diffPCAGroup <- renderUI({
 output$plotPCA <- renderPlot({
   validate(need(!(is.null(input$diffPCALevel) || input$diffPCALevel == ""), "select a level"))
   validate(need(!(is.null(input$PCAMethod) || input$PCAMethod == ""), "select a distance method")) 
-  validate(need(!(is.null(input$PCAdimMethod) || input$PCAdimMethod == ""), "select a dimension reduction method")) 
   validate(need(!(is.null(input$diffPCAGroup) || input$diffPCAGroup == ""), "select a group")) 
-  plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = input$PCAdimMethod)
+  plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = "PCA")
 })
 
 output$downPlotPCA <- renderUI({
-  if (!is.null(input$diffPCALevel) & !(is.null(input$PCAMethod)) & !(is.null(input$PCAdimMethod)) & !(is.null(input$diffPCAGroup))) {
+  if (!is.null(input$diffPCALevel) & !(is.null(input$PCAMethod)) & !(is.null(input$diffPCAGroup))) {
     downloadButton("PlotPCA", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotPCA <- downloadHandler(
   filename =  function() {
-    paste0(input$PCAdimMethod, "_", input$diffPCALevel, "_", input$PCAMethod, "_", input$diffPCAGroup, ".pdf")
+    paste0("PCA", "_", input$diffPCALevel, "_", input$PCAMethod, "_", input$diffPCAGroup, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = input$PCAdimMethod))
+    grid.draw(plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = "PCA"))
     dev.off()
   }
 )
@@ -661,7 +659,7 @@ output$pertOrder <- renderUI({
   
   selectizeInput(
     "pertOrder",
-    "Order sample by",
+    "Order labels by",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
@@ -741,7 +739,7 @@ observeEvent(input$pertHelp,
 )
 
 output$NB_pert <- renderText({
-  "<b>Note: Do not use the interactivate sub-heatmap mode.</b>"
+  "<b>Note: Do not use the interactivate sub-heatmap mode in the configure sub-heatmap tab.</b>"
 })
 
 # 

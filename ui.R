@@ -46,6 +46,7 @@ bodyTabs <-
                                             .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .progress-bar{border-color: #022F5A; border-radius: 0px;}
+                                            .irs--shiny .irs-min, .irs--shiny .irs-max{background-color: aliceblue;}
                                             .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}'))
                         ),
                         selectizeInput("summaryLevel",
@@ -268,7 +269,7 @@ bodyTabs <-
         tabItem(tabName = "showNormTab",
                 fluidRow(tabBox(width = 12,
                                 tabPanel("Down-sampling",
-                                         fluidRow(column(width = 2,
+                                         fluidRow(column(width = 3,
                                                          selectizeInput("doDown",
                                                                         "Perform a down-sampling normalization",
                                                                         choices = list("Yes", "No"),
@@ -290,12 +291,12 @@ bodyTabs <-
                                                                      width = NULL)
                                                  ),column(width = 2,
                                                           selectizeInput("downReplace",
-                                                                         "Select if replacement",
+                                                                         "With replacement",
                                                                          choices = list(TRUE, FALSE),
                                                                          options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ),
-                                                 column(width = 4,
-                                                        div(style="display:block;margin-left: 92%;padding-bottom: 10px;",
+                                                 column(width = 3,
+                                                        div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
                                                             circleButton(inputId = "downHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )

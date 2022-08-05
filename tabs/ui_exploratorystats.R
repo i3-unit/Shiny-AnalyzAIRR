@@ -81,7 +81,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                               selectizeInput(
                                                   "divIndex",
                                                   "Select an index",
-                                                  choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
+                                                  choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker", "gini", "iChao"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 2,

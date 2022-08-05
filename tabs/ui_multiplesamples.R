@@ -32,7 +32,7 @@ CompBasicTab<-
                                  column(width = 2,
                                         selectizeInput("diverIndex",
                                                        "Select an index",
-                                                       choices = list("chao1", "shannon", "simpson", "invsimpson", "gini", "iChao"),
+                                                       choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker","gini", "iChao"),
                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
                                  ),
                                  column(width = 2,
@@ -264,7 +264,7 @@ SimTab<-
                                 busyIndicator(wait = 500),
                                 htmlOutput("NB_diss")
                             ),
-                            tabPanel("Dimensionality reduction",
+                            tabPanel("Multidimensional scaling",
                                 fluidRow(
                                     column(width = 2,
                                            selectizeInput(
@@ -282,17 +282,11 @@ SimTab<-
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
-                                    column(width = 3,
-                                           selectizeInput("dissimilarityMethod", "Select a dimension reduction method",
-                                                          choices = list("MDS", "PCA"),
-                                                          options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
-                                    ),
                                     column(width = 2,
                                            uiOutput("GrpColMDS")
                                     ),
-                                    column(width = 3,
-                                           div(style="display:block;margin-left: 90%;padding-bottom: 10px;",
+                                    column(width = 6,
+                                           div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                                circleButton(inputId = "mdsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                     )
@@ -362,7 +356,7 @@ DiffTab<-
                                     dataTableOutput("tableDiffExpGroup"),
                                     busyIndicator(wait = 500)
                            ),
-                           tabPanel("Dimensionality reduction",
+                           tabPanel("Principal Component Analysis",
                                         fluidRow(
                                             column(width = 2,
                                                    selectizeInput(
@@ -385,16 +379,8 @@ DiffTab<-
                                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                )
                                             ),
-                                            column(width = 3,
-                                                   selectizeInput(
-                                                       "PCAdimMethod",
-                                                       "Select a dimension reduction method",
-                                                       choices = list("PCA", "MDS"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                                   )
-                                            ),
-                                            column(width = 3,
-                                                   div(style="display:block;margin-left: 90%;padding-bottom: 10px;",
+                                            column(width = 6,
+                                                   div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                                        circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                             )
