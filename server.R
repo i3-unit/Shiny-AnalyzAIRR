@@ -12,6 +12,7 @@ shinyServer(function(input, output, session) {
     )
     #
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
+    
     # load RDS 
     RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile), {
         validate(need(!(is.null(input$sInfofile) && input$putInfofile == "Yes") || 

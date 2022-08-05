@@ -51,6 +51,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     })
     # render multiple samples comparison menu
     output$multipleSampleTab <- renderMenu({
+      if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
         convertMenuItem(
             menuItem(tabName = "multipleSampleTab",
                 text = "Multi-sample analysis",
@@ -65,7 +66,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                 menuSubItem("Spectratyping comparison",
                             tabName = "showPertTab", icon = icon("angle-double-right", verify_fa = FALSE))
             ), tabName = "multipleSampleTab"
-        )
+        )} else shinyjs::hide(selector = "a[data-value='multipleSampleTab']")
     })
 
     # down load RDS freshly created 
