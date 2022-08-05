@@ -468,10 +468,6 @@ output$diversityMD <- renderUI({
     shiny::withMathJax(includeMarkdown("markdown/DiversityIndex.md"))
 })
 
-output$diffColGroup <- renderUI({
-  selectGroupDE("diffColGroup", dataFilt())
-})
-
 output$diffGroup <- renderUI({
   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
   to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
@@ -491,16 +487,15 @@ output$diffGroup <- renderUI({
 
 output$tableDiffExpGroup <- DT::renderDataTable({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "select a level"))
-  validate(need(!(is.null(input$diffColGroup) || input$diffColGroup == ""), "select a group")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select a group and subgroups")) 
   validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups")) 
-  diffExpGroup(x = dataFilt(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup)
+  diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup)
 })
 
 output$downloadtableDiffExpGroup <- downloadHandler(
   "RepSeqData_differentialExpressionTable.csv",
   content = function(file) {
-    write.table(diffExpGroup(x = dataFilt(), colGrp = input$diffColGroup, level = input$diffLevel, group = input$diffGroup), file, row.names = F, sep = '\t')
+    write.table(diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup), file, row.names = F, sep = '\t')
   }, contentType = "text/csv"
 ) 
 
@@ -522,7 +517,7 @@ output$Volcano <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "select a fold-change threshold")) 
   validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "select a pvalue threshold")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "select a group and subgroups")) 
-  validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups")) 
+  validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups"))
   plotly::ggplotly(plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
 

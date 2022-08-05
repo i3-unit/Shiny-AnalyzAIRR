@@ -47,7 +47,17 @@ bodyTabs <-
                                             .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .progress-bar{border-color: #022F5A; border-radius: 0px;}
                                             .irs--shiny .irs-min, .irs--shiny .irs-max{background-color: aliceblue;}
-                                            .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}'))
+                                            .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}
+                                            .onoffswitch {margin-top: 3px; position: relative; width: 69px;-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;}
+                                            .onoffswitch-checkbox {position: absolute; opacity: 0;pointer-events: none;}
+                                            .onoffswitch-label {display: block; overflow: hidden; cursor: pointer;border: 1.5px solid #022F5A; border-radius: 12px;}
+                                            .onoffswitch-inner {display: block; width: 200%; margin-left: -100%;transition: margin 0.3s ease-in 0s;}
+                                            .onoffswitch-inner:before, .onoffswitch-inner:after {display: block; float: left; width: 50%; height: 23px; padding: 0; line-height: 23px;font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;box-sizing: border-box;}
+                                            .onoffswitch-inner:before {content: "Yes";padding-left: 10px;background-color: #FFFFFF; color: #428BCA;}
+                                            .onoffswitch-inner:after {content: "No";padding-right: 10px;background-color: #FFFFFF; color: #999999;text-align: right;}
+                                            .onoffswitch-switch {display: block; width: 10px; height: 10px; margin: 8px; background: #A1A1A1;position: absolute; top: 0; bottom: 0;right: 42px;border: 2px solid #022F5A; border-radius: 12px;transition: all 0.3s ease-in 0s; }
+                                            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {margin-left: 0;}
+                                            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {right: 0px; background-color: #428BCA;}'))
                         ),
                         selectizeInput("summaryLevel",
                                           "Select a level",
@@ -212,14 +222,26 @@ bodyTabs <-
                                                                         choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
+                                                 # column(width = 2,
+                                                 #        selectizeInput("privateSingletons",
+                                                 #                       "Private singletons",
+                                                 #                       choices = list(TRUE, FALSE),
+                                                 #                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 # ),
                                                  column(width = 2,
-                                                        selectizeInput("privateSingletons",
-                                                                       "Private singletons",
-                                                                       choices = list(TRUE, FALSE),
-                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                        switchButton(inputId = "privateSingletons",
+                                                                     label = "Private singletons",
+                                                                     value = FALSE)
                                                  ),
-                                                 column(width = 8,
-                                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                                                 column(width = 2, 
+                                                        style = "margin-top: 25px;",
+                                                        tags$head(
+                                                            tags$style(HTML('#doPrivate{background-color:white; border-color: #022F5A;}'))
+                                                        ),
+                                                        actionButton("doPrivate", "run")
+                                                 ),
+                                                 column(width = 6,
+                                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                                             circleButton(inputId = "privateHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                                  )
@@ -269,11 +291,17 @@ bodyTabs <-
         tabItem(tabName = "showNormTab",
                 fluidRow(tabBox(width = 12,
                                 tabPanel("Down-sampling",
-                                         fluidRow(column(width = 3,
-                                                         selectizeInput("doDown",
-                                                                        "Perform a down-sampling normalization",
-                                                                        choices = list("Yes", "No"),
-                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                         fluidRow(
+                                                 # column(width = 3,
+                                                 #         selectizeInput("doDown",
+                                                 #                        "Perform a down-sampling normalization",
+                                                 #                        choices = list("Yes", "No"),
+                                                 #                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 #  ),
+                                                  column(width=3,
+                                                         switchButton(inputId = "doDown",
+                                                                      label = "Perform a down-sampling normalization",
+                                                                      value = FALSE)
                                                   ),
                                                   column(width = 2,
                                                          sliderInput(inputId = "downSampleSize",
@@ -289,11 +317,17 @@ bodyTabs <-
                                                                      min = 1,
                                                                      max = 9999,
                                                                      width = NULL)
-                                                 ),column(width = 2,
-                                                          selectizeInput("downReplace",
-                                                                         "With replacement",
-                                                                         choices = list(TRUE, FALSE),
-                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 ),
+                                                 # column(width = 2,
+                                                 #          selectizeInput("downReplace",
+                                                 #                         "With replacement",
+                                                 #                         choices = list(TRUE, FALSE),
+                                                 #                         options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                 # ),
+                                                 column(width=2,
+                                                        switchButton(inputId = "downReplace",
+                                                                     label = "With replacement",
+                                                                     value = TRUE)
                                                  ),
                                                  column(width = 3,
                                                         div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
@@ -321,11 +355,16 @@ bodyTabs <-
                                 ),
                                 tabPanel("Shannon-based normalization",
                                          fluidRow(
-                                             column(width = 2,
-                                                         selectizeInput("doNorm",
-                                                                        "Perform a shannon normalization",
-                                                                        choices = list("Yes", "No"),
-                                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                             # column(width = 2,
+                                             #             selectizeInput("doNorm",
+                                             #                            "Perform a shannon normalization",
+                                             #                            choices = list("Yes", "No"),
+                                             #                            options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                             # ),
+                                             column(width=2,
+                                                    switchButton(inputId = "doNorm",
+                                                                 label = "Perform a shannon normalization",
+                                                                 value = FALSE)
                                              ),
                                              column(width = 10,
                                                     div(style="display:block;margin-left: 97%;padding-bottom: 10px;",

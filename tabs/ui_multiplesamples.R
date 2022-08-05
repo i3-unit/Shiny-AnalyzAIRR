@@ -322,9 +322,6 @@ DiffTab<-
                                                uiOutput("diffGroup")
                                         ),
                                         column(width = 2,
-                                               uiOutput("diffColGroup")
-                                        ),
-                                        column(width = 2,
                                                sliderInput(inputId = "diffFC",
                                                            label = "Set a fold-change threshold",
                                                            value = 1,
@@ -338,14 +335,14 @@ DiffTab<-
                                                            min = 0,
                                                            max = 1)
                                         ),
-                                        column(width = 2,
-                                               div(style="display:block;margin-left: 84.5%;padding-bottom: 10px;",
+                                        column(width = 4,
+                                               div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                                    circleButton(inputId = "volcanoHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                         )
                                     ),
                                     uiOutput("downPlotVolcano"),
-                                    plotly::plotlyOutput("Volcano"),
+                                    plotly::plotlyOutput("Volcano", height = "600px"),
                                     busyIndicator(wait = 500),
                                     hr(),
                                     h4('Table of values'),

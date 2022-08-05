@@ -230,8 +230,44 @@ summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3
   return(p2)
 }
 
-
-
+#https://github.com/statnmap/RshinyApps/tree/master/On-Off_SwitchButton
+switchButton <- function(inputId, label, value=FALSE) {
+  if(value){
+    tagList(
+      tags$div(class = "form-group shiny-input-container",
+               tags$div(class = "",
+                        tags$label(label, class = "control-label"),
+                        tags$div(class = "onoffswitch",
+                                 tags$input(type = "checkbox", name = "onoffswitch", class = "onoffswitch-checkbox",
+                                            id = inputId, checked = ""
+                                 ),
+                                 tags$label(class = "onoffswitch-label", `for` = inputId,
+                                            tags$span(class = "onoffswitch-inner"),
+                                            tags$span(class = "onoffswitch-switch")
+                                 )
+                        )
+               )
+      )
+    )
+  } else {
+    tagList(
+      tags$div(class = "form-group shiny-input-container",
+               tags$div(class = "",
+                        tags$label(label, class = "control-label"),
+                        tags$div(class = "onoffswitch",
+                                 tags$input(type = "checkbox", name = "onoffswitch", class = "onoffswitch-checkbox",
+                                            id = inputId
+                                 ),
+                                 tags$label(class = "onoffswitch-label", `for` = inputId,
+                                            tags$span(class = "onoffswitch-inner"),
+                                            tags$span(class = "onoffswitch-switch")
+                                 )
+                        )
+               )
+      )
+    ) 
+  }
+}
 
 
 

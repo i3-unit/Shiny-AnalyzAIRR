@@ -188,19 +188,20 @@ observeEvent(input$publicHelp,
              ))
 )
 
-dataPrivate <- reactive({
+dataPrivate <- eventReactive(input$doPrivate,{
     validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select a level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
     privatedata <- getPrivate(x = RepSeqDT(), level = input$privateLevel, singletons = input$privateSingletons)
     return(privatedata)
 })
-
+observeEvent(input$doPrivate,
 output$privatedata <- renderDataTable({
     validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select a level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
     return(datatable(RepSeq::History(dataPrivate()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
+)
 
 output$downloaddataPrivate <- downloadHandler(
     "RepSeqData_privatedata.rds",
@@ -360,17 +361,18 @@ observeEvent(input$topseqHelp,
 
 
 downSampling <- reactive({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
+    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "Replacement"))
-    if(input$doDown=="Yes"){
+
+    if(input$doDown){
         downsampleddata <- sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = input$downReplace, verbose = FALSE)
     }
     return(downsampleddata)
 })
 
 output$downsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
+    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
     return(datatable(RepSeq::History(downSampling()),
@@ -402,7 +404,7 @@ observeEvent(input$downHelp,
 # new libsize after downsampling # library sizes
 observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
-        validate(need(!(is.null(input$doDown) || input$doDown == ""), "Perform a down-sampling normalization ?"))
+        validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- RepSeq::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
@@ -460,9 +462,9 @@ output$Plothistdownlibsizes <- downloadHandler(
 )
 
 shannonNormed <- reactive({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
+    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
 
-    if(input$doNorm=="Yes"){
+    if(input$doNorm){
         shannonsampleddata <- ShannonNorm(x = RepSeqDT())
     }
 
@@ -471,7 +473,7 @@ shannonNormed <- reactive({
 
 
 output$shannonsampleddata <- renderDataTable({
-    validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
+    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
     return(datatable(RepSeq::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -500,7 +502,7 @@ observeEvent(input$shannonHelp,
 
 observeEvent(c(input$doNorm, input$NormLevel), {
     output$histshannonlibsizes <- renderPlot({
-        validate(need(!(is.null(input$doNorm) || input$doNorm == ""), "Perform a shannon normalization ?"))
+        validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
         validate(need(!(is.null(input$NormLevel) || input$NormLevel == ""), "select a level"))
         cts1 <- RepSeq::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
@@ -561,7 +563,7 @@ output$Plothistshannonlibsizes <- downloadHandler(
 
 dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$filterCountN,
                             input$doPublic, input$publicLevel, input$publicProp,
-                            input$privateLevel, input$privateSingletons, 
+                            input$doPrivate, input$privateLevel, input$privateSingletons, 
                             input$doProductive, 
                             input$dropSampleNames,
                             input$doTopSeq, input$topSeqLevel, input$topSeqProp,
@@ -575,7 +577,8 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
               !(is.null(input$publicLevel) || input$publicLevel == "") &&
               !(is.null(input$publicProp) || input$publicProp == "")){
         return(dataPublic())
-    } else if(!(is.null(input$privateLevel) || input$privateLevel == "") &&
+    } else if(input$doPrivate==1 &&
+              !(is.null(input$privateLevel) || input$privateLevel == "") &&
               !(is.null(input$privateSingletons) || input$privateSingletons == "")){
         return(dataPrivate())
     }else if(input$doProductive == 1){
@@ -586,10 +589,9 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
               !(is.null(input$topSeqLevel) || input$topSeqLevel == "") && 
               !(is.null(input$topSeqProp) || input$topSeqProp == "")){
         return(dataTopSeq())
-    } else if(input$doNorm == "Yes"){
+    } else if(input$doNorm){
         return(shannonNormed())
-    } else if(input$doDown == "Yes" && 
-              !(is.null(input$downReplace) || input$downReplace == "")){
+    } else if(input$doDown && input$downReplace){
         return(downSampling())
     } else {
         return(RepSeqDT())
