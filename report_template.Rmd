@@ -1,0 +1,489 @@
+---
+title: "Report session"
+author:
+- name: V. Mhanna, G. Pires, N. Tchitchek, D. Klatzmann, A. Six, E. Mariotti-Ferrandiz
+  affiliation: Sorbonne Université, INSERM, Immunology-Immunopathology-Immunotherapy (i3), Paris, France
+- name: H. P. Pham
+  affiliation: Parean Biotechnologies
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This file is generated automatically, this is a summary report of your actions on Shiny AnalyzAIRR.
+
+# Data manipulation
+## Data extraction
+
+**Assay data**
+```{r show assay, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+
+assaydata <- RepSeq::assay(dataFilt())
+
+knitr::kable(head(assaydata)) %>%
+    kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+  kableExtra::row_spec(0, color="#022f5a", font_size = 12)      
+```
+
+**Metadata**
+```{r show metadata, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+
+metadata <- RepSeq::mData(dataFilt())
+knitr::kable(head(metadata)) %>%
+    kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+  kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
+```
+
+**Other data**
+```{r show other data, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+
+if(!(is.null(input$otherDataList))){
+       otherdata <-  RepSeq::oData(dataFilt())[[input$otherDataList]]
+       knitr::kable(head(otherdata)) %>%
+        kableExtra::kable_styling(
+                        full_width = FALSE,
+                        position = "left",
+                        font_size = 10) %>%
+        kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
+}
+    
+      
+```
+
+**History data**
+```{r show History, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+
+historydata <- RepSeq::History(dataFilt())
+knitr::kable(historydata) %>%
+        kableExtra::kable_styling(
+                        full_width = FALSE,
+                        position = "left",
+                        font_size = 10) %>%
+        kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+```
+
+## Filtering
+
+**Filter out a repertoire level count**
+```{r rep count, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1){
+   filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
+}
+      
+```
+
+**Filter out unproductive sequences**
+```{r productive, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(input$doProductive == 1){
+   getProductive(x = RepSeqDT())
+}
+      
+```
+
+**Drop a sample**
+```{r drop sample, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$dropSampleNames)){
+   dropSamples(x = RepSeqDT(), sampleNames = input$dropSampleNames)
+}
+      
+```
+
+**Extract shared sequences**
+```{r public, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1){
+   getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup)
+}
+      
+```
+
+**Extract private sequences**
+```{r private, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1){
+   getPrivate(x = RepSeqDT(), level = input$privateLevel, singletons = input$privateSingletons)
+}
+      
+```
+
+**Extract top sequences**
+```{r topseq, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$topSeqLevel) && !is.null(input$topSeqGroup) && !is.null(input$topSeqProp) && input$doTopSeq == 1){
+   getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
+}
+      
+```
+
+## Normalization
+
+**Down-sampling**
+```{r down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$downSampleSize) && !is.null(input$downseed) && !is.null(input$downReplace) && input$doDown == TRUE){
+   sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = input$downReplace, verbose = FALSE)
+}
+      
+```
+
+```{r show down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$DownLevel) && input$doDown == TRUE){
+   cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
+            ggtitle("Orignial data")+
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        cts2 <- RepSeq::assay(downSampling())
+        p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
+            ggtitle("Downsampled data") +
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+
+        gridExtra::grid.arrange(p1, p2, ncol=2)
+}
+      
+```
+
+**Shannnon-based normalization**
+```{r shannon, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(input$doNorm == TRUE){
+   ShannonNorm(x = RepSeqDT())
+}
+      
+```
+
+```{r show shannon, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$NormLevel) && input$doNorm == TRUE){
+   cts1 <- RepSeq::assay(RepSeqDT())
+        p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Orignial data")+
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        cts2 <- RepSeq::assay(shannonNormed())
+        p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
+            ggtitle("Shannon normalized data") +
+            theme_RepSeq()+
+            theme(axis.title.x = ggplot2::element_text(size=15),
+                  axis.title.y = ggplot2::element_text(size=15),
+                  axis.text.x = ggplot2::element_text(size=15),
+                  axis.text.y = ggplot2::element_text(size=15))
+        
+        gridExtra::grid.arrange(p1, p2, ncol=2)
+}
+      
+```
+
+# Exploratory statistics
+## Basic statistics
+
+### Metadata statistics
+
+```{r metadata stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$plotStats)){
+   plotStatistics(x=dataFilt(), stat = input$plotStats, groupBy = NULL, label_colors = NULL)
+}
+      
+```
+
+### Detailed repertoire level statistics
+```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+if(input$countLevel != "" && !is.null(input$countScale)){
+   countfeatures <- countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL)
+   knitr::kable(head(countfeatures)) %>%
+    kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+    kableExtra::row_spec(0, color="#022f5a", font_size = 12)      
+}
+      
+```
+
+## Diversity estimation 
+
+### Rarefaction analysis
+```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6, fig.asp = 1.5}
+if(!is.null(input$plotRare)){
+   plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
+}
+      
+```
+
+```{r rarefaction tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$plotRare)){
+   raretab <- rarefactionTab(x = dataFilt())
+   knitr::kable(head(raretab)) %>%
+            kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+            kableExtra::row_spec(0, color="#022f5a", font_size = 12)
+}
+      
+```
+
+### Diversity indices
+```{r div ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$divIndex) && input$divLevel != ""){
+   plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, groupBy = NULL, label_colors = NULL)
+}
+      
+```
+
+```{r div ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(input$divLevel != ""){
+   divind <- diversityIndices(x=dataFilt(), level = input$divLevel)
+   knitr::kable(head(divind)) %>%
+            kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+}
+      
+```
+
+### Renyi index
+```{r renyi ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(input$renyiLevel != ""){
+   plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = "sample_id", grouped = FALSE, label_colors = NULL)
+}
+      
+```
+
+
+```{r renyi ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(input$renyiLevel != ""){
+   renind <- renyiIndex(x=dataFilt(), level = input$renyiLevel)
+   knitr::kable(head(renind)) %>%
+            kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+}
+      
+```
+
+## Clonal distribution
+
+### Per count interval
+```{r count ind exp, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(input$countIntLevel != ""){
+    plotCountIntervals(x=dataFilt(), level = input$countIntLevel, groupBy = NULL, label_colors = NULL)
+}
+      
+```
+
+### Per decreasing rank
+```{r rank distrib exp, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(input$rankDistribLevel != "" && input$rankDistribGroupMeth != ""){
+    plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = "sample_id", grouped = FALSE, label_colors = NULL)
+}
+      
+```
+
+
+# One-sample analysis
+
+### Clonal distribution per count intervals
+```{r IndCountInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$singleSample) && input$indLevel != ""){
+   plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel)
+}
+      
+```
+
+### V/J usage
+```{r VJUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$singleSample) && input$indgeneUsageLevel != "" && !is.null(input$singleScale)){
+   plotIndGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$indgeneUsageLevel, scale = input$singleScale)
+}
+      
+```
+
+### V-J combination usage
+```{r VJGeneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$singleSample) && !is.null(input$VJLevel) && !is.null(input$singleScale) && !is.null(input$VJProp)){
+   plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp) 
+}
+      
+```
+
+### Stacked spectratyping
+```{r cd3 spectra, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$singleSample) && !is.null(input$singleScale) && !is.null(input$singleProp)){
+   plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)
+}
+      
+```
+
+### Individual spectratyping
+```{r cd3 spectra ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$singleSample) && !is.null(input$singleScale) && !is.null(input$spectraProp)){
+   plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
+}
+      
+```
+
+# Multi-sample analysis
+
+## Comparison of basic statistics
+
+### Metadata statistics
+```{r stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
+    plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)
+}
+      
+```
+
+### Diversity indices
+```{r div, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){
+    plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)
+}
+     
+```
+
+### Renyi index
+```{r renyi, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$multrenLevel) && !is.null(input$multrenGroup)){
+    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)
+}
+    
+```
+
+### Count intervals
+```{r countInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)){
+    plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)
+}
+       
+```
+
+### Rank distribution
+```{r rankDistrib, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$multRankLevel) && !is.null(input$multRankScale) && !is.null(input$multRankGroup)){
+    plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = TRUE, label_colors = NULL)
+}
+     
+```
+
+### V/J usage
+```{r geneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)){
+    plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)
+}
+    
+```
+ 
+## Similarity analysis
+
+### Repertoire overlap
+```{r eulerr, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$vennLevel) && !is.null(input$vennSamples)){
+    plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
+}
+    
+```
+
+### Repertoire correlation
+```{r scatter, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$scatterUISample) && !is.null(input$scatterLevel) && !is.null(input$scatterScale)){
+    plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
+}
+    
+```
+
+### Hierarchical clustering
+```{r disHM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1){
+    hm <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
+    ComplexHeatmap::draw(hm)
+}
+    
+```
+
+### Multidimensional scaling
+```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS)){
+    group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
+    plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = "MDS")
+}
+    
+```
+
+
+## Differential analysis
+
+### Volcano plot
+```{r volcano, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)){
+    plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0)
+}
+    
+```
+
+
+```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$diffGroup) && !is.null(input$diffLevel)){
+    diffexp <- diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup)
+    knitr::kable(head(diffexp)) %>%
+            kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+}
+    
+```
+
+### Principal component analysis
+```{r PCA, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)){
+    plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = "PCA")
+}
+    
+```
+
+## Spectractyping comparison
+```{r spectratyping comparison HM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1){
+    sampleinfo <- mData(dataFilt())
+    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+    hm1 <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+    ComplexHeatmap::draw(hm1)
+}
+    
+```
+
+```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && input$doHm == 1){
+    sampleinfo <- mData(dataFilt())
+    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+    pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
+    knitr::kable(head(pertscore)) %>%
+            kableExtra::kable_styling(
+                    full_width = FALSE,
+                    position = "left",
+                    font_size = 10) %>%
+            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+}
+    
+```
+
+

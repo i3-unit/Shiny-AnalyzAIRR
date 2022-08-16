@@ -13,6 +13,106 @@ shinyServer(function(input, output, session) {
     #
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
     
+    output$renderedReport <- renderUI({
+        includeMarkdown(knitr::knit("report_template.Rmd"))         
+    })
+    output$report <- downloadHandler(
+        filename = "report.html",
+        content = function(file) {
+            tempReport <- file.path("report_todownload.Rmd")
+            file.copy("report.Rmd", tempReport, overwrite = TRUE)
+            
+            params <- list(otherDataList = input$otherDataList, 
+                           filterCountLevel = input$filterCountLevel, 
+                           filterCountN = input$filterCountN,
+                           filterCountGroup = input$filterCountGroup,
+                           doFilterCount = input$doFilterCount,
+                           doProductive = input$doProductive, 
+                           dropSampleNames = input$dropSampleNames, 
+                           publicLevel = input$publicLevel, 
+                           publicGroup = input$publicGroup, 
+                           doPublic = input$doPublic, 
+                           privateLevel = input$privateLevel, 
+                           privateSingletons = input$privateSingletons, 
+                           doPrivate = input$doPrivate, 
+                           topSeqLevel = input$topSeqLevel, 
+                           topSeqGroup = input$topSeqGroup,
+                           topSeqProp = input$topSeqProp, 
+                           doTopSeq = input$doTopSeq, 
+                           downSampleSize = input$downSampleSize, 
+                           downseed = input$downseed, 
+                           downReplace = input$downReplace, 
+                           doDown = input$doDown, 
+                           DownLevel = input$DownLevel, 
+                           doNorm = input$doNorm, 
+                           NormLevel = input$NormLevel, 
+                           plotStats = input$plotStats, 
+                           countLevel = input$countLevel, 
+                           countScale = input$countScale, 
+                           plotRare = input$plotRare, 
+                           divIndex = input$divIndex, 
+                           divLevel = input$divLevel, 
+                           renyiLevel = input$renyiLevel, 
+                           countIntLevel = input$countIntLevel, 
+                           rankDistribLevel = input$rankDistribLevel, 
+                           rankDistribGroupMeth = input$rankDistribGroupMeth, 
+                           singleSample = input$singleSample, 
+                           indLevel = input$indLevel, 
+                           indgeneUsageLevel = input$indgeneUsageLevel, 
+                           singleScale = input$singleScale, 
+                           VJLevel = input$VJLevel, 
+                           VJProp = input$VJProp, 
+                           singleProp = input$singleProp, 
+                           spectraProp = input$spectraProp, 
+                           statisticsStat = input$statisticsStat,
+                           statisticsGroup = input$statisticsGroup, 
+                           diverLevel = input$diverLevel, 
+                           diverGroup = input$diverGroup, 
+                           diverIndex = input$diverIndex, 
+                           multrenLevel = input$multrenLevel, 
+                           multrenGroup = input$multrenGroup, 
+                           countIntervalsLevel = input$countIntervalsLevel, 
+                           countIntervalsGroup = input$countIntervalsGroup,
+                           multRankLevel = input$multRankLevel, 
+                           multRankScale = input$multRankScale, 
+                           multRankGroup = input$multRankGroup, 
+                           geneUsageLevel = input$geneUsageLevel, 
+                           geneUsageScale = input$geneUsageScale, 
+                           geneUsageGroup = input$geneUsageGroup,
+                           vennLevel = input$vennLevel, 
+                           vennSamples = input$vennSamples, 
+                           scatterUISample = input$scatterUISample, 
+                           scatterLevel = input$scatterLevel, 
+                           scatterScale = input$scatterScale, 
+                           dissimilarityLevel = input$dissimilarityLevel, 
+                           dissimilarityIndex = input$dissimilarityIndex,
+                           dissimilarityClustering = input$dissimilarityClustering, 
+                           doHm1 = input$doHm1, 
+                           MDSLevel = input$MDSLevel, 
+                           MDSMethod = input$MDSMethod, 
+                           grpCol4MDS = input$grpCol4MDS, 
+                           diffLevel = input$diffLevel, 
+                           diffGroup = input$diffGroup, 
+                           diffFC = input$diffFC, 
+                           diffPV = input$diffPV, 
+                           diffPCALevel = input$diffPCALevel, 
+                           PCAMethod = input$PCAMethod, 
+                           diffPCAGroup = input$diffPCAGroup, 
+                           PertGroupSelected = input$PertGroupSelected, 
+                           CtrlGroup = input$CtrlGroup, 
+                           pertDist = input$pertDist, 
+                           pertOrder = input$pertOrder, 
+                           pertPower = input$pertPower, 
+                           doHm = input$doHm,
+                           dataFiltered = dataFilt(), 
+                           repseqdt = RepSeqDT())
+            
+            render(tempReport, output_file = file,
+                   params = params,
+                   envir = new.env(parent = globalenv()))
+        }
+    )
+    
     # load RDS 
     RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile), {
         validate(need(!(is.null(input$sInfofile) && input$putInfofile == "Yes") || 

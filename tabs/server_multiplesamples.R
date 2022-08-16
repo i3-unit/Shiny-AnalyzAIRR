@@ -671,7 +671,7 @@ output$pertOrder <- renderUI({
 # })
 
 observeEvent(input$doHm, {
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), "select a group"))
+  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected == ""), "select a group"))
   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "select a control group"))
   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "select a distance method"))
   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "select an order sample by"))
