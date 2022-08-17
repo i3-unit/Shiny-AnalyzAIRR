@@ -15,9 +15,9 @@ source("tabs/ui_multiplesamples.R")
 #-------------------------------------------------------------------------------------------------------------------------------------------#
 source("tabs/ui_exploratorystats.R")
 #-------------------------------------------------------------------------------------------------------------------------------------------#
-#  perturbation section
+#  report section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
-#source("tabs/ui_peaktab.R")
+source("tabs/ui_report.R")
 #-------------------------------------------------------------------------------#
 # Dashboard header
 #-------------------------------------------------------------------------------# 
@@ -408,12 +408,8 @@ bodyTabs <-
                 box(width = 12, verbatimTextOutput("session"))
             )
     ),
-    tabItem(tabName = "reportTab", 
-            fluidRow(tags$h2("Report"),
-                     box(width = 12, 
-                         downloadButton("report", "Generate report", style="background-color:white; border-color: #022F5A;"),
-                         htmlOutput("renderedReport")))
-            )
+    sessionReportTab
+
 )
 
 #-------------------------------------------------------------------------------#

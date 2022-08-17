@@ -333,12 +333,6 @@ This file is generated automatically, this is a summary report of your actions o
 
 
 
-# One-sample analysis
-
-
-### Clonal distribution per count intervals
-
-![plot of chunk IndCountInt](figure/IndCountInt-1.png)
 
 
 
@@ -351,14 +345,20 @@ This file is generated automatically, this is a summary report of your actions o
 
 
 
-### Stacked spectratyping
-
-![plot of chunk cd3 spectra](figure/cd3 spectra-1.png)
 
 
-### Individual spectratyping
 
-![plot of chunk cd3 spectra ind](figure/cd3 spectra ind-1.png)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

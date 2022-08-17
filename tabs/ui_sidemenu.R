@@ -87,10 +87,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
   selected = F,
   text = "Session Info",
   icon = icon('info-circle', verify_fa = FALSE), tabName = "sessionTab"), 
-  menuItem(
-    selected = F,
-    text = "Session Report",
-    icon = icon('list', verify_fa = FALSE), tabName = "reportTab")
+  menuItemOutput("sessionReportTab")
 )
 
 

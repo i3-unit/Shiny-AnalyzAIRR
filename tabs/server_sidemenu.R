@@ -68,6 +68,15 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
             ), tabName = "multipleSampleTab"
         )} else shinyjs::hide(selector = "a[data-value='multipleSampleTab']")
     })
+    output$sessionReportTab <- renderMenu({
+      convertMenuItem(
+        menuItem(tabName = "sessionReportTab",
+          selected = F,
+          text = "Session Report",
+          icon = icon('list', verify_fa = FALSE)
+          ), tabName = "sessionReportTab"
+      )
+    })
     # down load RDS freshly created 
     output$downloadRDS <- renderMenu({
         menuItem("Download RepSeqexperiment",
