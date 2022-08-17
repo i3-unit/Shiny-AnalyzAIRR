@@ -206,7 +206,9 @@ This file is generated automatically, this is a summary report of your actions o
 </tbody>
 </table>
 
-**Other data**
+
+
+
 
 
 **History data**
@@ -226,142 +228,218 @@ This file is generated automatically, this is a summary report of your actions o
 </tbody>
 </table>
 
-## Filtering
-
-**Filter out a repertoire level count**
-
-
-**Filter out unproductive sequences**
-
-
-**Drop a sample**
-
-
-**Extract shared sequences**
-
-
-**Extract private sequences**
-
-
-**Extract top sequences**
-
-
-## Normalization
-
-**Down-sampling**
-
-
-
-
-**Shannnon-based normalization**
-
-
-
-
-# Exploratory statistics
-## Basic statistics
-
-### Metadata statistics
-
-
-
-### Detailed repertoire level statistics
-
-
-## Diversity estimation 
-
-### Rarefaction analysis
-
-
-
-
-### Diversity indices
-
-
-
-
-### Renyi index
 
 
 
 
 
-## Clonal distribution
-
-### Per count interval
 
 
-### Per decreasing rank
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 # One-sample analysis
 
+
 ### Clonal distribution per count intervals
 
+![plot of chunk IndCountInt](figure/IndCountInt-1.png)
 
-### V/J usage
 
 
-### V-J combination usage
+
+
+
+
+
+
+
 
 
 ### Stacked spectratyping
 
+![plot of chunk cd3 spectra](figure/cd3 spectra-1.png)
+
 
 ### Individual spectratyping
 
-
-# Multi-sample analysis
-
-## Comparison of basic statistics
-
-### Metadata statistics
+![plot of chunk cd3 spectra ind](figure/cd3 spectra ind-1.png)
 
 
-### Diversity indices
 
 
-### Renyi index
 
 
-### Count intervals
 
 
-### Rank distribution
 
 
-### V/J usage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
-## Similarity analysis
-
-### Repertoire overlap
-
-
-### Repertoire correlation
-
-
-### Hierarchical clustering
-
-
-### Multidimensional scaling
-
-
-
-## Differential analysis
-
-### Volcano plot
 
 
 
 
 
-### Principal component analysis
 
 
-## Spectractyping comparison
-![plot of chunk spectratyping comparison HM](figure/spectratyping comparison HM-1.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
