@@ -4,7 +4,7 @@
 source("installPackages.R", local = TRUE)
 library(shiny)
 library(shinydashboard)
-library(RepSeq)
+library(AnalyzAIRR)
 library(ggplot2)
 library(shinysky)
 library(DT)
@@ -93,7 +93,7 @@ selectGroup <- function(ID, x) {
 }
 
 selectList <- function(ID, x) {  
-  choices <- names(RepSeq::oData(x))
+  choices <- names(AnalyzAIRR::oData(x))
   selectizeInput(
     ID,
     "Select a table",
@@ -164,7 +164,7 @@ histSums<- function(dat=NULL, xlab="",ylab=""){
     ggplot2::xlab(xlab)+
     ggplot2::ylab(ylab)+
     ggplot2::scale_x_log10(labels=scales::comma)+
-    RepSeq::theme_RepSeq()+
+    AnalyzAIRR::theme_RepSeq()+
     theme( axis.title.x = ggplot2::element_text(size=15),
            axis.title.y = ggplot2::element_text(size=15),
            axis.text.x = ggplot2::element_text(size=15),
@@ -199,7 +199,7 @@ mydashboardHeader <- function(..., title = NULL, titleWidth = NULL, disable = FA
 
 summary_hist <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
   
-  metadata <- RepSeq::mData(x)
+  metadata <- AnalyzAIRR::mData(x)
   freq <- data.frame(table(metadata[[level]]))
   
   p1 <- ggplot2::ggplot(freq, aes(x=Var1, y=Freq)) +
@@ -207,14 +207,14 @@ summary_hist <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3n
                          fill="gray", alpha=.8) + 
     ggplot2::xlab(paste0("Number of ",level)) + 
     ggplot2::ylab("Number of samples") +
-    RepSeq::theme_RepSeq()
+    AnalyzAIRR::theme_RepSeq()
   
   return(p1)
 }
 
 summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
   
-  cts <- RepSeq::assay(x)
+  cts <- AnalyzAIRR::assay(x)
   levelChoice <- match.arg(level)
   out <- copy(cts)[, .(count = sum(count)), by = c("sample_id", levelChoice)]
   
@@ -225,7 +225,7 @@ summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3
                       fill="gray", alpha=.8, width = 1) + 
     ggplot2::ylab(paste0("Number of ", levelChoice)) + 
     ggplot2::xlab("Count")+
-    RepSeq::theme_RepSeq()
+    AnalyzAIRR::theme_RepSeq()
   
   return(p2)
 }

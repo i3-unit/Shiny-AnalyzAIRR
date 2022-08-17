@@ -191,7 +191,7 @@ output$spectraPlotbis <- renderPlot({
         height <- function() {
             if (is.null(input$singleSample) || input$singleSample == "") return(600)
             else { 
-                nrowsGrid <- ceiling(length(RepSeq::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
+                nrowsGrid <- ceiling(length(AnalyzAIRR::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
                 return(150 * nrowsGrid)
             }
         }

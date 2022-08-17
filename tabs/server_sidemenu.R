@@ -42,7 +42,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
             menuItem(tabName = "singleSampleTab",
                 text = "One-sample analysis",
                 icon = icon("user", verify_fa = FALSE),
-                selectSample("singleSample", rownames(RepSeq::mData(dataFilt()))),
+                selectSample("singleSample", rownames(AnalyzAIRR::mData(dataFilt()))),
                 radioButtons("singleScale", "Choose a scale",
                     choices = c("count", "frequency"), 
                     selected = character(0),
@@ -99,7 +99,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     
     # library sizes
     output$histlibsizesp1 <- renderPlot({
-        cts<- RepSeq::assay(dataFilt())
+        cts<- AnalyzAIRR::assay(dataFilt())
         p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
         
         p1
@@ -117,7 +117,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
         pdf(file, height=4, width=6)
-        cts<- RepSeq::assay(dataFilt())
+        cts<- AnalyzAIRR::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples"))
         dev.off()
       }
@@ -126,7 +126,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$histlibsizesp2 <- renderPlot({
       validate(need(!(is.null(input$summaryLevel) || input$summaryLevel == ""), "select a level"))
       
-      cts<- RepSeq::assay(dataFilt())
+      cts<- AnalyzAIRR::assay(dataFilt())
       p2<-histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel))
       
       p2
@@ -145,14 +145,14 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
         pdf(file, height=4, width=6)
-        cts<- RepSeq::assay(dataFilt())
+        cts<- AnalyzAIRR::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by=eval(input$summaryLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryLevel)))
         dev.off()
       }
     )
     
     output$histtxtlibsizesp1 <- renderPlot({
-      cts<- RepSeq::assay(dataFilt())
+      cts<- AnalyzAIRR::assay(dataFilt())
       p1<-histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples")
       
       p1
@@ -168,14 +168,14 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
         pdf(file, height=4, width=6)
-        cts<- RepSeq::assay(dataFilt())
+        cts<- AnalyzAIRR::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by="sample_id"][,V1], xlab="Number of sequences",ylab="Number of samples"))
         dev.off()
       }
     )
     output$histtxtlibsizesp2 <- renderPlot({
       validate(need(!(is.null(input$summaryTXTLevel) || input$summaryTXTLevel == ""), "select a level"))
-      cts<- RepSeq::assay(dataFilt())
+      cts<- AnalyzAIRR::assay(dataFilt())
       p2<-histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel))
       
       p2
@@ -194,7 +194,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       # content is a function with argument file. content writes the plot to the device
       content = function(file) {
         pdf(file, height=4, width=6)
-        cts<- RepSeq::assay(dataFilt())
+        cts<- AnalyzAIRR::assay(dataFilt())
         grid.draw(histSums(cts[,sum(count), by=eval(input$summaryTXTLevel)][,V1], xlab="count",ylab=paste("Number of", input$summaryTXTLevel)))
         dev.off()
       }

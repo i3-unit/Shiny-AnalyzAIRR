@@ -8,23 +8,23 @@ filenameDT <- function(fname){
 }
 
 # output AssayTable
-output$assayTable <- renderDataTable(RepSeq::assay(dataFilt()),
+output$assayTable <- renderDataTable(AnalyzAIRR::assay(dataFilt()),
                                      options = list(scrollX=TRUE)
 )
 output$downloadAssay <- downloadHandler(
     "RepSeqAssay.csv",
     content = function(file) {
-        write.table(RepSeq::assay(dataFilt()), file, row.names = F, sep = '\t')
+        write.table(AnalyzAIRR::assay(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # output infoTable
-output$infoTable <- renderDataTable(RepSeq::mData(dataFilt()), 
+output$infoTable <- renderDataTable(AnalyzAIRR::mData(dataFilt()), 
                                     options = list(scrollX=TRUE))
 
 output$downloadMetadata <- downloadHandler(
     "RepSeqMetadata.csv",
     content = function(file) {
-        write.table(RepSeq::mData(dataFilt()), file, row.names = F, sep = '\t')
+        write.table(AnalyzAIRR::mData(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # get information of slot metadata
@@ -34,7 +34,7 @@ output$otherDataList <- renderUI({
 
 output$metadataTable <- renderDataTable(
     if(!(is.null(input$otherDataList)))
-        RepSeq::oData(dataFilt())[[input$otherDataList]], 
+        AnalyzAIRR::oData(dataFilt())[[input$otherDataList]], 
         options = list(scrollX=TRUE)
 )
 
@@ -42,11 +42,11 @@ output$downloadOtherdata <- downloadHandler(
     paste0("RepSeqOtherdata", eval(input$otherDataList), ".csv"),
     content = function(file) {
         if(!(is.null(input$otherDataList)))
-            write.table(RepSeq::oData(dataFilt())[[input$otherDataList]], file, row.names = F, sep = '\t')
+            write.table(AnalyzAIRR::oData(dataFilt())[[input$otherDataList]], file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 # output history
-output$historyTable <- renderDataTable(RepSeq::History(dataFilt()), 
+output$historyTable <- renderDataTable(AnalyzAIRR::History(dataFilt()), 
                                        # server = FALSE, 
                                        # style="bootstrap", 
                                        # extensions = 'Buttons', 
@@ -55,12 +55,12 @@ output$historyTable <- renderDataTable(RepSeq::History(dataFilt()),
 output$downloadHistory <- downloadHandler(
     "RepSeqHistory.csv",
     content = function(file) {
-        write.table(RepSeq::History(dataFilt()), file, row.names = F, sep = '\t')
+        write.table(AnalyzAIRR::History(dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 
 output$dataExtractionHelp <- renderText({
-    createHelp(?RepSeq::assay)
+    createHelp(?AnalyzAIRR::assay)
 })
 
 observeEvent(input$dataextractionHelp,
@@ -107,7 +107,7 @@ observeEvent(input$doFilterCount,
         validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
         #validate(need(!(input$filterCountGroup == ""), "select a group and a subgroup"))
         #validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
-        return(datatable(RepSeq::History(dataFilterCount()), 
+        return(datatable(AnalyzAIRR::History(dataFilterCount()), 
                          options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
     })
 )
@@ -163,7 +163,7 @@ observeEvent(input$doPublic,
         validate(need(!(is.null(input$publicLevel) || input$publicLevel == ""), "select a level"))
         # validate(need(!(is.null(input$publicGroup) || input$publicGroup == ""), "select a group and a subgroup"))
         # validate(need(length(input$publicGroup)==2, "Need at least one group and one subgroup")) 
-        return(datatable(RepSeq::History(dataPublic()), 
+        return(datatable(AnalyzAIRR::History(dataPublic()), 
                          options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
     })
 )
@@ -198,7 +198,7 @@ observeEvent(input$doPrivate,
 output$privatedata <- renderDataTable({
     validate(need(!(is.null(input$privateLevel) || input$privateLevel == ""), "select a level"))
     validate(need(!(is.null(input$privateSingletons) || input$privateSingletons == ""), "select a number of count")) 
-    return(datatable(RepSeq::History(dataPrivate()), 
+    return(datatable(AnalyzAIRR::History(dataPrivate()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 )
@@ -230,7 +230,7 @@ dataProductiveOrUnproductive <- eventReactive(input$doProductive, {
 
 observeEvent(input$doProductive,
     output$productivedata <- renderDataTable({
-        return(datatable(RepSeq::History(dataProductiveOrUnproductive()), 
+        return(datatable(AnalyzAIRR::History(dataProductiveOrUnproductive()), 
                          options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
     })
 )
@@ -273,7 +273,7 @@ dataDropedSamples <- reactive({
 
 output$dropeddata <- renderDataTable({
     validate(need(!(is.null(input$dropSampleNames) || input$dropSampleNames == ""), "select a sample"))
-    return(datatable(RepSeq::History(dataDropedSamples()), 
+    return(datatable(AnalyzAIRR::History(dataDropedSamples()), 
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
@@ -332,7 +332,7 @@ observeEvent(input$doTopSeq,
         validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
         # validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
         # validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
-        return(datatable(RepSeq::History(dataTopSeq()), 
+        return(datatable(AnalyzAIRR::History(dataTopSeq()), 
                          options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
     })
 )
@@ -375,7 +375,7 @@ output$downsampleddata <- renderDataTable({
     validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
-    return(datatable(RepSeq::History(downSampling()),
+    return(datatable(AnalyzAIRR::History(downSampling()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
@@ -406,7 +406,7 @@ observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
         validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
-        cts1 <- RepSeq::assay(RepSeqDT())
+        cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -414,7 +414,7 @@ observeEvent(c(input$doDown, input$DownLevel), {
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(downSampling())
+        cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Downsampled data") +
             theme_RepSeq()+
@@ -440,7 +440,7 @@ output$Plothistdownlibsizes <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=3.5, width=7)
-        cts1 <- RepSeq::assay(RepSeqDT())
+        cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -448,7 +448,7 @@ output$Plothistdownlibsizes <- downloadHandler(
                    axis.title.y = ggplot2::element_text(size=15),
                    axis.text.x = ggplot2::element_text(size=15),
                    axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(downSampling())
+        cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Downsampled data") +
             theme_RepSeq()+
@@ -474,7 +474,7 @@ shannonNormed <- reactive({
 
 output$shannonsampleddata <- renderDataTable({
     validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
-    return(datatable(RepSeq::History(shannonNormed()),
+    return(datatable(AnalyzAIRR::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
 
@@ -504,7 +504,7 @@ observeEvent(c(input$doNorm, input$NormLevel), {
     output$histshannonlibsizes <- renderPlot({
         validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
         validate(need(!(is.null(input$NormLevel) || input$NormLevel == ""), "select a level"))
-        cts1 <- RepSeq::assay(RepSeqDT())
+        cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -512,7 +512,7 @@ observeEvent(c(input$doNorm, input$NormLevel), {
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(shannonNormed())
+        cts2 <- AnalyzAIRR::assay(shannonNormed())
         p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Shannon normalized data") +
             theme_RepSeq()+
@@ -538,7 +538,7 @@ output$Plothistshannonlibsizes <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=3.5, width=7)
-        cts1 <- RepSeq::assay(RepSeqDT())
+        cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -546,7 +546,7 @@ output$Plothistshannonlibsizes <- downloadHandler(
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(shannonNormed())
+        cts2 <- AnalyzAIRR::assay(shannonNormed())
         p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Shannon normalized data") +
             theme_RepSeq()+

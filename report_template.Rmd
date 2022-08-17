@@ -92,7 +92,7 @@ if(!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(
 ```{r rep count, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1){
    filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -111,7 +111,7 @@ if(input$doProductive == 1){cat("**Filter out unproductive sequences**")}
 ```{r productive, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(input$doProductive == 1){
    getProductive(x = RepSeqDT())
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -130,7 +130,7 @@ if(!is.null(input$dropSampleNames)){cat("**Drop a sample**")}
 ```{r drop sample, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$dropSampleNames)){
    dropSamples(x = RepSeqDT(), sampleNames = input$dropSampleNames)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -149,7 +149,7 @@ if(!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic 
 ```{r public, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1){
    getPublic(x = RepSeqDT(), level = input$publicLevel, group = input$publicGroup)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -168,7 +168,7 @@ if(!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$do
 ```{r private, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1){
    getPrivate(x = RepSeqDT(), level = input$privateLevel, singletons = input$privateSingletons)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -187,7 +187,7 @@ if(!is.null(input$topSeqLevel) && !is.null(input$topSeqGroup) && !is.null(input$
 ```{r topseq, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$topSeqLevel) && !is.null(input$topSeqGroup) && !is.null(input$topSeqProp) && input$doTopSeq == 1){
    getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -212,7 +212,7 @@ if(!is.null(input$downSampleSize) && !is.null(input$downseed) && !is.null(input$
 ```{r down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(input$downSampleSize) && !is.null(input$downseed) && !is.null(input$downReplace) && input$doDown == TRUE){
    sampleRepSeqExp(x = RepSeqDT(), sample.size = input$downSampleSize, rngseed = isolate(input$downseed), replace = input$downReplace, verbose = FALSE)
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -225,7 +225,7 @@ if(!is.null(input$downSampleSize) && !is.null(input$downseed) && !is.null(input$
 
 ```{r show down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(input$DownLevel) && input$doDown == TRUE){
-   cts1 <- RepSeq::assay(RepSeqDT())
+   cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -233,7 +233,7 @@ if(!is.null(input$DownLevel) && input$doDown == TRUE){
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(downSampling())
+        cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
             ggtitle("Downsampled data") +
             theme_RepSeq()+
@@ -255,7 +255,7 @@ if(input$doNorm == TRUE){cat("**Shannnon-based normalization**")}
 ```{r shannon, echo=FALSE, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(input$doNorm == TRUE){
    ShannonNorm(x = RepSeqDT())
-   historydata <- RepSeq::History(dataFilt())
+   historydata <- AnalyzAIRR::History(dataFilt())
    knitr::kable(historydata) %>%
         kableExtra::kable_styling(
                         full_width = FALSE,
@@ -268,7 +268,7 @@ if(input$doNorm == TRUE){
 
 ```{r show shannon, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(input$NormLevel) && input$doNorm == TRUE){
-   cts1 <- RepSeq::assay(RepSeqDT())
+   cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Orignial data")+
             theme_RepSeq()+
@@ -276,7 +276,7 @@ if(!is.null(input$NormLevel) && input$doNorm == TRUE){
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- RepSeq::assay(shannonNormed())
+        cts2 <- AnalyzAIRR::assay(shannonNormed())
         p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
             ggtitle("Shannon normalized data") +
             theme_RepSeq()+
@@ -348,7 +348,7 @@ if((!is.null(input$plotRare)) ||
 if(!is.null(input$plotRare)){cat("### Rarefaction analysis")}
 ```
 
-```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6, fig.asp = 1.5}
+```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(input$plotRare)){
    plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
 }

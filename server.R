@@ -131,7 +131,7 @@ shinyServer(function(input, output, session) {
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
             file.rename(tempFile, inFiles)
             
-            RepSeqDT <- RepSeq::readAIRRSet(fileList = inFiles, 
+            RepSeqDT <- AnalyzAIRR::readAIRRSet(fileList = inFiles, 
                                                 fileFormat = input$source, 
                                                 chain = input$chain, 
                                                 sampleinfo = sInfo,
@@ -153,7 +153,7 @@ shinyServer(function(input, output, session) {
           tempFile <- input$samplefiles$datapath
           inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
           file.rename(tempFile, inFiles)
-          RepSeqDT <- RepSeq::readFormatSet(fileList = inFiles, 
+          RepSeqDT <- AnalyzAIRR::readFormatSet(fileList = inFiles, 
                                             chain = input$chain, 
                                             sampleinfo = sInfo, 
                                             keep.ambiguous = TRUE,
