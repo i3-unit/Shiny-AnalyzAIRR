@@ -170,65 +170,6 @@ knitr::opts_chunk$set(echo = TRUE)
 This file is generated automatically, this is a summary report of your actions on Shiny AnalyzAIRR.
 
 # Data manipulation
-## Data extraction
-
-**Assay data**
-```{r show assay, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-assaydata <- AnalyzAIRR::assay(params$dataFiltered)
-
-knitr::kable(head(assaydata)) %>%
-    kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "left",
-                    font_size = 10) %>%
-  kableExtra::row_spec(0, color="#022f5a", font_size = 12)      
-```
-
-**Metadata**
-```{r show metadata, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-metadata <- AnalyzAIRR::mData(params$dataFiltered)
-knitr::kable(head(metadata)) %>%
-    kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "left",
-                    font_size = 10) %>%
-  kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
-```
-
-
-```{r show other data title, results='asis', echo=FALSE}
-if(!(is.null(params$otherDataList))){cat("**Other data**")}
-```
-
-```{r show other data, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-if(!(is.null(params$otherDataList))){
-       otherdata <-  AnalyzAIRR::oData(params$dataFiltered)[[params$otherDataList]]
-       knitr::kable(head(otherdata)) %>%
-        kableExtra::kable_styling(
-                        full_width = FALSE,
-                        position = "left",
-                        font_size = 10) %>%
-        kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
-}
-    
-      
-```
-
-**History data**
-```{r show History, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-historydata <- AnalyzAIRR::History(params$dataFiltered)
-knitr::kable(historydata) %>%
-        kableExtra::kable_styling(
-                        full_width = FALSE,
-                        position = "left",
-                        font_size = 10) %>%
-        kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-```
-
 
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.null(params$filterCountGroup) && params$doFilterCount == 1) ||

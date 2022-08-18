@@ -5,8 +5,78 @@ author:
   affiliation: Sorbonne Université, INSERM, Immunology-Immunopathology-Immunotherapy (i3), Paris, France
 - name: H. P. Pham
   affiliation: Parean Biotechnologies
-output: html_document
+output: 
+   #html_document
+    rmdformats::robobook:
+    #toc: true
+    toc_depth: 2
+    #theme: cerulean
+    highlight: tango
+    use_bookdown: true
+    css: styles.css
 ---
+
+<style type="text/css">
+<!-- div#TOC li { -->
+<!--     list-style:none; -->
+<!--     background-image:none; -->
+<!--     background-repeat:none; -->
+<!--     background-position:0;  -->
+<!-- } -->
+ .book .book-body .page-inner  { 
+    max-width: 1400px; 
+ <!-- width: 120%;  -->
+ } 
+ .column-left {
+  float: left;
+  width: 49.7%;
+}
+.column-right{
+ float: right;
+  width: 49.7%;
+}
+.col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+h1 {
+  color: #033c73;
+   font-size: 30px;
+}
+h1.title {
+  color: #033c73;
+}
+h2 {
+  color: #033c73;
+  font-size: 24px;
+}
+h3 {
+   color: #033c73;
+   font-size: 18px;
+}
+h4 {
+   color: #022f5a;
+}
+h5 {
+  color: #033c73;
+}
+h6 {
+   color: #033c73;
+}
+body{ 
+  font-size: 14px;
+}
+p.caption {
+  font-size: 0.9em;
+  font-style: italic;
+  color: grey;
+  margin-right: 10%;
+  margin-left: 10%;  
+  text-align: justify;
+}
+</style>
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,65 +85,6 @@ knitr::opts_chunk$set(echo = TRUE)
 This file is generated automatically, this is a summary report of your actions on Shiny AnalyzAIRR.
 
 # Data manipulation
-## Data extraction
-
-**Assay data**
-```{r show assay, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-assaydata <- RepSeq::assay(dataFilt())
-
-knitr::kable(head(assaydata)) %>%
-    kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "left",
-                    font_size = 10) %>%
-  kableExtra::row_spec(0, color="#022f5a", font_size = 12)      
-```
-
-**Metadata**
-```{r show metadata, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-metadata <- RepSeq::mData(dataFilt())
-knitr::kable(head(metadata)) %>%
-    kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "left",
-                    font_size = 10) %>%
-  kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
-```
-
-
-```{r show other data title, results='asis', echo=FALSE}
-if(!(is.null(input$otherDataList))){cat("**Other data**")}
-```
-
-```{r show other data, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-if(!(is.null(input$otherDataList))){
-       otherdata <-  RepSeq::oData(dataFilt())[[input$otherDataList]]
-       knitr::kable(head(otherdata)) %>%
-        kableExtra::kable_styling(
-                        full_width = FALSE,
-                        position = "left",
-                        font_size = 10) %>%
-        kableExtra::row_spec(0, color="#022f5a", font_size = 12)    
-}
-    
-      
-```
-
-**History data**
-```{r show History, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
-
-historydata <- RepSeq::History(dataFilt())
-knitr::kable(historydata) %>%
-        kableExtra::kable_styling(
-                        full_width = FALSE,
-                        position = "left",
-                        font_size = 10) %>%
-        kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-```
-
 
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
