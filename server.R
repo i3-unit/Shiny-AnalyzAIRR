@@ -171,7 +171,7 @@ shinyServer(function(input, output, session) {
     })
     # output reactive
     output$isUploaded <- reactive({
-        return(is.RepSeqExperiment(RepSeqDT()))
+        return(AnalyzAIRR::is.RepSeqExperiment(RepSeqDT()))
     })
     outputOptions(output, "isUploaded", suspendWhenHidden = FALSE)
     

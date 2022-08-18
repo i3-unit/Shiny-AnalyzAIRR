@@ -627,7 +627,7 @@ dataPert <- reactive({
   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
+  pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2)
   return(pertscore)
 })
 

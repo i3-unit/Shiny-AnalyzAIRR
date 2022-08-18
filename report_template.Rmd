@@ -740,7 +740,7 @@ if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(in
 if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && input$doHm == 1){
     sampleinfo <- mData(dataFilt())
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-    pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = input$pertPower)
+    pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2)
     knitr::kable(head(pertscore)) %>%
             kableExtra::kable_styling(
                     full_width = FALSE,

@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------#
 #  check and load libraries
 #------------------------------------------------------------------------------#
-source("installPackages.R", local = TRUE)
+#source("installPackages.R", local = TRUE)
 library(shiny)
 library(shinydashboard)
 library(AnalyzAIRR)
