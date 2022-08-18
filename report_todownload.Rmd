@@ -204,7 +204,7 @@ if(!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.nul
 if(params$doProductive == 1){cat("**Filter out unproductive sequences**")}
 ```
 
-```{r productive, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r productive, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(params$doProductive == 1){
    getProductive(x = params$repseqdt)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -223,7 +223,7 @@ if(params$doProductive == 1){
 if(!is.null(params$dropSampleNames)){cat("**Drop a sample**")}
 ```
 
-```{r drop sample, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r drop sample,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$dropSampleNames)){
    dropSamples(x = params$repseqdt, sampleNames = params$dropSampleNames)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -242,7 +242,7 @@ if(!is.null(params$dropSampleNames)){
 if(!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPublic == 1){cat("**Extract shared sequences**")}
 ```
 
-```{r public, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r public, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPublic == 1){
    getPublic(x = params$repseqdt, level = params$publicLevel, group = params$publicGroup)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -261,7 +261,7 @@ if(!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPubl
 if(!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params$doPrivate == 1){cat("**Extract private sequences**")}
 ```
 
-```{r private, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r private, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params$doPrivate == 1){
    getPrivate(x = params$repseqdt, level = params$privateLevel, singletons = params$privateSingletons)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -280,7 +280,7 @@ if(!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params
 if(!is.null(params$topSeqLevel) && !is.null(params$topSeqGroup) && !is.null(params$topSeqProp) && params$doTopSeq == 1){cat("**Extract top sequences**")}
 ```
 
-```{r topseq, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r topseq, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$topSeqLevel) && !is.null(params$topSeqGroup) && !is.null(params$topSeqProp) && params$doTopSeq == 1){
    getTopSequences(x=params$repseqdt, level = params$topSeqLevel, group = params$topSeqGroup, prop = params$topSeqProp)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -305,7 +305,7 @@ if((!is.null(params$downSampleSize) && !is.null(params$downseed) && !is.null(par
 if(!is.null(params$downSampleSize) && !is.null(params$downseed) && !is.null(params$downReplace) && params$doDown == TRUE){cat("**Down-sampling**")}
 ```
 
-```{r down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r down-sampling, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$downSampleSize) && !is.null(params$downseed) && !is.null(params$downReplace) && params$doDown == TRUE){
    sampleRepSeqExp(x = params$repseqdt, sample.size = params$downSampleSize, rngseed = isolate(params$downseed), replace = params$downReplace, verbose = FALSE)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -348,7 +348,7 @@ if(!is.null(params$DownLevel) && params$doDown == TRUE){
 if(params$doNorm == TRUE){cat("**Shannnon-based normalization**")}
 ```
 
-```{r shannon, echo=FALSE, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r shannon, echo=FALSE, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(params$doNorm == TRUE){
    ShannonNorm(x = params$repseqdt)
    historydata <- AnalyzAIRR::History(params$dataFiltered)
@@ -420,7 +420,7 @@ if(!is.null(params$plotStats)){
 if(params$countLevel != "" && !is.null(params$countScale)){cat("### Detailed repertoire level statistics")}
 ```
 
-```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(params$countLevel != "" && !is.null(params$countScale)){
    countfeatures <- countFeatures(x=params$dataFiltered, level = params$countLevel, scale = params$countScale, group = NULL)
    knitr::kable(head(countfeatures)) %>%
@@ -451,7 +451,7 @@ if(!is.null(params$plotRare)){
       
 ```
 
-```{r rarefaction tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+```{r rarefaction tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$plotRare)){
    raretab <- rarefactionTab(x = params$dataFiltered)
    knitr::kable(head(raretab)) %>%
@@ -476,7 +476,7 @@ if(!is.null(params$divIndex) && params$divLevel != ""){
       
 ```
 
-```{r div ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+```{r div ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(params$divLevel != ""){
    divind <- diversityIndices(x=params$dataFiltered, level = params$divLevel)
    knitr::kable(head(divind)) %>%
@@ -502,7 +502,7 @@ if(params$renyiLevel != ""){
 ```
 
 
-```{r renyi ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+```{r renyi ind tab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(params$renyiLevel != ""){
    renind <- renyiIndex(x=params$dataFiltered, level = params$renyiLevel)
    knitr::kable(head(renind)) %>%
@@ -792,7 +792,7 @@ if(!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$d
 ```
 
 
-```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
+```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(params$diffGroup) && !is.null(params$diffLevel)){
     diffexp <- diffExpGroup(x = params$dataFiltered, colGrp = params$diffGroup[[1]], level = params$diffLevel, group = params$diffGroup)
     knitr::kable(head(diffexp)) %>%
@@ -832,8 +832,8 @@ if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(
     
 ```
 
-```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all'}
-if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && params$doHm == 1){
+```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
+if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1){
     sampleinfo <- mData(params$dataFiltered)
     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, params$PertGroupSelected] %in% params$CtrlGroup)]
     pertscore <- perturbationScore(x = params$dataFiltered, ctrl.names = ctrnames, distance = params$pertDist, p = 2)
