@@ -17,7 +17,10 @@ shinyServer(function(input, output, session) {
         includeMarkdown(knitr::knit("report_template.Rmd"))         
     })
     output$report <- downloadHandler(
-        filename = "report.html",
+        filename = function() {
+            paste('report', sep = '.', switch(
+                input$format, PDF = 'pdf', HTML = 'html', Word = 'docx', PPT = "pptx"
+            ))},
         content = function(file) {
             tempReport <- file.path("report_todownload.Rmd")
             file.copy("report.Rmd", tempReport, overwrite = TRUE)
@@ -136,7 +139,13 @@ shinyServer(function(input, output, session) {
             
             render(tempReport, output_file = file,
                    params = params,
-                   envir = new.env(parent = globalenv()))
+                   envir = new.env(parent = globalenv()),
+                   switch(input$format,
+                          PDF = pdf_document(), 
+                          HTML = html_document(), 
+                          Word = word_document(), 
+                          PPT = powerpoint_presentation())
+                   )
         }
     )
     

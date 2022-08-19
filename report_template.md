@@ -76,7 +76,7 @@ p.caption {
   margin-left: 10%;  
   text-align: justify;
 } 
-p{
+#renderedReport p{
   color: white;
 }
 
@@ -85,7 +85,8 @@ p{
 
 
 
-# Data manipulation
+
+
 
 
 
@@ -255,24 +256,17 @@ p{
 
 
 
-# Multi-sample analysis
 
 
-## Comparison of basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/stats-1.png" title="plot of chunk stats" alt="plot of chunk stats" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="statsText-label" for="statsText">Enter text</label>
-<input id="statsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
 
 
 

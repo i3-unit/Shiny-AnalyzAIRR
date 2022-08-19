@@ -194,7 +194,18 @@ p.caption {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Data manipulation
+
+```{r show data manipulation title, results='asis', echo=FALSE}
+if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.null(params$filterCountGroup) && params$doFilterCount == 1) ||
+   (params$doProductive == 1) ||
+   (!is.null(params$dropSampleNames)) || 
+   (!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPublic == 1) || 
+   (!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params$doPrivate == 1) || 
+   (!is.null(params$topSeqLevel) && !is.null(params$topSeqGroup) && !is.null(params$topSeqProp) && params$doTopSeq == 1) || 
+   (!is.null(params$downSampleSize) && !is.null(params$downseed) && !is.null(params$downReplace) && params$doDown == TRUE) ||
+   (params$doNorm == TRUE)){cat("# Data manipulation")}
+```
+
 
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.null(params$filterCountGroup) && params$doFilterCount == 1) ||

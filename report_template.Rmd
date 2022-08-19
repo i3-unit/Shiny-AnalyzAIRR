@@ -76,7 +76,7 @@ p.caption {
   margin-left: 10%;  
   text-align: justify;
 } 
-p{
+#renderedReport p{
   color: white;
 }
 
@@ -87,7 +87,17 @@ p{
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Data manipulation
+```{r show data manipulation title, results='asis', echo=FALSE}
+if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
+   (input$doProductive == 1) ||
+   (!is.null(input$dropSampleNames)) || 
+   (!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1) || 
+   (!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1) || 
+   (!is.null(input$topSeqLevel) && !is.null(input$topSeqGroup) && !is.null(input$topSeqProp) && input$doTopSeq == 1) || 
+   (!is.null(input$downSampleSize) && !is.null(input$downseed) && !is.null(input$downReplace) && input$doDown == TRUE) ||
+   (input$doNorm == TRUE)){cat("# Data manipulation")}
+```
+
 
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||

@@ -42,7 +42,8 @@ bodyTabs <-
                 fluidRow(
                     column(width = 3,
                         tags$head(
-                           tags$style(HTML('.selectize-input{background-color:white; border-color: #022F5A;}
+                           tags$style(HTML('.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, .shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
+                                            .selectize-input{background-color:white; border-color: #022F5A;}
                                             .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .progress-bar{border-color: #022F5A; border-radius: 0px;}
