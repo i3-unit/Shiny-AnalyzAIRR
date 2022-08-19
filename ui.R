@@ -59,6 +59,9 @@ bodyTabs <-
                                             .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {margin-left: 0;}
                                             .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {right: 0px; background-color: #428BCA;}'))
                         ),
+                        tags$div(
+                            tags$style(".renderedReport.shiny-html-output.shiny-bound-output{color: white;}")
+                        ),
                         selectizeInput("summaryLevel",
                                           "Select a level",
                                        choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
