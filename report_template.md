@@ -85,6 +85,16 @@ p.caption {
 
 
 
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="authors-label" for="authors">Enter authors</label>
+<input id="authors" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
+
+
 
 
 

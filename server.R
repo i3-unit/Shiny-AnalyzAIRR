@@ -135,7 +135,8 @@ shinyServer(function(input, output, session) {
                            MDSText = input$MDSText,
                            volcanoText = input$volcanoText,
                            PCAText = input$PCAText,
-                           spectratypingcomparisonHMText = input$spectratypingcomparisonHMText)
+                           spectratypingcomparisonHMText = input$spectratypingcomparisonHMText, 
+                           authors = input$authors)
             
             render(tempReport, output_file = file,
                    params = params,

@@ -87,6 +87,13 @@ p.caption {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r authors, echo = FALSE}
+  tags$body(style="color: white;",
+       p(style="color: white;",
+  textInput("authors", "Enter authors", value="")))
+```
+
+
 ```{r show data manipulation title, results='asis', echo=FALSE}
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
    (input$doProductive == 1) ||
