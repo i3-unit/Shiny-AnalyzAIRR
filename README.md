@@ -18,7 +18,7 @@ a RepSeqExperiment object in ```rds``` format. Clonotype tables obtained from al
 Example
 ```r
 # load library in memory
-library(RepSeq)
+library(AnalyzAIRR)
 # list of aligner output files (suppose to be stored in /MiXCR_output/) 
 inputFolder <- list.files("/MiXCR_output/", full.name = TRUE, pattern = ".tsv")
 # Create an object of class RepSeqExperiment using the wrapper function readClonotypeSet

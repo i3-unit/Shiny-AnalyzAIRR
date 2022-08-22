@@ -14,7 +14,7 @@ shinyServer(function(input, output, session) {
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
     
     output$renderedReport <- renderUI({
-        includeMarkdown(knitr::knit("report_template.Rmd"))         
+        includeMarkdown(knitr::knit("markdown/report_template.Rmd"))         
     })
     output$report <- downloadHandler(
         filename = function() {
@@ -22,8 +22,8 @@ shinyServer(function(input, output, session) {
                 input$format, PDF = 'pdf', HTML = 'html', Word = 'docx', PPT = "pptx"
             ))},
         content = function(file) {
-            tempReport <- file.path("report_todownload.Rmd")
-            file.copy("report.Rmd", tempReport, overwrite = TRUE)
+            tempReport <- file.path("markdown/report_todownload.Rmd")
+            file.copy("markdown/report.Rmd", tempReport, overwrite = TRUE)
             
             params <- list(otherDataList = input$otherDataList, 
                            filterCountLevel = input$filterCountLevel, 

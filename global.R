@@ -16,6 +16,8 @@ library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
 library(InteractiveComplexHeatmap)
+library(rmarkdown)
+library(rsconnect)
 graphics.off()
 #------------------------------------------------------------------------------#
 # options
