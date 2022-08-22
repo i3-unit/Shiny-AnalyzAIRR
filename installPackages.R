@@ -21,11 +21,12 @@ if (is.na(match("BiocManager", instPkgs))) {
 requiredPkgs <- c("devtools", "shiny", "shinydashboard", "ggplot2", "shinysky", "DT", "gridExtra",
     "data.table", "pbapply", "pheatmap", "DESeq2", "Rcpp", "vegan", "ggplot2", "naturalsort", 
     "ade4", "scales", "magick", "directlabels")
+
 githubPkgs <- "AnalyzAIRR"
 
-# if (is.na(match("RepSeq", instPkgs))) {
-#     devtools::install_github("https://github.com/vanessajmh/AnalyzAIRR")
-# }
+if (is.na(match("AnalyzAIRR", instPkgs))) {
+    devtools::install_github("https://github.com/vanessajmh/AnalyzAIRR")
+}
 
 # missing packages
 missing_packages <- requiredPkgs[is.na(match(requiredPkgs, instPkgs))]

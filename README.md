@@ -1,6 +1,6 @@
-# DiversiTR
+# Shiny-AnalyzAIRR
 
-DiversiTR is a web-based interface developped with shiny tools that allows exploring an RepSeqExperiment object. ```RepSeqExperiment``` is a **R** **S4** class provided by the package ```RepSeq``` (cf https://github.com/ph-pham/RepSeq for more details). 
+Shiny-AnalyzAIRR is a web-based interface developped with shiny tools that allows exploring an RepSeqExperiment object. ```RepSeqExperiment``` is a **R** **S4** class provided by the package ```AnalyzAIRR``` (cf https://github.com/vanessajmh/AnalyzAIRR for more details). 
 
 # Prerequisites
 ## R
@@ -10,10 +10,10 @@ R should be installed with the following packages:
 * shinydashboard
 * shinysky
 * DT
-* RepSeq
+* AnalyzAIRR
 
 ## File in RDS format
-a RepSeqExperiment object in ```rds``` format. Clonotype tables obtained from aligners could be pre-processed using the function ```readClonotypeSet``` of the package ```RepSeq``` and saved under the ```.rds```format.
+a RepSeqExperiment object in ```rds``` format. Clonotype tables obtained from aligners could be pre-processed using the function ```readClonotypeSet``` of the package ```AnalyzAIRR``` and saved under the ```.rds```format.
 
 Example
 ```r
@@ -33,13 +33,13 @@ in development
 
 Clone the repository in commande line:
 ```r
-git clone https://github.com/ph-pham/DiversiTR
+git clone https://github.com/vanessajmh/Shiny-AnalyzAIRR
 ```
 
 Launch the Shiny application in commande line
 ```
 # Change to DiversiTR folder
-cd DiversiTR
+cd Shiny-AnalyzAIRR
 # launch R and shiny
 R -e 'shiny::runApp("./")'
 ```

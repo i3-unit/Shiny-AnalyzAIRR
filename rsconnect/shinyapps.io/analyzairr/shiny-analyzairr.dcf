@@ -1,0 +1,11 @@
+name: shiny-analyzairr
+title:
+username:
+account: analyzairr
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6824334
+bundleId: 6226248
+url: https://analyzairr.shinyapps.io/shiny-analyzairr/
+when: 1661186913.68036
+lastSyncTime: 1661186913.68037
