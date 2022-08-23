@@ -147,10 +147,10 @@ shinyServer(function(input, output, session) {
                    params = params,
                    envir = new.env(parent = globalenv()),
                    switch(input$format,
-                          PDF = pdf_document(), 
-                          HTML = html_document(), 
-                          Word = word_document(), 
-                          PPT = powerpoint_presentation())
+                          PDF = rmarkdown::pdf_document(), 
+                          HTML = BiocStyle::html_document(), 
+                          Word = rmarkdown::word_document(), 
+                          PPT = rmarkdown::powerpoint_presentation())
                    )
         }
     )

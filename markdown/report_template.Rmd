@@ -90,7 +90,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r title, echo = FALSE}
   tags$body(style="color: white;",
        p(style="color: white;",
-  textInput("title", "Enter title", value="")))
+  textInput("title", "Enter title", value="Analysis report")))
 ```
 
 

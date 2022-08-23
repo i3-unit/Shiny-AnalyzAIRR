@@ -89,7 +89,7 @@ p.caption {
 <p style="color: white;">
 <div class="form-group shiny-input-container">
 <label class="control-label" id="title-label" for="title">Enter title</label>
-<input id="title" type="text" class="form-control" value=""/>
+<input id="title" type="text" class="form-control" value="Analysis report"/>
 </div>
 </p>
 </body><!--/html_preserve-->
@@ -162,142 +162,21 @@ p.caption {
 
 
 
+# Exploratory statistics
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Multi-sample analysis
-
-
-## Comparison of basic statistics
+## Basic statistics
 
 
 ### Metadata statistics
 
-<img src="figure/stats-1.png" title="plot of chunk stats" alt="plot of chunk stats" style="display: block; margin: auto;" />
+<img src="figure/metadata stats-1.png" title="plot of chunk metadata stats" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
 <div class="form-group shiny-input-container">
-<label class="control-label" id="statsText-label" for="statsText">Enter text</label>
-<input id="statsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
-
-
-### Diversity indices
-
-<img src="figure/div-1.png" title="plot of chunk div" alt="plot of chunk div" style="display: block; margin: auto;" />
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="divText-label" for="divText">Enter text</label>
-<input id="divText" type="text" class="form-control" value=""/>
+<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
+<input id="metadatastatsText" type="text" class="form-control" value=""/>
 </div>
 </p>
 </body><!--/html_preserve-->
@@ -310,18 +189,125 @@ p.caption {
 
 
 
-### Count intervals
 
-<img src="figure/countInt-1.png" title="plot of chunk countInt" alt="plot of chunk countInt" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="countIntText-label" for="countIntText">Enter text</label>
-<input id="countIntText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

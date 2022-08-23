@@ -2,11 +2,7 @@
 title: '`r params$title `'
 author: '`r params$authors `'
 output: 
-    #html_document
-    # #toc: true
-    # #toc_depth: 2
-    # #theme: cerulean
-  pdf_document: 
+  rmarkdown::pdf_document: 
     rmdformats::robobook:
     number_sections: yes
     toc: yes
@@ -14,13 +10,14 @@ output:
     css: styles.css
     highlight: tango
     use_bookdown: true
+    template: mytemplate.tex
   word_document:
     rmdformats::robobook:
     toc: yes
     css: styles.css
     highlight: tango
     use_bookdown: true
-  html_document:
+  BiocStyle::html_document:
     rmdformats::robobook:
     number_sections: yes
     toc: yes
@@ -28,6 +25,7 @@ output:
     css: styles.css
     highlight: tango
     use_bookdown: true
+always_allow_html: true
 params: 
   otherDataList: NA
   filterCountLevel: NA
@@ -141,7 +139,7 @@ params:
   PCAText: null
   spectratypingcomparisonHMText: null
   authors: null
-  title: null
+  title: "Report"
   doStats: null
   dogeneUsage: null
   doCountInt: null

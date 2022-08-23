@@ -18,7 +18,9 @@ library(shinyWidgets)
 library(InteractiveComplexHeatmap)
 library(rmarkdown)
 library(rsconnect)
-#library(markdown)
+library(BiocStyle)
+library(markdown)
+
 graphics.off()
 #------------------------------------------------------------------------------#
 # options
