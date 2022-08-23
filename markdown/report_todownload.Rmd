@@ -1,5 +1,5 @@
 ---
-title: "Report session"
+title: '`r params$title `'
 author: '`r params$authors `'
 output: 
     #html_document
@@ -141,6 +141,11 @@ params:
   PCAText: null
   spectratypingcomparisonHMText: null
   authors: null
+  title: null
+  doStats: null
+  dogeneUsage: null
+  doCountInt: null
+  doDiversity: null
 ---
 
 
@@ -771,46 +776,46 @@ if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)) ||
 
 
 ```{r show Comparison of basic statistics title, results='asis', echo=FALSE}
-if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)) || 
-   (!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)) || 
+if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup) && params$doStats == 1) || 
+   (!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex) && params$doDiversity == 1) || 
    (!is.null(params$multrenLevel) && !is.null(params$multrenGroup)) || 
-   (!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup)) || 
+   (!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && params$doCountInt == 1) || 
    (!is.null(params$multRankLevel) && !is.null(params$multRankScale) && !is.null(params$multRankGroup)) || 
-   (!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup))){cat("## Comparison of basic statistics")}
+   (!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup) && params$dogeneUsage == 1)){cat("## Comparison of basic statistics")}
 ```
 
 
 ```{r show Metadata statistics multiple title, results='asis', echo=FALSE}
-if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){cat("### Metadata statistics")}
+if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup) && params$doStats == 1){cat("### Metadata statistics")}
 ```
 
 ```{r stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){
+if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup) && params$doStats == 1){
     plotStatistics(x = params$dataFiltered, stat = params$statisticsStat, groupBy = params$statisticsGroup, label_colors = NULL)
 }
       
 ```
 
 ```{r show stats text entry, echo = FALSE, results='asis'}
-if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){
+if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup) && params$doStats == 1){
   cat(params$statsText)
 }
 ```
 
 
 ```{r show Diversity indices multiple title, results='asis', echo=FALSE}
-if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)){cat("### Diversity indices")}
+if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex) && params$doDiversity == 1){cat("### Diversity indices")}
 ```
 
 ```{r div, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)){
+if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex) && params$doDiversity == 1){
     plotDiversity(x = params$dataFiltered, level = params$diverLevel, groupBy = params$diverGroup, index = params$diverIndex, label_colors = NULL)
 }
      
 ```
 
 ```{r show div text entry, echo = FALSE, results='asis'}
-if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)){
+if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex) && params$doDiversity == 1){
   cat(params$divText)
 }
 ```
@@ -835,18 +840,18 @@ if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){
 
 
 ```{r show Count intervals multiple title, results='asis', echo=FALSE}
-if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup)){cat("### Count intervals")}
+if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && params$doCountInt == 1){cat("### Count intervals")}
 ```
 
 ```{r countInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup)){
+if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && params$doCountInt == 1){
     plotCountIntervals(x = params$dataFiltered, level = params$countIntervalsLevel, groupBy = params$countIntervalsGroup, label_colors = NULL)
 }
        
 ```
 
 ```{r show countInt text entry, echo = FALSE, results='asis'}
-if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup)){
+if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && params$doCountInt == 1){
   cat(params$countIntText)
 }
 ```
@@ -871,18 +876,18 @@ if(!is.null(params$multRankLevel) && !is.null(params$multRankScale) && !is.null(
 
 
 ```{r show V/J usage multiple title, results='asis', echo=FALSE}
-if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup)){cat("### V/J usage")}
+if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup) && params$dogeneUsage == 1){cat("### V/J usage")}
 ```
 
 ```{r geneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup)){
+if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup) && params$dogeneUsage == 1){
     plotGeneUsage(x = params$dataFiltered, level = params$geneUsageLevel, scale = params$geneUsageScale, groupBy = params$geneUsageGroup, label_colors = NULL)
 }
     
 ```
 
 ```{r show geneUsage text entry, echo = FALSE, results='asis'}
-if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup)){
+if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup) && params$dogeneUsage == 1){
   cat(params$geneUsageText)
 }
 ```

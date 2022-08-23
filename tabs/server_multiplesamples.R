@@ -7,15 +7,17 @@ output$statisticsStat <- renderUI({
 })
 
 output$statisticsGroup <- renderUI({
-  selectGroupDE("statisticsGroup", dataFilt())
+  selectMultGroupDE("statisticsGroup", dataFilt())
 })
 
 # plot statistics
-output$Statistics <- renderPlot({
-    validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "select a statistic"))
-    validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "select a group"))
-    plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
-})  
+observeEvent(input$doStats, {
+  output$Statistics <- renderPlot({
+      validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "select a statistic"))
+      validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "select one or more groups"))
+      plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
+  })  
+})
 
 output$StatisticsHelp <- renderText({
   createHelp(?plotStatistics)
@@ -31,7 +33,7 @@ observeEvent(input$statsHelp,
 )
 
 output$downPlotStatistics <- renderUI({
-  if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup))) {
+  if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup)) & input$doStats==1) {
     downloadButton("PlotStatistics", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -49,19 +51,20 @@ output$PlotStatistics <- downloadHandler(
 )
 
 output$diverGroup <- renderUI({
-  selectGroupDE("diverGroup", dataFilt())
+  selectMultGroupDE("diverGroup", dataFilt())
 })
 
 # plot diversity
-output$Diversity <- renderPlot({
-  validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select a level"))
-  validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "select an index"))
-  validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select a group"))
-  plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
-})  
-
+observeEvent(input$doDiversity, {
+  output$Diversity <- renderPlot({
+    validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "select a level"))
+    validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "select an index"))
+    validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "select a group"))
+    plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
+  })  
+})
 output$downPlotDiversity <- renderUI({
-  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex))) {
+  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex)) & input$doDiversity == 1) {
     downloadButton("PlotDiversity", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -132,17 +135,19 @@ observeEvent(input$RenHelp,
 )
 
 output$countIntervalsGroup <- renderUI({
-  selectGroupDE("countIntervalsGroup", dataFilt())
+  selectMultGroupDE("countIntervalsGroup", dataFilt())
 })
 # plot count intervals
-output$CountInt <- renderPlot({
-  validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "select a level"))
-  validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "select a group"))
-  plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
-}) 
+observeEvent(input$doCountInt, {
+  output$CountInt <- renderPlot({
+    validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "select a level"))
+    validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "select a group"))
+    plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
+  }) 
+})
 
 output$downPlotCountInt <- renderUI({
-  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup))) {
+  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup)) & input$doCountInt==1) {
     downloadButton("PlotCountInt", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -213,22 +218,26 @@ observeEvent(input$mrankHelp,
 )
 
 output$geneUsageGroup <- renderUI({
-  selectGroupDE("geneUsageGroup", dataFilt())
+  selectMultGroupDE("geneUsageGroup", dataFilt())
 })
 # plot V and J gene usages
-output$geneUsage <- plotly::renderPlotly({
-  validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "select a scale"))
-  validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
-  validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "select a group"))
-  plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+theme(legend.position = "none"), 
-                   tooltip = c("x", "y")) %>%
-    plotly::layout(boxmode = "group")
+observeEvent(input$dogeneUsage, {
+  output$geneUsage <- plotly::renderPlotly({
+    validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "select a scale"))
+    validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "select a level"))
+    validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "select a group"))
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+theme(legend.position = "none"), 
+                     tooltip = c("x", "y")) %>%
+      plotly::layout(boxmode = "group")
+  })
 })
+
 output$downPlotgeneUsage <- renderUI({
-  if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale))) {
+  if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale)) & input$dogeneUsage==1) {
     downloadButton("PlotgeneUsage", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
-}) 
+})
+
 
 output$PlotgeneUsage <- downloadHandler(
   filename =  function() {

@@ -136,7 +136,12 @@ shinyServer(function(input, output, session) {
                            volcanoText = input$volcanoText,
                            PCAText = input$PCAText,
                            spectratypingcomparisonHMText = input$spectratypingcomparisonHMText, 
-                           authors = input$authors)
+                           authors = input$authors, 
+                           title = input$title,
+                           doStats = input$doStats,
+                           dogeneUsage = input$dogeneUsage,
+                           doCountInt = input$doCountInt,
+                           doDiversity = input$doDiversity)
             
             render(tempReport, output_file = file,
                    params = params,

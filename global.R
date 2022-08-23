@@ -18,11 +18,12 @@ library(shinyWidgets)
 library(InteractiveComplexHeatmap)
 library(rmarkdown)
 library(rsconnect)
+#library(markdown)
 graphics.off()
 #------------------------------------------------------------------------------#
 # options
 #------------------------------------------------------------------------------#
-options(shiny.maxRequestSize = 200 * 1024 ^ 2, repos = BiocManager::repositories()) # limite la taille des fichiers input, a modifier
+options(shiny.maxRequestSize = 200 * 1024 ^ 2) # limite la taille des fichiers input, a modifier
 
 #------------------------------------------------------------------------------#
 # additional functions
@@ -117,6 +118,20 @@ selectGroupDE <- function(ID, x){
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )
 }
+
+selectMultGroupDE <- function(ID, x){
+  sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+  idx <- sapply(sdata, function(i) nlevels(i)/length(i))
+  choices <- colnames(sdata)[which(idx < 1)]
+  selectizeInput(
+    ID,
+    "Select one or multiple groups",
+    choices = choices,
+    multiple = TRUE,
+    options = list(onInitialize = I('function() { this.setValue(""); }'))
+  )
+}
+
 
 selectGroupStat <- function(ID, x){
   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]

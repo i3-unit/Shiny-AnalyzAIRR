@@ -87,6 +87,13 @@ p.caption {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r title, echo = FALSE}
+  tags$body(style="color: white;",
+       p(style="color: white;",
+  textInput("title", "Enter title", value="")))
+```
+
+
 ```{r authors, echo = FALSE}
   tags$body(style="color: white;",
        p(style="color: white;",
@@ -682,28 +689,28 @@ if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)) ||
 
 
 ```{r show Comparison of basic statistics title, results='asis', echo=FALSE}
-if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)) || 
-   (!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)) || 
+if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup) && input$doStats == 1) || 
+   (!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex) && input$doDiversity == 1) || 
    (!is.null(input$multrenLevel) && !is.null(input$multrenGroup)) || 
-   (!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)) || 
+   (!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && input$doCountInt == 1) || 
    (!is.null(input$multRankLevel) && !is.null(input$multRankScale) && !is.null(input$multRankGroup)) || 
-   (!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup))){cat("## Comparison of basic statistics")}
+   (!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup) && input$dogeneUsage == 1)){cat("## Comparison of basic statistics")}
 ```
 
 
 ```{r show Metadata statistics multiple title, results='asis', echo=FALSE}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){cat("### Metadata statistics")}
+if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup) && input$doStats == 1){cat("### Metadata statistics")}
 ```
 
 ```{r stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
+if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup) && input$doStats == 1){
     plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)
 }
       
 ```
 
 ```{r show stats text entry,echo = FALSE}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
+if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup) && input$doStats == 1){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("statsText", "Enter text", value="")))
@@ -712,18 +719,18 @@ if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
 
 
 ```{r show Diversity indices multiple title, results='asis', echo=FALSE}
-if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){cat("### Diversity indices")}
+if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex) && input$doDiversity == 1){cat("### Diversity indices")}
 ```
 
 ```{r div, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){
+if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex) && input$doDiversity == 1){
     plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)
 }
      
 ```
 
 ```{r show div text entry,echo = FALSE}
-if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){
+if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex) && input$doDiversity == 1){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("divText", "Enter text", value="")))
@@ -752,18 +759,18 @@ if(!is.null(input$multrenLevel) && !is.null(input$multrenGroup)){
 
 
 ```{r show Count intervals multiple title, results='asis', echo=FALSE}
-if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)){cat("### Count intervals")}
+if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && input$doCountInt == 1){cat("### Count intervals")}
 ```
 
 ```{r countInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)){
+if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && input$doCountInt == 1){
     plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)
 }
        
 ```
 
 ```{r show countInt text entry,echo = FALSE}
-if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)){
+if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && input$doCountInt == 1){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("countIntText", "Enter text", value="")))
@@ -792,18 +799,18 @@ if(!is.null(input$multRankLevel) && !is.null(input$multRankScale) && !is.null(in
 
 
 ```{r show V/J usage multiple title, results='asis', echo=FALSE}
-if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)){cat("### V/J usage")}
+if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup) && input$dogeneUsage == 1){cat("### V/J usage")}
 ```
 
 ```{r geneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)){
+if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup) && input$dogeneUsage == 1){
     plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)
 }
     
 ```
 
 ```{r show geneUsage text entry,echo = FALSE}
-if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)){
+if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup) && input$dogeneUsage == 1){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("geneUsageText", "Enter text", value="")))

@@ -10,8 +10,15 @@ CompBasicTab<-
                         column(width = 2,
                                uiOutput("statisticsGroup")
                         ),
-                        column(width = 8,
-                               div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                        column(width = 2, 
+                               style = "margin-top: 25px;",
+                               tags$head(
+                                   tags$style(HTML('#doStats{background-color:white; border-color: #022F5A;}'))
+                               ),
+                               actionButton("doStats", "run")
+                        ),
+                        column(width = 6,
+                               div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                    circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                tags$head(tags$style(".modal-dialog{ width:1200px}"))
                         )
@@ -38,8 +45,15 @@ CompBasicTab<-
                                  column(width = 2,
                                         uiOutput("diverGroup")
                                  ),
-                                 column(width = 6,
-                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                                 column(width = 2, 
+                                        style = "margin-top: 25px;",
+                                        tags$head(
+                                            tags$style(HTML('#doDiversity{background-color:white; border-color: #022F5A;}'))
+                                        ),
+                                        actionButton("doDiversity", "run")
+                                 ),
+                                 column(width = 4,
+                                        div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                             circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                  )
@@ -81,8 +95,15 @@ CompBasicTab<-
                                  column(width = 2,
                                         uiOutput("countIntervalsGroup")
                                  ),
-                                 column(width = 8,
-                                        div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
+                                 column(width = 2, 
+                                        style = "margin-top: 25px;",
+                                        tags$head(
+                                            tags$style(HTML('#doCountInt{background-color:white; border-color: #022F5A;}'))
+                                        ),
+                                        actionButton("doCountInt", "run")
+                                 ),
+                                 column(width = 6,
+                                        div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                             circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                  )
@@ -134,8 +155,15 @@ CompBasicTab<-
                          column(width = 2,
                                 uiOutput("geneUsageGroup")
                          ),
-                         column(width = 6,
-                                div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                         column(width = 2, 
+                                style = "margin-top: 25px;",
+                                tags$head(
+                                    tags$style(HTML('#dogeneUsage{background-color:white; border-color: #022F5A;}'))
+                                ),
+                                actionButton("dogeneUsage", "run")
+                         ),
+                         column(width = 4,
+                                div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                     circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                 tags$head(tags$style(".modal-dialog{ width:1200px}"))
                          )
