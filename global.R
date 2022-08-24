@@ -20,7 +20,6 @@ library(rmarkdown)
 library(rsconnect)
 library(BiocStyle)
 library(markdown)
-
 graphics.off()
 #------------------------------------------------------------------------------#
 # options

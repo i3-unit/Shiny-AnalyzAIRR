@@ -27,17 +27,15 @@ sideMenu <- sidebarMenu(id = "sideTabs",
         menuItem(
             text = "Upload alignment files",
             icon = icon("folder-open", verify_fa = FALSE),
-            selectizeInput(
-                "source",
-                'Source',
-                choices = list("MiXCR", "immunoseq", "AIRR", "Other"),
-                options = list(onInitialize = I('function() { this.setValue(""); }'))
+            selectizeInput(inputId = "source", 
+                           'Source',
+                           choices = list("MiXCR", "immunoseq", "AIRR", "Other"),
+                           options = list(onInitialize = I('function() { this.setValue(""); }'))
             ),
-            radioButtons(
-                "chain",
-                "Chain", 
-                choiceNames = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL"),
-                choiceValues = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL")
+            radioButtons(inputId = "chain", 
+                         label = "Chain", 
+                         choiceNames = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL"),
+                         choiceValues = c("TRA", "TRB", "TRG", "TRD", "IGH", "IGK", "IGL")
             ),
             conditionalPanel(
               condition = "output.canUpload",

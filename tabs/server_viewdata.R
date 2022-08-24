@@ -96,17 +96,19 @@ output$filterCountGroup <- renderUI({
 dataFilterCount <- eventReactive(input$doFilterCount, {
     validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
     validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-    #validate(need(!(is.null(input$filterCountGroup) || input$filterCountGroup == ""), "select a group and a subgroup")) 
-    #validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
-    filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = input$filterCountGroup)
+    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+        filterCountGroup <- input$filterCountGroup
+    } else {
+        filterCountGroup <- NULL
+    }
+    filtercounts <- filterCount(x = RepSeqDT(), level = input$filterCountLevel, n = input$filterCountN, group = filterCountGroup)
     return(filtercounts)
 })
+
 observeEvent(input$doFilterCount,
     output$filtercounts <- renderDataTable({
         validate(need(!(is.null(input$filterCountLevel) || input$filterCountLevel == ""), "select a level"))
         validate(need(!(is.null(input$filterCountN) || input$filterCountN == ""), "select a number of count")) 
-        #validate(need(!(input$filterCountGroup == ""), "select a group and a subgroup"))
-        #validate(need(length(input$filterCountGroup)==2, "Need at least one group and one subgroup")) 
         return(datatable(AnalyzAIRR::History(dataFilterCount()), 
                          options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
     })

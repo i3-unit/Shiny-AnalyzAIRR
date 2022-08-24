@@ -42,7 +42,7 @@ bodyTabs <-
                 fluidRow(
                     column(width = 3,
                         tags$head(
-                           tags$style(HTML('.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, .shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
+                           tags$style(HTML('#format.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, #format.shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
                                             .selectize-input{background-color:white; border-color: #022F5A;}
                                             .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A; border-radius: 0px;}
                                             .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
@@ -130,7 +130,12 @@ bodyTabs <-
                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ),
                                                  column(width = 3,
-                                                       uiOutput("filterCountGroup")
+                                                        tags$head(
+                                                            tags$style(type="text/css",
+                                                                        '#filterCountGroup.shiny-output-error { visibility: hidden; }',
+                                                                        '#filterCountGroup.shiny-output-error:before { visibility: hidden; }')
+                                                        ),
+                                                        uiOutput("filterCountGroup")
                                                  ), 
                                                  column(width = 2,
                                                         sliderInput(inputId = "filterCountN",
@@ -199,6 +204,11 @@ bodyTabs <-
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
                                                  column(width = 3,
+                                                        tags$head(
+                                                            tags$style(type="text/css",
+                                                                       '#publicGroup.shiny-output-error { visibility: hidden; }',
+                                                                       '#publicGroup.shiny-output-error:before { visibility: hidden; }')
+                                                        ),
                                                         uiOutput("publicGroup")
                                                  ),
                                                  column(width = 2, 
@@ -226,12 +236,6 @@ bodyTabs <-
                                                                         choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
-                                                 # column(width = 2,
-                                                 #        selectizeInput("privateSingletons",
-                                                 #                       "Private singletons",
-                                                 #                       choices = list(TRUE, FALSE),
-                                                 #                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                                 # ),
                                                  column(width = 2,
                                                         switchButton(inputId = "privateSingletons",
                                                                      label = "Private singletons",
@@ -263,6 +267,11 @@ bodyTabs <-
                                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  ), 
                                                  column(width = 3,
+                                                        tags$head(
+                                                            tags$style(type="text/css",
+                                                                       '#topSeqGroup.shiny-output-error { visibility: hidden; }',
+                                                                       '#topSeqGroup.shiny-output-error:before { visibility: hidden; }')
+                                                        ),
                                                         uiOutput("topSeqGroup")
                                                  ), 
                                                  column(width = 2,

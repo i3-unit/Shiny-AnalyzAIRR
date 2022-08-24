@@ -147,10 +147,10 @@ shinyServer(function(input, output, session) {
                    params = params,
                    envir = new.env(parent = globalenv()),
                    switch(input$format,
-                          PDF = rmarkdown::pdf_document(), 
+                          PDF = rmarkdown::pdf_document(toc = TRUE, toc_depth = 4, number_sections = TRUE, highlight = "tango", keep_tex = TRUE), 
                           HTML = BiocStyle::html_document(), 
-                          Word = rmarkdown::word_document(), 
-                          PPT = rmarkdown::powerpoint_presentation())
+                          Word = rmarkdown::word_document(toc = TRUE, toc_depth = 4, number_sections = TRUE), 
+                          PPT = rmarkdown::powerpoint_presentation(toc = TRUE, toc_depth = 4, number_sections = TRUE))
                    )
         }
     )

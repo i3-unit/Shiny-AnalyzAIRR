@@ -162,90 +162,90 @@ p.caption {
 
 
 
-# Exploratory statistics
 
 
-## Basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/metadata stats-1.png" title="plot of chunk metadata stats" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# One-sample analysis
+
+
+### Clonal distribution per count intervals
+
+<img src="figure/IndCountInt-1.png" title="plot of chunk IndCountInt" alt="plot of chunk IndCountInt" style="display: block; margin: auto;" />
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
 <div class="form-group shiny-input-container">
-<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
-<input id="metadatastatsText" type="text" class="form-control" value=""/>
+<label class="control-label" id="IndCountIntText-label" for="IndCountIntText">Enter text</label>
+<input id="IndCountIntText" type="text" class="form-control" value=""/>
 </div>
 </p>
 </body><!--/html_preserve-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
