@@ -270,9 +270,9 @@ observeEvent(input$geneusageHelp,
 output$vennUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("vennSamples",
-                 "Select samples",  #modified by VMH
+                 "Select samples (maximum 7)",  #modified by VMH
                  choices = choices,
-                 options = list(maxItems = length(choices), onInitialize = I('function() { this.setValue(""); }')),
+                 options = list(maxItems = 7, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)  #VMH changed 3 to 4
 })
 
