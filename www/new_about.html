@@ -3,18 +3,8 @@
 <ul>
 <li>It proposes an analytical routine starting with data exploration, leading to in-depth statistical comparisons with the aim of answering defined biological questions.</li>
 <li>It allows the calculation of a set of diversity measures and statistical metrics applicable at any level of granularity.</li>
-<li>It offers different types of data visualization and ready-to-publish graphics that can be easily personalized.</li>
+<li>It offers different types of data visualization and ready-to-publish graphics that can be easily downloaded.</li>
 </ul>
-<p>Useful links:</p>
-<ul>
-<li><a href="https://github.com/vanessajmh/AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/AnalyzAIRR</a></li>
-<li><a href="https://vanessajmh.github.io/AnalyzAIRR.github.io" style="color: #3C8DBC">https://vanessajmh.github.io/AnalyzAIRR.github.io</a></li>
-<li><a href="https://github.com/vanessajmh/Shiny-AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/Shiny-AnalyzAIRR</a></li>
-  
-</ul>
-
- 
-
 
 <div id="how-to" class="section level2">
 <h2>Data loading</h2>
@@ -51,81 +41,17 @@ It is possible to provide a metadata if users wish to perform inter-group compar
 <p><strong>5. Download the RepSeqExperiment object</strong></p>
 Once files are successfully downloaded, a <strong>RepSeqExperiment</strong> object is built which can downloaded in a rds format for subsequent usage.
 
-<h3> Start your analysis </h3>
-<h4> Data manipulation </h4>
-<p><strong>1. Visualize the data</strong></p>
-<ul>
-<li><strong>Assay</strong></li>
-<li><strong>Metadata</strong></li>
-<li><strong>Other data</strong></li>
-<li><strong>History</strong></li>
-</ul>
-<p><strong>2. Filter the data</strong></p>
-<ul>
-<li><strong>Filter out a repertoire level count</strong></li>
-<li><strong>Filter out unproductive sequences</strong></li>
-<li><strong>Drop a sample</strong></li>
-<li><strong>Extract shared sequences</strong></li>
-<li><strong>Extract private sequences</strong></li>
-<li><strong>Extract top sequences</strong></li>
-</ul>
-<p><strong>3. Normalize the data</strong></p>
-<ul>
-<li><strong>Down-sampling</strong></li>
-<li><strong>Shannon-based normalization</strong></li>
-</ul>
 <p> <strong> Note </strong>: If multiple filters are applied on the <strong>RepSeqExperiment</strong> object, only the last applied filter will be taken into account. In order to perform multiple filtering, the object must be downloaded in a rds format and re-uploaded into the interface.</p>
-<h4> Exploratory statistics </h4>
-<p><strong>1. Basic statistics</strong></p>
-<ul>
-<li><strong>Metadata statistics</strong></li>
-<li><strong>Detailed repertoire level statistics</strong></li>
-</ul>
-<p><strong>2. Diversity estimation</strong></p>
-<ul>
-<li><strong>Rarefaction analysis</strong></li>
-<li><strong>Diversity indices</strong></li>
-<li><strong>Renyi index</strong></li>
-</ul>
-<p><strong>3. Clonal distribution</strong></p>
-<ul>
-<li><strong>Per count interval</strong></li>
-<li><strong>Per decreasing rank</strong></li>
-</ul>
-<h4> One-sample analysis </h4>
-<ul>
-<li><strong>Clonal distribution pr count intervals</strong></li>
-<li><strong>V/J usage</strong></li>
-<li><strong>V-J combination usage</strong></li>
-<li><strong>CDR3 stacked spectractyping</strong></li>
-<li><strong>CDR3 individual spectractyping</strong></li>
-</ul>
-<h4> Multi-sample analysis </h4>
-<p><strong>1. Comparison of basic statistics</strong></p>
-<ul>
-<li><strong>Metadata statistics</strong></li>
-<li><strong>Diversity indices</strong></li>
-<li><strong>Renyi diversity</strong></li>
-<li><strong>Count intervals</strong></li>
-<li><strong>Rank distribution</strong></li>
-<li><strong>V/J usage</strong></li>
-</ul>
-<p><strong>2. Similarity analysis</strong></p>
-<ul>
-<li><strong>Repertoire overlap</strong></li>
-<li><strong>Repertoire correlation</strong></li>
-<li><strong>Hierarchical clustering</strong></li>
-<li><strong>Multidimensional scaling</strong></li>
-</ul>
-<p><strong>3. Differential analysis</strong></p>
-<ul>
-<li><strong>Volcano plot</strong></li>
-<li><strong>Principal component analysis</strong></li>
-</ul>
-<p><strong>4. Spectratyping comparison</strong></p>
 
-<p>Finally, you can visualize and download the final report of your analysis session. Do not hesitate to give it a title, specify your name(s) and to add text. Note that each table or plot can also be downloaded separately in pdf.</p>
-<p>If you need help, do not hesitate to click on the question mark located at the top right of each panel to learn more about the function used.</p>
+<p>Finally, you can visualize and download the complete analysis report in the <strong>Report session</strong> section.</p>
+
+<p>A description of all the proposed analyses can be obtained by clicking on the question mark located at the top right of each panel. For more details, visit the following links:</p>
+<ul>
+<li><a href="https://github.com/vanessajmh/AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/AnalyzAIRR</a></li>
+<li><a href="https://vanessajmh.github.io/AnalyzAIRR.github.io" style="color: #3C8DBC">https://vanessajmh.github.io/AnalyzAIRR.github.io</a></li>
+<li><a href="https://github.com/vanessajmh/Shiny-AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/Shiny-AnalyzAIRR</a></li>
+  
+</ul>
 
 </div>
 

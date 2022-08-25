@@ -1,46 +1,102 @@
 # Shiny-AnalyzAIRR
 
-Shiny-AnalyzAIRR is a web-based interface developped with shiny tools that allows exploring an RepSeqExperiment object. ```RepSeqExperiment``` is a **R** **S4** class provided by the package ```AnalyzAIRR``` (cf https://github.com/vanessajmh/AnalyzAIRR for more details). 
+Shiny-AnalyzAIRR is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/vanessajmh/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
 
-# Prerequisites
-## R
+The application can be either download from the Github repository or used directly at this [link](https://analyzairr.shinyapps.io/shiny-analyzairr/).
+
+
+# Package installation
 R should be installed with the following packages:
 * shiny
-* shinyjs
 * shinydashboard
 * shinysky
-* DT
+* shinyjs
+* shinythemes
+* shinyWidgets
 * AnalyzAIRR
+* rmarkdown
+* markdown
+* BiocStyle
 
-## File in RDS format
-a RepSeqExperiment object in ```rds``` format. Clonotype tables obtained from aligners could be pre-processed using the function ```readClonotypeSet``` of the package ```AnalyzAIRR``` and saved under the ```.rds```format.
-
-Example
-```r
-# load library in memory
-library(AnalyzAIRR)
-# list of aligner output files (suppose to be stored in /MiXCR_output/) 
-inputFolder <- list.files("/MiXCR_output/", full.name = TRUE, pattern = ".tsv")
-# Create an object of class RepSeqExperiment using the wrapper function readClonotypeSet
-datatab <- readClonotypeSet(inputFolder, cores=2L, aligner="MiXCR", chain="A", sampleinfo=NULL, keep.ambiguous=FALSE, keep.unproductive=FALSE, aa.th=8) 
-saveRDS(datatab, file="~/datatab.rds")
 ```
+#Install package dependencies
 
-## Tab-delimited clonotype tables
-in development
+
+
+```
 
 # Getting started
 
 Clone the repository in commande line:
-```r
+```
 git clone https://github.com/vanessajmh/Shiny-AnalyzAIRR
 ```
 
 Launch the Shiny application in commande line
 ```
-# Change to DiversiTR folder
+# Change to Shiny-AnalyzAIRR folder
 cd Shiny-AnalyzAIRR
 # launch R and shiny
 R -e 'shiny::runApp("./")'
 ```
+
+Launch the Shiny application in Rstudio
+```
+# Open global.R and run
+shiny::runApp("./")
+```
+
+
 and copy/paste the hyper link address (http://120.0.0.1:port_number) into a web browser address bar.
+
+# Data loading
+
+## Upload a RepSeqExperiment object
+
+A **RepSeqExperiment** object generated using the AnalyzAIRR R package and saved in an rds format can be used.
+
+## Upload alignment files in AnalyzAIRR-compliant formats
+
+**1. Specify an alignment file format**
+
+  * **MiXCR**: https://github.com/milaboratory/mixcr
+
+  * **immunoSEQ**: https://www.immunoseq.com/
+
+  * **MiAIRR**: https://docs.airr-community.org/en/latest/datarep/rearrangements.html 
+  
+  * **Other**: Alignment files should contain the following required column names:
+
+      - **sample_id**: Sample names
+      
+      - **CDR3nt**: CDR3 nucleotide sequence
+      
+      - **CDR3aa**: CDR3 amino acid sequence
+      
+      - **V**: Variable gene name (IMGT nomenclature)
+      
+      - **J**: Joining gene name (IMGT nomenclature)
+      
+      - **count**: the occurrence of each sequence within the sample
+      
+      **Note**: The order of the columns must be respected. Input files can contain           additional columns that will not be taken into account during the loading process.
+
+**2. Specify the chain type to be analyzed (only one chain can be loaded at once)**
+
+**3. Specify the paths to input files**
+
+**4. Load the metadata**
+
+  It is possible to provide a metadata if users wish to perform inter-group comparative analyses. 
+  
+  The metadata should be provided as a dataframe containing:
+
+  * a column with the sample names that match the name of the alignment files and their order in the list.
+  
+  * any additional columns with relevant information for the analyses. Columns could encompass the experimental conditions, clinical variables, etc... 
+  
+  No specific column names nor order are required.
+
+**5. Download the RepSeqExperiment object**
+
+Once files are successfully downloaded, a RepSeqExperiment object is built which can downloaded in a rds format for subsequent usage.
