@@ -272,6 +272,7 @@ p.caption {
 # Multi-sample analysis
 
 
+## Comparison of basic statistics
 
 
 
@@ -288,12 +289,18 @@ p.caption {
 
 
 
+### Renyi index
 
+<img src="figure/renyi-1.png" title="plot of chunk renyi" alt="plot of chunk renyi" style="display: block; margin: auto;" />
 
-
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="renyiText-label" for="renyiText">Enter text</label>
+<input id="renyiText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 

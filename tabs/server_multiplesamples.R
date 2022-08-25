@@ -281,8 +281,6 @@ observeEvent(input$doVenn, {
     validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select a level"))
     validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
     validate(need(length(input$vennSamples)>1, "select a second sample"))
-    validate(need(!(is.null(input$vennSeed) || input$vennSeed ==""), "select a seed"))
-    set.seed(input$vennSeed)
     plotVenn(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
   })
 })

@@ -79,7 +79,7 @@ CompBasicTab<-
                                    )
                                ),
                              uiOutput("downPlotRenyi"),
-                             plotOutput("RenyiDiversity", height = "800px"),
+                             plotOutput("RenyiDiversity"),#, height = "600px"),
                              busyIndicator(wait = 500)
                     )
                 ),
@@ -192,14 +192,6 @@ SimTab<-
                                column(width = 2,
                                        uiOutput("vennUISample")
                                ),
-                               column(width = 2,
-                                      sliderInput(inputId = "vennSeed",
-                                                  label = "Set a seed",
-                                                  value = 1234,
-                                                  min = 1,
-                                                  max = 9999,
-                                                  width = NULL)
-                               ),
                                column(width = 2, 
                                       style = "margin-top: 25px;",
                                       tags$head(
@@ -207,8 +199,8 @@ SimTab<-
                                       ),
                                       actionButton("doVenn", "run")
                                ),
-                               column(width = 4,
-                                      div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
+                               column(width = 6,
+                                      div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                           circleButton(inputId = "eulerHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                       tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                )
