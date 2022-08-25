@@ -832,7 +832,7 @@ if(!is.null(input$vennLevel) && !is.null(input$vennSamples)){cat("### Repertoire
 
 ```{r eulerr, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$vennLevel) && !is.null(input$vennSamples)){
-    plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
+    plotVenn(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
 }
     
 ```

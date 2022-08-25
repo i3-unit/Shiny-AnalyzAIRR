@@ -276,14 +276,17 @@ output$vennUISample <- renderUI({
                  multiple = T)  #VMH changed 3 to 4
 })
 
-output$plotEulerr <- renderPlot({
-  validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select a level"))
-  validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
-  validate(need(length(input$vennSamples)>1, "select a second sample"))
-  validate(need(!(is.null(input$vennSeed) || input$vennSeed ==""), "select a seed"))
-  set.seed(input$vennSeed)
-  plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
+observeEvent(input$doVenn, {
+  output$plotEulerr <- renderPlot({
+    validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "select a level"))
+    validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "select samples"))
+    validate(need(length(input$vennSamples)>1, "select a second sample"))
+    validate(need(!(is.null(input$vennSeed) || input$vennSeed ==""), "select a seed"))
+    set.seed(input$vennSeed)
+    plotVenn(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
+  })
 })
+
 
 output$downPlotEulerr <- renderUI({
   if (!is.null(input$vennLevel) & !(is.null(input$vennSamples))) {
@@ -298,13 +301,13 @@ output$PlotEulerr <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotEulerr(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples))
+    grid.draw(plotVenn(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples))
     dev.off()
   }
 )
 
 output$EulerrHelp <- renderText({
-  createHelp(?plotEulerr)
+  createHelp(?plotVenn)
 })
 
 observeEvent(input$eulerHelp,

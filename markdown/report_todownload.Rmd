@@ -871,7 +871,7 @@ if(!is.null(params$vennLevel) && !is.null(params$vennSamples)){cat("### Repertoi
 
 ```{r eulerr, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$vennLevel) && !is.null(params$vennSamples)){
-    plotEulerr(x = params$dataFiltered, level = params$vennLevel, sampleNames = params$vennSamples)
+    plotVenn(x = params$dataFiltered, level = params$vennLevel, sampleNames = params$vennSamples)
 }
     
 ```

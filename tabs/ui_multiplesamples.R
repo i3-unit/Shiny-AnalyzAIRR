@@ -200,8 +200,15 @@ SimTab<-
                                                   max = 9999,
                                                   width = NULL)
                                ),
-                               column(width = 6,
-                                      div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                               column(width = 2, 
+                                      style = "margin-top: 25px;",
+                                      tags$head(
+                                          tags$style(HTML('#doVenn{background-color:white; border-color: #022F5A;}'))
+                                      ),
+                                      actionButton("doVenn", "run")
+                               ),
+                               column(width = 4,
+                                      div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                           circleButton(inputId = "eulerHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                       tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                )
