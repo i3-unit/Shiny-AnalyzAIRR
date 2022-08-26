@@ -21,7 +21,7 @@
         validate(need(!(is.null(input$DivMethod) || input$DivMethod == ""), ""))
         meth <- strsplit(input$DivMethod, split="\\.")
         if (is.na(meth[[1]][2])) normindex <- TRUE else normindex <- FALSE
-        divdata <- RepSeq::divLevel(RepSeqDT(), index = meth[[1]][1], level = input$DivRepLevel, norm = normindex)
+        #divdata <- RepSeq::divLevel(RepSeqDT(), index = meth[[1]][1], level = input$DivRepLevel, norm = normindex)
         return(data.frame(divdata, row.names = 1, check.names = FALSE))
     })
     #render plot heatmap
