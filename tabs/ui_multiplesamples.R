@@ -109,7 +109,7 @@ CompBasicTab<-
                                  )
                              ),
                              uiOutput("downPlotCountInt"),
-                             plotOutput("CountInt"),
+                             plotOutput("CountInt" ),
                              busyIndicator(wait = 500)
                     ),
                     tabPanel("Rank distribution",

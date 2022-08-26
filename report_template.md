@@ -289,15 +289,22 @@ p.caption {
 
 
 
-### Renyi index
 
-<img src="figure/renyi-1.png" title="plot of chunk renyi" alt="plot of chunk renyi" style="display: block; margin: auto;" />
+
+
+
+
+
+
+### Count intervals
+
+<img src="figure/countInt-1.png" title="plot of chunk countInt" alt="plot of chunk countInt" style="display: block; margin: auto;" />
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
 <div class="form-group shiny-input-container">
-<label class="control-label" id="renyiText-label" for="renyiText">Enter text</label>
-<input id="renyiText" type="text" class="form-control" value=""/>
+<label class="control-label" id="countIntText-label" for="countIntText">Enter text</label>
+<input id="countIntText" type="text" class="form-control" value=""/>
 </div>
 </p>
 </body><!--/html_preserve-->
@@ -324,21 +331,7 @@ p.caption {
 
 
 
-## Similarity analysis
 
-
-### Repertoire overlap
-
-<img src="figure/eulerr-1.png" title="plot of chunk eulerr" alt="plot of chunk eulerr" style="display: block; margin: auto;" />
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="eulerrText-label" for="eulerrText">Enter text</label>
-<input id="eulerrText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
 
