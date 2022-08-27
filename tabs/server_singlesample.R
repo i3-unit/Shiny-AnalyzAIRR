@@ -145,7 +145,7 @@ output$spectraPlot <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "select a proportion"))    
-    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp))
+    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)+ggplot2::theme(legend.position = "none"))
 })
 # download button for individual spectratype
 output$Spectra <- downloadHandler(
