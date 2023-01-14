@@ -2,7 +2,8 @@
 
 **Shiny-AnalyzAIRR** is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/vanessajmh/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
 
-The application can be either download from the Github repository or directly used at this [link](https://analyzairr.shinyapps.io/shiny-analyzairr/).
+**Shiny-AnalyzAIRR** can be download from the Github repository and run locally on any device.
+Alternatively, it was deployed on the Web and can thus be directly used at this [link](https://analyzairr.shinyapps.io/shiny-analyzairr/).
 
 
 # Package installation

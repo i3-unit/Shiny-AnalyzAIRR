@@ -431,7 +431,7 @@ bodyTabs <-
 dashboardPage(skin = "blue",
     mydashboardHeader(title = "Shiny AnalyzAIRR", titleWidth = "19%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
     dashboardSidebar(width = "19%", sideMenu, 
-                     div(style="position: absolute; bottom: 0;", hr(), tags$i(class="fa fa-user"), "V. Mhanna, H. P. Pham, G. Pires,", "N. Tchitchek, D. Klatzmann, A. Six, E. Mariotti-Ferrandiz")),
+                     div(style="position: absolute; bottom: 0;", hr(), tags$i(class="fa fa-user"), "V. Mhanna, G. Pires, G. Bohl, K. el Soufi,", br(), "N. Tchitchek, D. Klatzmann, A. Six, H. P. Pham, E. Mariotti-Ferrandiz")),
     dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
         busyIndicator(wait = 500), 
         bodyTabs
