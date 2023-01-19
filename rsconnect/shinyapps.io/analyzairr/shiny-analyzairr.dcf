@@ -5,7 +5,7 @@ account: analyzairr
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6824334
-bundleId: 6243152
+bundleId: 6733392
 url: https://analyzairr.shinyapps.io/shiny-analyzairr/
-when: 1661591525.14458
-lastSyncTime: 1661591525.14458
+when: 1673709957.6531
+lastSyncTime: 1673709957.65312
