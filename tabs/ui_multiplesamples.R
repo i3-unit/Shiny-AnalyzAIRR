@@ -266,6 +266,9 @@ SimTab<-
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
+                                    column(width = 2,
+                                           uiOutput("multdissGroup")
+                                    ),
                                     column(width = 2, 
                                            style = "margin-top: 25px;",
                                            tags$head(
@@ -273,7 +276,7 @@ SimTab<-
                                            ),
                                            actionButton("doHm1", "run")
                                     ),
-                                    column(width = 4,
+                                    column(width = 2,
                                            div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
                                                circleButton(inputId = "disHMHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                            tags$head(tags$style(".modal-dialog{ width:1200px}"))
@@ -292,36 +295,42 @@ SimTab<-
                                 htmlOutput("NB_diss")
                             ),
                             tabPanel("Multidimensional scaling",
-                                fluidRow(
-                                    column(width = 2,
-                                           selectizeInput(
-                                               "MDSLevel",
-                                               "Select a level",
-                                               choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
-                                               options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
-                                    ),
-                                    column(width = 2,
-                                           selectizeInput("MDSMethod", "Select a dissimlarity method",
-                                                          choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
-                                                                         "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
-                                                                         "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
-                                                          options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                           )
-                                    ),
-                                    column(width = 2,
-                                           uiOutput("GrpColMDS")
-                                    ),
-                                    column(width = 6,
-                                           div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                               circleButton(inputId = "mdsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                           tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                    )
-                                ),
-                                uiOutput("downPlotMDS"),
-                                plotOutput("plotMDS", height = "700px"),
-                                busyIndicator(wait = 500),
-                                value = "dissimilarityHM"
+                                     fluidRow(
+                                       column(width = 2,
+                                              selectizeInput(
+                                                "mdsLevel",
+                                                "Select a level",
+                                                choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                              )
+                                       ),
+                                       column(width = 2,
+                                              selectizeInput("mdsIndex", "Select a dissimlarity method",
+                                                             choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
+                                                                            "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
+                                                                            "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
+                                                             options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                              )
+                                       ),
+                                       column(width = 2,
+                                              selectizeInput("mdsClustering", "Select a dissimlarity clustering",
+                                                             choices = list("ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
+                                                                            "median", "centroid"),
+                                                             options = list(onInitialize = I('function() { this.setValue(""); }'))
+                                              )
+                                       ),
+                                       column(width = 2,
+                                              uiOutput("multMDSGroup")
+                                       ),
+                                       column(width = 4,
+                                              div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",
+                                                  circleButton(inputId = "disMDSHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                              tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                       )
+                                     ),
+                                     uiOutput("downPlotMDS"),
+                                     plotly::plotlyOutput("MDS", height = "600px"),
+                                     busyIndicator(wait = 500)
                             )
                        )
                 )
@@ -393,24 +402,14 @@ DiffTab<-
                                             column(width = 2,
                                                    uiOutput("diffPCAGroup")
                                             ),
-                                            column(width = 2,
-                                               selectizeInput(
-                                                   "PCAMethod",
-                                                   "Select a distance method",
-                                                   choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
-                                                                  "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
-                                                                  "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
-                                                   options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                               )
-                                            ),
-                                            column(width = 6,
+                                            column(width = 8,
                                                    div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
                                                        circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))
                                             )
                                         ),
                                         uiOutput("downPlotPCA"),
-                                        plotOutput("plotPCA", height = "700px"),
+                                        plotly::plotlyOutput("plotPCA", height = "700px"),
                                         busyIndicator(wait = 500)
                                         
                            )

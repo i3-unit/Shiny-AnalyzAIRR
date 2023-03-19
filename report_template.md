@@ -1,7 +1,7 @@
 ---
 title: "Report session"
 author:
-- name: V. Mhanna, G. Pires, G. Bohl, K. El Soufi, N. Tchitchek, D. Klatzmann, A. Six, E. Mariotti-Ferrandiz
+- name: V. Mhanna, G. Pires, N. Tchitchek, D. Klatzmann, A. Six, E. Mariotti-Ferrandiz
   affiliation: Sorbonne Université, INSERM, Immunology-Immunopathology-Immunotherapy (i3), Paris, France
 - name: H. P. Pham
   affiliation: Parean Biotechnologies
@@ -162,17 +162,24 @@ p.caption {
 
 
 
+# Exploratory statistics
 
 
+## Basic statistics
 
 
+### Metadata statistics
 
+<img src="figure/metadata stats-1.png" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
 
-
-
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
+<input id="metadatastatsText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
@@ -275,39 +282,39 @@ p.caption {
 ## Comparison of basic statistics
 
 
+### Metadata statistics
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Count intervals
-
-<img src="figure/countInt-1.png" title="plot of chunk countInt" alt="plot of chunk countInt" style="display: block; margin: auto;" />
+<img src="figure/stats-1.png" alt="plot of chunk stats" style="display: block; margin: auto;" />
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
 <div class="form-group shiny-input-container">
-<label class="control-label" id="countIntText-label" for="countIntText">Enter text</label>
-<input id="countIntText" type="text" class="form-control" value=""/>
+<label class="control-label" id="statsText-label" for="statsText">Enter text</label>
+<input id="statsText" type="text" class="form-control" value=""/>
 </div>
 </p>
 </body><!--/html_preserve-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

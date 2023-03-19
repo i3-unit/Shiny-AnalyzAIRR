@@ -50,7 +50,13 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                  value = 0.1,
                                                  min = 0, max = 1)
                             ),
-                            column(width = 8,
+                            column(width = 2,
+                                   selectizeInput("VJViz",
+                                                  "Select a visualization",
+                                                  choices = list("Heatmap", "Circos"),
+                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
+                            ),
+                            column(width = 6,
                                    div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                        circleButton(inputId = "vjusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
                                    tags$head(tags$style(".modal-dialog{ width:1200px}"))

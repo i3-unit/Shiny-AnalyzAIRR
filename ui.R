@@ -311,11 +311,7 @@ bodyTabs <-
                                                  #                        choices = list("Yes", "No"),
                                                  #                        options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                  #  ),
-                                                  column(width=3,
-                                                         switchButton(inputId = "doDown",
-                                                                      label = "Perform a down-sampling normalization",
-                                                                      value = FALSE)
-                                                  ),
+                                           
                                                   column(width = 2,
                                                          sliderInput(inputId = "downSampleSize",
                                                                      label = "Set a sample size",
@@ -341,6 +337,11 @@ bodyTabs <-
                                                         switchButton(inputId = "downReplace",
                                                                      label = "With replacement",
                                                                      value = TRUE)
+                                                 ),
+                                                 column(width=3,
+                                                        switchButton(inputId = "doDown",
+                                                                     label = "Perform a down-sampling normalization",
+                                                                     value = FALSE)
                                                  ),
                                                  column(width = 3,
                                                         div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",

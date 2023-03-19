@@ -82,16 +82,17 @@ observeEvent(input$indgeneusageHelp,
 # plot V and J gene usages
 output$VJUsage <- renderPlot({
     sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
-    validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "select a level"))
-    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "select a proportion"))
-    if(input$VJProp==0 || input$VJProp==1){
-        hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+    validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "Select a scale"))
+    validate(need(!(is.null(input$VJLevel) ||  input$VJLevel == ""), "Select a level"))
+    validate(need(!(is.null(input$VJProp) ||  input$VJProp == ""), "Select a proportion"))
+    validate(need(!(is.null(input$VJViz) ||  input$VJViz == ""), "Select a visualization"))
+    if(input$VJViz == "Heatmap"){
+        hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Heatmap")
         hm2@column_names_param$gp$fontsize <- 10
         hm2@row_names_param$gp$fontsize <- 10
         ComplexHeatmap::draw(hm2)
     } else {
-        plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)    
+        plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Circos")    
     }
     
 })
@@ -104,16 +105,16 @@ output$downPlotVJUsage <- renderUI({
 
 output$PlotVJUsage <- downloadHandler(
     filename =  function() {
-        paste0("VJusage_", input$singleSample, "_", input$singleScale, "_", input$VJLevel, "_", input$VJProp, ".pdf")
+        paste0("VJusage_", input$VJViz, "_", input$singleSample, "_", input$singleScale, "_", input$VJLevel, "_", input$VJProp, ".pdf")
     },
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        if(input$VJProp==0 || input$VJProp==1){
-            hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp)
+        if(input$VJViz == "Heatmap"){
+            hm2 <- plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Heatmap")
             ComplexHeatmap::draw(hm2)
         } else {
-            grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp))
+            grid.draw(plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Circos"))
         }
         dev.off()
     }

@@ -24,7 +24,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$statisticTab <- renderMenu({
       convertMenuItem(
         menuItem(tabName = "statisticTab",
-               text = "Exploratory statistics",
+               text = "Exploratory analysis",
                icon = icon("square-root-alt", lib="font-awesome", verify_fa = FALSE),
                startExpanded = TRUE,
                menuSubItem("Basic statistics",
