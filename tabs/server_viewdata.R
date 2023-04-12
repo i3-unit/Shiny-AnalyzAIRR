@@ -359,6 +359,66 @@ observeEvent(input$topseqHelp,
              ))
 )
 
+output$filterSeqGroup <- renderUI({
+  sdata <- mData(RepSeqDT())[,unlist(lapply(mData(RepSeqDT()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+  to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+  to_keep <- names(to_keep)[which(to_keep < 1)]
+  idx <- sapply(sdata, function(i) unique(i))[to_keep]
+  
+  choices <- list()
+  for(i in 1:length(idx)){
+    choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
+  }
+  selectizeInput("filterSeqGroup",
+                 "Select a group and a subgroup",  
+                 choices = choices,
+                 selected = NULL,
+                 options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
+                 multiple = T)
+})
+
+dataFilterSeq <- eventReactive(input$doFilterSeq, {
+  validate(need(!(is.null(input$filterSeqLevel) || input$filterSeqLevel == ""), "select a level"))
+  validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "enter a sequence")) 
+  if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+    filterSeqGroup <- input$filterSeqGroup
+  } else {
+    filterSeqGroup <- NULL
+  }
+  filterseqs <- filterSequence(x = RepSeqDT(), level = input$filterSeqLevel, name = input$filterSeqName, group = filterSeqGroup)
+  return(filterseqs)
+})
+
+observeEvent(input$doFilterSeq,
+             output$filterseqs <- renderDataTable({
+               validate(need(!(is.null(input$filterSeqLevel) || input$filterSeqLevel == ""), "select a level"))
+               validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "enter a sequence")) 
+               return(datatable(AnalyzAIRR::History(dataFilterSeq()), 
+                                options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+             })
+)
+
+output$downloaddataFilterSeq <- downloadHandler(
+  "RepSeqData_filteredseq.rds",
+  content = function(file) {
+    saveRDS(dataFilterSeq(), file)
+  }, 
+) 
+
+output$FilterSeqHelp <- renderText({
+  createHelp(?filterSequence)
+})
+
+observeEvent(input$filterseqHelp,
+             showModal(modalDialog(
+               title = paste("Help"),
+               htmlOutput("FilterSeqHelp"),
+               size = "l",
+               easyClose = T
+             ))
+)
+
+
 #### Normalization ####
 
 
@@ -564,6 +624,7 @@ output$Plothistshannonlibsizes <- downloadHandler(
 
 
 dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$filterCountN,
+                            input$doFilterSeq,input$filterSeqLevel, input$filterSeqName,
                             input$doPublic, input$publicLevel, input$publicProp,
                             input$doPrivate, input$privateLevel, input$privateSingletons, 
                             input$doProductive, 
@@ -575,6 +636,10 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
        !(is.null(input$filterCountLevel) || input$filterCountLevel == "") && 
        !(is.null(input$filterCountN) || input$filterCountN == "")){
         return(dataFilterCount())
+    } else if(input$doFilterSeq==1 && 
+              !(is.null(input$filterSeqLevel) || input$filterSeqLevel == "") && 
+              !(is.null(input$filterSeqName) || input$filterSeqName == "")){
+      return(dataFilterSeq())
     } else if(input$doPublic==1 &&
               !(is.null(input$publicLevel) || input$publicLevel == "") &&
               !(is.null(input$publicProp) || input$publicProp == "")){

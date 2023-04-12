@@ -11,12 +11,6 @@ Alternatively, it was deployed on the Web and can thus be directly used at this 
 The latest release of **AnalyzAIRR** can be installed from Github using devtools:
 
 ```
-# Install package dependencies
-#Package Dependencies installation
-list.pkgs <- c("shiny", "shinydashboard", "shinysky", "shinyjs", "shinythemes", "shinyWidgets", "rmarkdown","markdown", "BiocStyle","devtools")
-pkgs <- list.pkgs[!(list.pkgs %in% installed.packages()[,"Package"])] if(length(pkgs)>0)
-install.packages(pkgs)
-
 # AnalyzAIRR installation
 devtools::install_github("vanessajmh/AnalyzAIRR")
 

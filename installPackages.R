@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------#
 # Check that the currently-installed version of R
 #------------------------------------------------------------------------------#
-R_required <- "4.0.0"
+R_required <- "4.2.0"
 R_installed <- paste0(R.Version()$major, ".", R.Version()$minor)
 if(compareVersion(R_installed, R_required) < 0){
   stop("The installed version of R is", R_installed,".\n", 
@@ -18,9 +18,10 @@ if (is.na(match("BiocManager", instPkgs))) {
 }
 
 # required packages
-requiredPkgs <- c("devtools", "shiny", "shinydashboard", "ggplot2", "shinysky", "DT", "gridExtra",
-    "data.table", "pbapply", "pheatmap", "DESeq2", "Rcpp", "vegan", "ggplot2", "naturalsort", 
-    "ade4", "scales", "magick", "directlabels")
+requiredPkgs <- c("devtools", "shiny", "shinydashboard",  "shinysky", "DT", "Rcpp", 
+                  "shinyjs", "shinythemes", "shinyWidgets", "rmarkdown","markdown", "BiocStyle",
+                  "InteractiveComplexHeatmap","plotly")
+
 
 githubPkgs <- "AnalyzAIRR"
 

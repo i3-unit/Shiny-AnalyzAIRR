@@ -162,6 +162,46 @@ bodyTabs <-
                                          dataTableOutput("filtercounts"),
                                          busyIndicator(wait = 500)
                                 ),
+                                tabPanel("Filter out a sequence",
+                                         fluidRow(
+                                           column(width = 2,
+                                                  selectizeInput("filterSeqLevel",
+                                                                 "Select a level",
+                                                                 choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
+                                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                           ),
+                                           column(width = 3,
+                                                  tags$head(
+                                                    tags$style(type="text/css",
+                                                               '#filterCountGroup.shiny-output-error { visibility: hidden; }',
+                                                               '#filterCountGroup.shiny-output-error:before { visibility: hidden; }')
+                                                  ),
+                                                  uiOutput("filterSeqGroup")
+                                           ), 
+                                           column(width = 2,
+                                                  textInput(inputId = "filterSeqName",
+                                                            label = "Enter a sequence",
+                                                            value = "", 
+                                                            placeholder = "TRAV11 CVVGDRGSALGRLHF TRAJ18")
+                                           ),
+                                           column(width = 2, 
+                                                  style = "margin-top: 25px;",
+                                                  tags$head(
+                                                    tags$style(HTML('#doFilterSeq{background-color:white; border-color: #022F5A;}'))
+                                                  ),
+                                                  actionButton("doFilterSeq", "run")
+                                           ),
+                                           column(width = 3,
+                                                  div(style="display:block;margin-left: 89.5%;padding-bottom: 10px;",
+                                                      circleButton(inputId = "filterseqHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                  tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                           )
+                                         ),
+                                         h4("Filtered table"),
+                                         downloadButton("downloaddataFilterSeq", "Download RDS", style="background-color:white; border-color: #022F5A;"),
+                                         dataTableOutput("filterseqs"),
+                                         busyIndicator(wait = 500)
+                                ),
                                 tabPanel("Filter out unproductive sequences",
                                          fluidRow(
                                              column(width = 2, 

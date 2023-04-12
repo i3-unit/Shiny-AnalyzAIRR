@@ -1,30 +1,24 @@
 #------------------------------------------------------------------------------#
 #  check and load libraries
 #------------------------------------------------------------------------------#
-#source("installPackages.R", local = TRUE)
+source("installPackages.R", local = TRUE)
 library(shiny)
 library(shinydashboard)
 library(AnalyzAIRR)
-library(ggplot2)
 library(shinysky)
 library(DT)
-library(grid)
-library(dplyr)
-library(rstatix)
-library(ggrepel)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
 library(InteractiveComplexHeatmap)
 library(rmarkdown)
-library(rsconnect)
 library(BiocStyle)
 library(markdown)
 graphics.off()
 #------------------------------------------------------------------------------#
 # options
 #------------------------------------------------------------------------------#
-options(shiny.maxRequestSize = 200 * 1024 ^ 2, repos = BiocManager::repositories()) # limite la taille des fichiers input, a modifier
+options(shiny.maxRequestSize = 900*1024 ^ 3, repos = BiocManager::repositories()) # limite la taille des fichiers input, a modifier
 
 #------------------------------------------------------------------------------#
 # additional functions
