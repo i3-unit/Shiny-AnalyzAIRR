@@ -20,7 +20,7 @@ if (is.na(match("BiocManager", instPkgs))) {
 # required packages
 requiredPkgs <- c("devtools", "shiny", "shinydashboard",  "shinysky", "DT", "Rcpp", 
                   "shinyjs",  "shinyWidgets", "rmarkdown","markdown", "BiocStyle",
-                  "InteractiveComplexHeatmap","plotly")
+                  "InteractiveComplexHeatmap","plotly","gbRd")
 
 
 githubPkgs <- "AnalyzAIRR"
@@ -29,8 +29,8 @@ if (is.na(match("AnalyzAIRR", instPkgs))) {
     devtools::install_github("https://github.com/vanessajmh/AnalyzAIRR")
 }
 
-#install shinythemes
-devtools::install_version("shinythemes", version="1.2.0")
+# #install shinythemes
+# devtools::install_version("shinythemes", version="1.2.0")
 
 # missing packages
 missing_packages <- requiredPkgs[is.na(match(requiredPkgs, instPkgs))]

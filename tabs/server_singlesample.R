@@ -45,7 +45,8 @@ output$indgeneUsage <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) ||  input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$indgeneUsageLevel) ||  input$indgeneUsageLevel == ""), "select a level"))
-    plotly::ggplotly(plotIndGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$indgeneUsageLevel, scale = input$singleScale)+theme(legend.position = "none"), 
+    plotly::ggplotly(plotIndGeneUsage(x = dataFilt(), sampleName = input$singleSample, level = input$indgeneUsageLevel, scale = input$singleScale)+
+                       ggplot2::theme(legend.position = "none"), 
                      tooltip = c("x", "y"))
 })
 output$downPlotIndgeneUsage <- renderUI({
@@ -146,7 +147,8 @@ output$spectraPlot <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
     validate(need(!(is.null(input$singleProp) || input$singleProp == ""), "select a proportion"))    
-    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)+ggplot2::theme(legend.position = "none"))
+    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)+
+                       ggplot2::theme(legend.position = "none"))
 })
 # download button for individual spectratype
 output$Spectra <- downloadHandler(

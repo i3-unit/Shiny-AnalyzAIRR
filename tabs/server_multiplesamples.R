@@ -226,7 +226,8 @@ observeEvent(input$dogeneUsage, {
     validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "Select a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
     validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "Select a group"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+theme(legend.position = "none"), 
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+
+                       ggplot2::theme(legend.position = "none"), 
                      tooltip = c("x", "y")) %>%
       plotly::layout(boxmode = "group")
   })
@@ -376,6 +377,7 @@ observeEvent(input$doHm1, {
   validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "Select a dissimilarity method"))
   validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "Select a clustering method"))
   validate(need(!(is.null(input$multdissGroup) || input$multdissGroup == ""), "Select one or multiple groups"))
+  pdf(file = NULL)
   hm1 <- plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = input$multdissGroup, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL, plot = 'Heatmap')    
   hm1@column_names_param$gp$fontsize <- 10
   hm1@row_names_param$gp$fontsize <- 10
