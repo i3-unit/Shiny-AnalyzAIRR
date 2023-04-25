@@ -177,7 +177,7 @@ histSums<- function(dat=NULL, xlab="",ylab=""){
     ggplot2::ylab(ylab)+
     ggplot2::scale_x_log10(labels=scales::comma)+
     AnalyzAIRR::theme_RepSeq()+
-    theme( axis.title.x = ggplot2::element_text(size=15),
+    ggplot2::theme( axis.title.x = ggplot2::element_text(size=15),
            axis.title.y = ggplot2::element_text(size=15),
            axis.text.x = ggplot2::element_text(size=15),
            axis.text.y = ggplot2::element_text(size=15))

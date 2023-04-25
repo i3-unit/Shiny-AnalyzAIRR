@@ -700,6 +700,7 @@ observeEvent(input$doHm, {
   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "Select an order sample by"))
   sampleinfo <- mData(dataFilt())
   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+  pdf(file = NULL)
   hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
   hm@column_names_param$gp$fontsize <- 10
   hm@row_names_param$gp$fontsize <- 10
