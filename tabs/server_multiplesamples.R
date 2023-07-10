@@ -528,7 +528,7 @@ output$Volcano <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "Select a pvalue threshold")) 
   validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "Select a group and subgroups")) 
   validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups"))
-  plotly::ggplotly(plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0, plot = "Volcano"))
+  plotly::ggplotly(plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
 
 output$downPlotVolcano <- renderUI({
@@ -544,7 +544,7 @@ output$PlotVolcano <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0, plot = "Volcano"))
+    grid.draw(plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
     dev.off()
   }
 )
@@ -561,60 +561,60 @@ observeEvent(input$volcanoHelp,
                easyClose = T
              ))
 )
-output$diffPCAGroup <- renderUI({
-  sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-  to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
-  to_keep <- names(to_keep)[which(to_keep < 1)]
-  idx <- sapply(sdata, function(i) unique(i))[to_keep]
-  
-  choices <- list()
-  for(i in 1:length(idx)){
-    choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
-  }
-  selectizeInput("diffPCAGroup",
-                 "Select a group and subgroups",  
-                 choices = choices,
-                 options = list(minItems=3, onInitialize = I('function() { this.setValue(""); }')),
-                 multiple = T)
-})
+# output$diffPCAGroup <- renderUI({
+#   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+#   to_keep <- sapply(sdata, function(i) nlevels(i)/length(i))
+#   to_keep <- names(to_keep)[which(to_keep < 1)]
+#   idx <- sapply(sdata, function(i) unique(i))[to_keep]
+#   
+#   choices <- list()
+#   for(i in 1:length(idx)){
+#     choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
+#   }
+#   selectizeInput("diffPCAGroup",
+#                  "Select a group and subgroups",  
+#                  choices = choices,
+#                  options = list(minItems=3, onInitialize = I('function() { this.setValue(""); }')),
+#                  multiple = T)
+# })
 
-output$plotPCA <- plotly::renderPlotly({
-  validate(need(!(is.null(input$diffPCALevel) || input$diffPCALevel == ""), "Select a level"))
-  validate(need(!(is.null(input$diffPCAGroup) || input$diffPCAGroup == ""), "Select a group and subgroups")) 
-  validate(need(length(input$diffPCAGroup)>=3, "Need at least one group and 2 subgroups"))
-  plotly::ggplotly(plotDiffExp(x = dataFilt(), level = input$diffPCALevel, group = input$diffPCAGroup, label_colors = NULL, plot = "PCA"))
-})
-
-output$downPlotPCA <- renderUI({
-  if (!is.null(input$diffPCALevel) & !(is.null(input$PCAMethod)) & !(is.null(input$diffPCAGroup))) {
-    downloadButton("PlotPCA", "Download PDF", style="background-color:white; border-color: #022F5A;")
-  }
-}) 
-
-output$PlotPCA <- downloadHandler(
-  filename =  function() {
-    paste0("PCA", "_", input$diffPCALevel, "_", input$PCAMethod, "_", input$diffPCAGroup, ".pdf")
-  },
-  # content is a function with argument file. content writes the plot to the device
-  content = function(file) {
-    pdf(file, height=4, width=6)
-    grid.draw(plotDiffExp(x = dataFilt(), level = input$diffPCALevel, group = input$diffPCAGroup, label_colors = NULL, plot = "PCA"))
-    dev.off()
-  }
-)
-
-output$PCAHelp <- renderText({
-  createHelp(?plotDiffExp)
-})
-
-observeEvent(input$pcaHelp,
-             showModal(modalDialog(
-               title = paste("Help"),
-               htmlOutput("PCAHelp"),
-               size = "l",
-               easyClose = T
-             ))
-)
+# output$plotPCA <- plotly::renderPlotly({
+#   validate(need(!(is.null(input$diffPCALevel) || input$diffPCALevel == ""), "Select a level"))
+#   validate(need(!(is.null(input$diffPCAGroup) || input$diffPCAGroup == ""), "Select a group and subgroups")) 
+#   validate(need(length(input$diffPCAGroup)>=3, "Need at least one group and 2 subgroups"))
+#   plotly::ggplotly(plotDiffExp(x = dataFilt(), level = input$diffPCALevel, group = input$diffPCAGroup, label_colors = NULL, plot = "PCA"))
+# })
+# 
+# output$downPlotPCA <- renderUI({
+#   if (!is.null(input$diffPCALevel) & !(is.null(input$PCAMethod)) & !(is.null(input$diffPCAGroup))) {
+#     downloadButton("PlotPCA", "Download PDF", style="background-color:white; border-color: #022F5A;")
+#   }
+# }) 
+# 
+# output$PlotPCA <- downloadHandler(
+#   filename =  function() {
+#     paste0("PCA", "_", input$diffPCALevel, "_", input$PCAMethod, "_", input$diffPCAGroup, ".pdf")
+#   },
+#   # content is a function with argument file. content writes the plot to the device
+#   content = function(file) {
+#     pdf(file, height=4, width=6)
+#     grid.draw(plotDiffExp(x = dataFilt(), level = input$diffPCALevel, group = input$diffPCAGroup, label_colors = NULL, plot = "PCA"))
+#     dev.off()
+#   }
+# )
+# 
+# output$PCAHelp <- renderText({
+#   createHelp(?plotDiffExp)
+# })
+# 
+# observeEvent(input$pcaHelp,
+#              showModal(modalDialog(
+#                title = paste("Help"),
+#                htmlOutput("PCAHelp"),
+#                size = "l",
+#                easyClose = T
+#              ))
+# )
 
 
 # render select group UI

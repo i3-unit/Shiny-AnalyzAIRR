@@ -341,10 +341,10 @@ SimTab<-
 
 DiffTab<- 
     tabItem(tabName = "showDiffTab",
-            fluidRow(
-                tabBox(width=12,
-                       navbarMenu("Analysis",
-                           tabPanel("Volcano plot",
+            # fluidRow(
+            #     tabBox(width=12,
+            #            navbarMenu("Analysis",
+            #                tabPanel("Volcano plot",
                                     fluidRow(
                                         column(width = 2,
                                                selectizeInput(
@@ -388,35 +388,35 @@ DiffTab<-
                                     downloadButton("downloadtableDiffExpGroup", "Export table", style="background-color:white; border-color: #022F5A;"),
                                     dataTableOutput("tableDiffExpGroup"),
                                     busyIndicator(wait = 500)
-                           ),
-                           tabPanel("Principal Component Analysis",
-                                        fluidRow(
-                                            column(width = 2,
-                                                   selectizeInput(
-                                                       "diffPCALevel",
-                                                       "Select a level",
-                                                       choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                                   )
-                                            ),
-                                            column(width = 2,
-                                                   uiOutput("diffPCAGroup")
-                                            ),
-                                            column(width = 8,
-                                                   div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
-                                                       circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                                   tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                            )
-                                        ),
-                                        uiOutput("downPlotPCA"),
-                                        plotly::plotlyOutput("plotPCA", height = "700px"),
-                                        busyIndicator(wait = 500)
-                                        
-                           )
-                )
-               )
-            )
-    )
+                           )#,
+                           # tabPanel("Principal Component Analysis",
+                           #              fluidRow(
+                           #                  column(width = 2,
+                           #                         selectizeInput(
+                           #                             "diffPCALevel",
+                           #                             "Select a level",
+                           #                             choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
+                           #                             options = list(onInitialize = I('function() { this.setValue(""); }'))
+                           #                         )
+                           #                  ),
+                           #                  column(width = 2,
+                           #                         uiOutput("diffPCAGroup")
+                           #                  ),
+                           #                  column(width = 8,
+                           #                         div(style="display:block;margin-left: 95%;padding-bottom: 10px;",
+                           #                             circleButton(inputId = "pcaHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                           #                         tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                           #                  )
+                           #              ),
+                           #              uiOutput("downPlotPCA"),
+                           #              plotly::plotlyOutput("plotPCA", height = "700px"),
+                           #              busyIndicator(wait = 500)
+                           #              
+                           # )
+    #             )
+    #            )
+    #         )
+    # )
 
 
 
