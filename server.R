@@ -90,17 +90,15 @@ shinyServer(function(input, output, session) {
                            dissimilarityLevel = input$dissimilarityLevel, 
                            dissimilarityIndex = input$dissimilarityIndex,
                            dissimilarityClustering = input$dissimilarityClustering, 
+                           multdissGroup=input$multdissGroup,
                            doHm1 = input$doHm1, 
                            MDSLevel = input$MDSLevel, 
                            MDSMethod = input$MDSMethod, 
-                           grpCol4MDS = input$grpCol4MDS, 
+                           multMDSGroup=input$multMDSGroup,
                            diffLevel = input$diffLevel, 
                            diffGroup = input$diffGroup, 
                            diffFC = input$diffFC, 
                            diffPV = input$diffPV, 
-                           diffPCALevel = input$diffPCALevel, 
-                           PCAMethod = input$PCAMethod, 
-                           diffPCAGroup = input$diffPCAGroup, 
                            PertGroupSelected = input$PertGroupSelected, 
                            CtrlGroup = input$CtrlGroup, 
                            pertDist = input$pertDist, 
@@ -141,14 +139,19 @@ shinyServer(function(input, output, session) {
                            doStats = input$doStats,
                            dogeneUsage = input$dogeneUsage,
                            doCountInt = input$doCountInt,
-                           doDiversity = input$doDiversity)
+                           doDiversity = input$doDiversity,
+                           plotvj=input$VJViz)
             
             render(tempReport, output_file = file,
                    params = params,
                    envir = new.env(parent = globalenv()),
                    switch(input$format,
-                          PDF = rmarkdown::pdf_document(toc = TRUE, toc_depth = 4, number_sections = TRUE, highlight = "tango", keep_tex = TRUE), 
-                          HTML = BiocStyle::html_document(), 
+                          HTML = rmarkdown::html_document(theme="yeti",
+                                                           toc= TRUE,
+                                                           toc_depth= 4,
+                                                           highlight= "tango",
+                                                          number_sections=TRUE), 
+
                           Word = rmarkdown::word_document(toc = TRUE, toc_depth = 4, number_sections = TRUE), 
                           PPT = rmarkdown::powerpoint_presentation(toc = TRUE, toc_depth = 4, number_sections = TRUE))
                    )

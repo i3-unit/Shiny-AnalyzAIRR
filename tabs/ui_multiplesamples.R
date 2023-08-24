@@ -72,6 +72,13 @@ CompBasicTab<-
                                    column(width = 2,
                                           uiOutput("multrenGroup")
                                    ),
+                                   column(width = 2, 
+                                          style = "margin-top: 25px;",
+                                          tags$head(
+                                            tags$style(HTML('#doRenyi{background-color:white; border-color: #022F5A;}'))
+                                          ),
+                                          actionButton("doRenyi", "run")
+                                   ),
                                    column(width = 8,
                                           div(style="display:block;margin-left: 96.25%;padding-bottom: 10px;",
                                               circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
@@ -298,14 +305,14 @@ SimTab<-
                                      fluidRow(
                                        column(width = 2,
                                               selectizeInput(
-                                                "mdsLevel",
+                                                "MDSLevel",
                                                 "Select a level",
                                                 choices = list("V", "J", "VJ", "CDR3nt", "CDR3aa", "clone", "clonotype"),
                                                 options = list(onInitialize = I('function() { this.setValue(""); }'))
                                               )
                                        ),
                                        column(width = 2,
-                                              selectizeInput("mdsIndex", "Select a dissimlarity method",
+                                              selectizeInput("MDSMethod", "Select a dissimlarity method",
                                                              choices = list("manhattan", "euclidean", "canberra", "clark", "bray", 
                                                                             "kulczynski", "jaccard", "gower", "altGower", "morisita", "horn", 
                                                                             "mountford", "raup", "binomial", "chao", "cao", "mahalanobis"),
@@ -313,14 +320,14 @@ SimTab<-
                                               )
                                        ),
                                        column(width = 2,
-                                              selectizeInput("mdsClustering", "Select a dissimlarity clustering",
-                                                             choices = list("ward.D", "ward.D2", "single", "complete", "average", "mcquitty",
-                                                                            "median", "centroid"),
-                                                             options = list(onInitialize = I('function() { this.setValue(""); }'))
-                                              )
-                                       ),
-                                       column(width = 2,
                                               uiOutput("multMDSGroup")
+                                       ),
+                                       column(width = 2, 
+                                              style = "margin-top: 25px;",
+                                              tags$head(
+                                                tags$style(HTML('#doMds{background-color:white; border-color: #022F5A;}'))
+                                              ),
+                                              actionButton("doMds", "run")
                                        ),
                                        column(width = 4,
                                               div(style="display:block;margin-left: 92.5%;padding-bottom: 10px;",

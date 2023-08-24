@@ -35,7 +35,7 @@ output$otherDataList <- renderUI({
 output$metadataTable <- renderDataTable(
     if(!(is.null(input$otherDataList)))
         AnalyzAIRR::oData(dataFilt())[[input$otherDataList]], 
-        options = list(scrollX=TRUE)
+        options = list(scrollX=TRUE )
 )
 
 output$downloadOtherdata <- downloadHandler(

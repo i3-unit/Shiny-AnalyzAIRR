@@ -2,24 +2,13 @@
 title: '`r params$title `'
 author: '`r params$authors `'
 output: 
-  rmarkdown::pdf_document: 
-    #rmdformats::robobook:
-    toc: true
-    toc_depth: 4
-    number_sections: true
-    linkcolor: 'blue'
-    # css: styles.css
-    # highlight: tango
-    # use_bookdown: true
-    #template: mytemplate.tex
   word_document:
     rmdformats::robobook:
     toc: yes
     css: styles.css
     highlight: tango
     use_bookdown: true
-  BiocStyle::html_document:
-    rmdformats::robobook:
+  rmarkdown::html_document:
     number_sections: yes
     toc: yes
     toc_depth: 4
@@ -96,15 +85,11 @@ params:
   doHm1: NA
   MDSLevel: NA
   MDSMethod: NA
-  grpCol4MDS: NA
   diffGroup: NA
   doHm: NA 
   diffFC: NA
   diffPV: NA
   diffLevel: NA
-  diffPCALevel: NA
-  PCAMethod: NA
-  diffPCAGroup: NA
   PertGroupSelected: NA
   CtrlGroup: NA
   pertDist: NA
@@ -145,9 +130,10 @@ params:
   dogeneUsage: null
   doCountInt: null
   doDiversity: null
+  plotvj: null
+  multMDSGroup: null
+  multdissGroup: null
 ---
-
-
 <style type="text/css">
 <!-- div#TOC li { -->
 <!--     list-style:none; -->
@@ -159,22 +145,14 @@ params:
     max-width: 1400px; 
  <!-- width: 120%;  -->
  } 
- .column-left {
-  float: left;
-  width: 49.7%;
-}
-.column-right{
- float: right;
-  width: 49.7%;
-}
-.col2 {
-    columns: 2 200px;         /* number of columns and width in pixels*/
-    -webkit-columns: 2 200px; /* chrome, safari */
-    -moz-columns: 2 200px;    /* firefox */
-  }
+
 h1 {
   color: #033c73;
    font-size: 30px;
+  margin-bottom: 25px;
+   padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: solid 1px #033c73
 }
 h1.title {
   color: #033c73;
@@ -182,13 +160,16 @@ h1.title {
 h2 {
   color: #033c73;
   font-size: 24px;
+  margin-bottom: 25px
 }
 h3 {
    color: #033c73;
    font-size: 18px;
+   margin-bottom: 25px
 }
 h4 {
    color: #022f5a;
+   margin-bottom: 25px
 }
 h5 {
   color: #033c73;
@@ -204,8 +185,14 @@ p.caption {
   font-style: italic;
   color: grey;
   margin-right: 10%;
-  margin-left: 10%;  
+  margin-left: 10%;
   text-align: justify;
+}
+em { 
+font-weight: normal; font-style: italic; font-size: 0.9em;
+}
+em.special { 
+color: grey; 
 }
 </style>
 
@@ -672,8 +659,13 @@ if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$sing
 ```
 
 ```{r VJGeneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
+
 if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$singleScale) && !is.null(params$VJProp)){
-   plotVJusage(x = params$dataFiltered, sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp) 
+      if(params$VJViz == "Heatmap"){
+        plotVJusage(x = dataFilt(), sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Heatmap")
+    } else {
+        plotVJusage(x = dataFilt(), sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Circos")    
+    }
 }
       
 ```
@@ -731,7 +723,7 @@ if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)) ||
    (!is.null(params$vennLevel) && !is.null(params$vennSamples)) || 
    (!is.null(params$scatterUISample) && !is.null(params$scatterLevel) && !is.null(params$scatterScale)) || 
    (!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && params$doHm1 == 1) || 
-   (!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$grpCol4MDS)) || 
+   (!is.null(params$MDSLevel) && !is.null(params$MDSMethod)) || 
    (!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV)) || 
    (!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup)) || 
    (!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1)){cat("# Multi-sample analysis")}
@@ -861,7 +853,7 @@ if(!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.nul
 if((!is.null(params$vennLevel) && !is.null(params$vennSamples)) || 
    (!is.null(params$scatterUISample) && !is.null(params$scatterLevel) && !is.null(params$scatterScale)) || 
    (!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && params$doHm1 == 1) || 
-   (!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$grpCol4MDS))){cat("## Similarity analysis")}
+   (!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$multMDSGroup) )){cat("## Similarity analysis")}
 ```
 
 
@@ -902,38 +894,40 @@ if(!is.null(params$scatterUISample) && !is.null(params$scatterLevel) && !is.null
 
 
 ```{r show Hierarchical clustering title, results='asis', echo=FALSE}
-if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && params$doHm1 == 1){cat("### Hierarchical clustering")}
+if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) 
+   && !is.null(params$multdissGroup) && params$doHm1 == 1){cat("### Hierarchical clustering")}
 ```
 
 ```{r disHM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && params$doHm1 == 1){
-    hm <- plotDissimilarityMatrix(x = params$dataFiltered, level = params$dissimilarityLevel, method = params$dissimilarityIndex, binary = FALSE, clustering = params$dissimilarityClustering, label_colors = NULL)
+    hm <- plotDissimilarity(x = params$dataFiltered, level = params$dissimilarityLevel, method = params$dissimilarityIndex, binary = FALSE, clustering = params$dissimilarityClustering, label_colors = NULL, colorBy=params$multdissGroup, plot="Heatmap")
     ComplexHeatmap::draw(hm)
 }
     
 ```
 
 ```{r show disHM text entry, echo = FALSE, results='asis'}
-if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && params$doHm1 == 1){
+if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) 
+    && !is.null(params$multdissGroup) && params$doHm1 == 1){
   cat(params$disHMText)
 }
 ```
 
 
 ```{r show Multidimensional scaling title, results='asis', echo=FALSE}
-if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$grpCol4MDS)){cat("### Multidimensional scaling")}
+if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) 
+   && !is.null(params$multMDSGroup) ){cat("### Multidimensional scaling")}
 ```
 
 ```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$grpCol4MDS)){
-    group <- switch((params$grpCol4MDS == "Sample") + 1, params$grpCol4MDS, NULL)
-    plotDimReduction(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, colorBy = group, label_colors = NULL, dim_method = "MDS")
+if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$multMDSGroup)){
+    plotDissimilarity(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, label_colors = NULL, colorBy=params$multMDSGroup ,plot = "MDS")
 }
     
 ```
 
 ```{r show MDS text entry, echo = FALSE, results='asis'}
-if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$grpCol4MDS)){
+if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod)  && !is.null(params$multMDSGroup)){
   cat(params$MDSText)
 }
 ```
@@ -951,7 +945,7 @@ if(!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$d
 
 ```{r volcano, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV)){
-    plotVolcano(x = params$dataFiltered, level = params$diffLevel, group =  params$diffGroup, FC.TH = params$diffFC, PV.TH = params$diffPV, top = 0)
+    plotDiffExp(x = params$dataFiltered, level = params$diffLevel, group =  params$diffGroup, FC.TH = params$diffFC, PV.TH = params$diffPV, top = 0)
 }
     
 ```
@@ -973,23 +967,6 @@ if(!is.null(params$diffGroup) && !is.null(params$diffLevel)){
     
 ```
 
-
-```{r show Principal component analysis title, results='asis', echo=FALSE}
-if(!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup)){cat("### Principal component analysis")}
-```
-
-```{r PCA, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup)){
-    plotDimReduction(x = params$dataFiltered, level = params$diffPCALevel, method = params$PCAMethod, colorBy = params$diffPCAGroup, label_colors = NULL, dim_method = "PCA")
-}
-    
-```
-
-```{r show PCA text entry, echo = FALSE, results='asis'}
-if(!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup)){
-  cat(params$PCAText)
-}
-```
 
 ```{r show Spectractyping comparison title, results='asis', echo=FALSE}
 if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1){cat("## Spectractyping comparison")}

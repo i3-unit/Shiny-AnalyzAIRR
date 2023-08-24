@@ -91,7 +91,7 @@ selectGroup <- function(ID, x) {
 }
 
 selectList <- function(ID, x) {  
-  choices <- names(AnalyzAIRR::oData(x))
+  choices <- names(AnalyzAIRR::oData(x))[-3]
   selectizeInput(
     ID,
     "Select a table",

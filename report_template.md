@@ -331,17 +331,7 @@ p.caption {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+## Similarity analysis
 
 
 

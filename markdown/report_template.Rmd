@@ -617,7 +617,11 @@ if(!is.null(input$singleSample) && input$VJLevel != "" && !is.null(input$singleS
 
 ```{r VJGeneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$singleSample) && input$VJLevel != "" && !is.null(input$singleScale) && !is.null(input$VJProp)){
-   plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp) 
+      if(input$VJViz == "Heatmap"){
+        plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Heatmap")
+    } else {
+        plotVJusage(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, level = input$VJLevel, prop = input$VJProp, plot = "Circos")    
+    }
 }
       
 ```
@@ -681,9 +685,9 @@ if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)) ||
    (!is.null(input$vennLevel) && !is.null(input$vennSamples)) || 
    (!is.null(input$scatterUISample) && !is.null(input$scatterLevel) && !is.null(input$scatterScale)) || 
    (!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1) || 
-   (!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS)) || 
+   (!is.null(input$MDSLevel) && !is.null(input$MDSMethod)) || 
    (!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)) || 
-   (!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)) || 
+  # (!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)) || 
    (!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1)){cat("# Multi-sample analysis")}
 ```
 
@@ -822,7 +826,7 @@ if(!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(
 if((!is.null(input$vennLevel) && !is.null(input$vennSamples)) || 
    (!is.null(input$scatterUISample) && !is.null(input$scatterLevel) && !is.null(input$scatterScale)) || 
    (!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1) || 
-   (!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS))){cat("## Similarity analysis")}
+   (!is.null(input$MDSLevel) && !is.null(input$MDSMethod))){cat("## Similarity analysis")}
 ```
 
 
@@ -867,19 +871,21 @@ if(!is.null(input$scatterUISample) && !is.null(input$scatterLevel) && !is.null(i
 
 
 ```{r show Hierarchical clustering title, results='asis', echo=FALSE}
-if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1){cat("### Hierarchical clustering")}
+if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) 
+    && !is.null(input$multdissGroup) && input$doHm1 == 1){cat("### Hierarchical clustering")}
 ```
 
 ```{r disHM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1){
-    hm <- plotDissimilarityMatrix(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)
-    ComplexHeatmap::draw(hm)
+     plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, 
+                       label_colors = NULL, colorBy =input$multdissGroup ,  plot="Heatmap")
 }
     
 ```
 
 ```{r show disHM text entry,echo = FALSE}
-if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && input$doHm1 == 1){
+if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering)
+   && !is.null(input$multdissGroup) && input$doHm1 == 1){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("disHMText", "Enter text", value="")))
@@ -888,29 +894,24 @@ if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !
 
 
 ```{r show Multidimensional scaling title, results='asis', echo=FALSE}
-if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS)){cat("### Multidimensional scaling")}
+if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) 
+   && !is.null(input$multMDSGroup) ){cat("### Multidimensional scaling")}
 ```
 
 ```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS)){
-    group <- switch((input$grpCol4MDS == "Sample") + 1, input$grpCol4MDS, NULL)
-    plotDimReduction(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = group, label_colors = NULL, dim_method = "MDS")
+if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$multMDSGroup)){
+    plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod,  label_colors = NULL, colorBy = input$multMDSGroup, plot = "MDS")
+
 }
     
 ```
 
 ```{r show MDS text entry,echo = FALSE}
-if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$grpCol4MDS)){
+if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$multMDSGroup)){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("MDSText", "Enter text", value="")))
 }
-```
-
-
-```{r show Differential analysis title, results='asis', echo=FALSE, fig.width=17, fig.height=6, fig.align='center'}
-if((!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)) || 
-   (!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup))){cat("## Differential analysis")}
 ```
 
 
@@ -920,7 +921,7 @@ if(!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diff
 
 ```{r volcano, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)){
-    plotVolcano(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0)
+    plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0)
 }
     
 ```
@@ -945,26 +946,6 @@ if(!is.null(input$diffGroup) && !is.null(input$diffLevel)){
             kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
 }
     
-```
-
-
-```{r show Principal component analysis title, results='asis', echo=FALSE}
-if(!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)){cat("### Principal component analysis")}
-```
-
-```{r PCA, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)){
-    plotDimReduction(x = dataFilt(), level = input$diffPCALevel, method = input$PCAMethod, colorBy = input$diffPCAGroup, label_colors = NULL, dim_method = "PCA")
-}
-    
-```
-
-```{r show PCA text entry,echo = FALSE}
-if(!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)){
-  tags$body(style="color: white;",
-       p(style="color: white;",
-  textInput("PCAText", "Enter text", value="")))
-}
 ```
 
 

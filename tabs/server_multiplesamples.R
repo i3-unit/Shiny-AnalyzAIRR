@@ -97,14 +97,24 @@ output$multrenGroup <- renderUI({
   selectMultGroupDE("multrenGroup", dataFilt())
 })
 
-output$RenyiDiversity <- renderPlot({
-  validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
-  validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group"))
-  plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
-})  
+# output$RenyiDiversity <- renderPlot({
+#   validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
+#   validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group"))
+#   plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
+# })  
+
+
+observeEvent(input$doRenyi, {
+  output$RenyiDiversity <- renderPlot({
+    validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
+    validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group"))
+    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
+    })  
+})
+
 
 output$downPlotRenyi <- renderUI({
-  if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup))) {
+  if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup)) & input$doRenyi == 1) {
     downloadButton("PlotRenyi", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -137,6 +147,7 @@ observeEvent(input$RenHelp,
 output$countIntervalsGroup <- renderUI({
   selectMultGroupDE("countIntervalsGroup", dataFilt())
 })
+
 # plot count intervals
 observeEvent(input$doCountInt, {
   output$CountInt <- renderPlot({
@@ -176,6 +187,7 @@ observeEvent(input$CIHelp,
                easyClose = T
              ))
 )
+
 output$multRankGroup <- renderUI({
   selectGroupDE("multRankGroup", dataFilt())
 })
@@ -398,7 +410,10 @@ output$PlotDisHM <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=8, width=12)
-    hm <- plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, colorBy = input$multdissGroup, label_colors = NULL, plot = 'Heatmap')
+    hm <- plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel,
+                            method = input$dissimilarityIndex, binary = FALSE,
+                            clustering = input$dissimilarityClustering, 
+                            colorBy = input$multdissGroup, label_colors = NULL, plot = 'Heatmap')
     ComplexHeatmap::draw(hm)
     dev.off()
   }
@@ -426,29 +441,29 @@ output$multMDSGroup <- renderUI({
   selectMultGroupDE("multMDSGroup", dataFilt())
 })
 
-
+observeEvent(input$doMds, {
 output$MDS <- plotly::renderPlotly({
-  validate(need(!(is.null(input$mdsLevel) || input$mdsLevel == ""), "Select a level"))
-  validate(need(!(is.null(input$mdsIndex) || input$mdsIndex == ""), "Select a dissimilarity method"))
-  validate(need(!(is.null(input$mdsClustering) || input$mdsClustering == ""), "Select a clustering method"))
+  validate(need(!(is.null(input$MDSLevel) || input$MDSLevel == ""), "Select a level"))
+  validate(need(!(is.null(input$MDSMethod) || input$MDSMethod == ""), "Select a dissimilarity method"))
   validate(need(!(is.null(input$multMDSGroup) || input$multMDSGroup == ""), "Select one or multiple groups"))
-  plotly::ggplotly(plotDissimilarity(x = dataFilt(), level = input$mdsLevel, method = input$mdsIndex, colorBy = input$multMDSGroup, binary = FALSE, clustering = input$mdsClustering, label_colors = NULL, plot = 'MDS'))  
+  plotly::ggplotly(plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = input$multMDSGroup, binary = FALSE, label_colors = NULL, plot = 'MDS'))  
 })   
+})
 
 output$downPlotMDS <- renderUI({
-  if (!is.null(input$mdsLevel) & !(is.null(input$mdsIndex)) & !(is.null(input$mdsClustering)) & !(is.null(input$multMDSGroup))) {
+  if (!is.null(input$MDSLevel) & !(is.null(input$MDSMethod)) & !(is.null(input$multMDSGroup)) & input$doMds ==1) {
     downloadButton("PlotMDS", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotMDS <- downloadHandler(
   filename =  function() {
-    paste0("MDS_", input$mdsLevel, "_", input$mdsIndex, "_", input$mdsClustering, '_', input$multMDSGroup, ".pdf")
+    paste0("MDS_", input$MDSLevel, "_", input$MDSMethod, "_",  input$multMDSGroup, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=8, width=12)
-    grid.draw(plotDissimilarity(x = dataFilt(), level = input$mdsLevel, method = input$mdsIndex, binary = FALSE, clustering = input$mdsClustering, colorBy = input$multMDSGroup, label_colors = NULL, plot = 'MDS'))
+    grid.draw(plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, binary = FALSE, colorBy = input$multMDSGroup, label_colors = NULL, plot = 'MDS'))
     dev.off()
   }
 )

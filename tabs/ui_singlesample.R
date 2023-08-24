@@ -100,7 +100,7 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                               )
                       ),
                       uiOutput("downSpectrabis"),
-                      plotOutput("spectraPlotbis", height = "auto", width = "90%"),
+                      plotOutput("spectraPlotbis", height = "20%", width = "100%"),
                       busyIndicator(wait = 500),
                       value = "individualspectraTypetab"
                   )
