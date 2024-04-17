@@ -7,17 +7,23 @@ output$statisticsStat <- renderUI({
 })
 
 output$statisticsGroup <- renderUI({
-  selectMultGroupDE("statisticsGroup", dataFilt())
+  selectColorGroupmulti("statisticsGroup", dataFilt())
 })
 
-# plot statistics
-observeEvent(input$doStats, {
-  output$Statistics <- renderPlot({
-      validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "Select a statistic"))
-      validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "Select one or more groups"))
-      plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL)    
-  })  
+output$statisticsFacet <- renderUI({
+  selectFacetGroup("statisticsFacet", dataFilt())
 })
+
+
+
+# plot statistics
+#observeEvent(input$doStats, {
+  output$Statistics <- renderPlot({
+      validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "Statistic"))
+      validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "Colors"))
+      plotStatistics(x = dataFilt(), stat = input$statisticsStat, grouped=TRUE, colorBy = input$statisticsGroup, facetBy=input$statisticsFacet, show_stats=input$statisticsshowstats, label_colors = NULL)    
+  })  
+#})
 
 output$StatisticsHelp <- renderText({
   createHelp(?plotStatistics)
@@ -33,7 +39,7 @@ observeEvent(input$statsHelp,
 )
 
 output$downPlotStatistics <- renderUI({
-  if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup)) & input$doStats==1) {
+  if (!is.null(input$statisticsStat) & !(is.null(input$statisticsGroup)) ) {
     downloadButton("PlotStatistics", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -45,26 +51,33 @@ output$PlotStatistics <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotStatistics(x = dataFilt(), stat = input$statisticsStat, groupBy = input$statisticsGroup, label_colors = NULL))
+    grid.draw(plotStatistics(x = dataFilt(), stat = input$statisticsStat, grouped=TRUE, colorBy = input$statisticsGroup, facetBy=input$statisticsFacet, show_stats=input$statisticsshowstats, label_colors = NULL)    
+)
     dev.off()
   }
 )
 
 output$diverGroup <- renderUI({
-  selectMultGroupDE("diverGroup", dataFilt())
+  selectColorGroupmulti("diverGroup", dataFilt())
+})
+
+
+output$diverfacet <- renderUI({
+  selectFacetGroup("diverfacet", dataFilt())
 })
 
 # plot diversity
-observeEvent(input$doDiversity, {
+#observeEvent(input$doDiversity, {
   output$Diversity <- renderPlot({
     validate(need(!(is.null(input$diverLevel) || input$diverLevel == ""), "Select a level"))
     validate(need(!(is.null(input$diverIndex) || input$diverIndex == ""), "Select an index"))
-    validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "Select a group"))
-    plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL)    
+    validate(need(!(is.null(input$diverGroup) || input$diverGroup == ""), "Select a group for colours"))
+    plotDiversity(x = dataFilt(), index = input$diverIndex, level = input$diverLevel, grouped=T, colorBy = input$diverGroup, facetBy=input$diverfacet, show_stats=input$divshowstats, label_colors = NULL)    
   })  
-})
+#})
 output$downPlotDiversity <- renderUI({
-  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex)) & input$doDiversity == 1) {
+  if (!is.null(input$diverLevel) & !(is.null(input$diverGroup))& !(is.null(input$diverIndex))# & input$doDiversity == 1
+      ) {
     downloadButton("PlotDiversity", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -76,7 +89,8 @@ output$PlotDiversity <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotDiversity(x = dataFilt(), level = input$diverLevel, groupBy = input$diverGroup, index = input$diverIndex, label_colors = NULL))
+    grid.draw(plotDiversity(x = dataFilt(), level = input$diverLevel, grouped=T, colorBy = input$diverGroup, index = input$diverIndex, facetBy=input$diverfacet, show_stats=input$divshowstats,label_colors = NULL)    
+)
     dev.off()
   }
 )
@@ -93,28 +107,54 @@ observeEvent(input$DivHelp,
                easyClose = T
              ))
 )
-output$multrenGroup <- renderUI({
-  selectMultGroupDE("multrenGroup", dataFilt())
-})
+# output$multrenGroup <- renderUI({
+#   selectMultGroupDE("multrenGroup", dataFilt())
+# })
 
+#plot renyi index
 # output$RenyiDiversity <- renderPlot({
 #   validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
 #   validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group"))
 #   plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
 # })  
 
-
-observeEvent(input$doRenyi, {
-  output$RenyiDiversity <- renderPlot({
-    validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group"))
-    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL)    
-    })  
+output$multrenGroup <- renderUI({
+  selectColorGroupmulti("multrenGroup", dataFilt())
 })
 
 
+output$multrenfacet <- renderUI({
+  selectFacetGroup("multrenfacet", dataFilt())
+})
+
+
+output$multrenshape <- renderUI({
+  selectShapeGroup("multrenshape", dataFilt())
+})
+
+
+#observeEvent(input$doRenyi, {
+  output$RenyiDiversity <- renderPlot({
+    validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
+    validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group for colours"))
+    print(input$multrenshape)
+    print(input$multrenfacet)
+    if(input$multrenshape == ''){
+      shape <- NULL
+    } else {
+      shape <- input$multrenshape
+    }
+    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
+                   grouped = TRUE, shapeBy=shape, 
+                   facetBy=input$multrenfacet,
+                   label_colors = NULL)    
+    })  
+#})
+
+
 output$downPlotRenyi <- renderUI({
-  if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup)) & input$doRenyi == 1) {
+  if (!is.null(input$multrenLevel) & !(is.null(input$multrenGroup)) #& input$doRenyi == 1
+      ) {
     downloadButton("PlotRenyi", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -126,7 +166,11 @@ output$PlotRenyi <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, grouped = TRUE, label_colors = NULL))
+    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
+                             grouped = TRUE, shapeBy=input$multrenshape, label_colors = NULL,
+                             facetBy=input$multrenfacet
+                             )    
+)
     dev.off()
   }
 )
@@ -145,20 +189,27 @@ observeEvent(input$RenHelp,
 )
 
 output$countIntervalsGroup <- renderUI({
-  selectMultGroupDE("countIntervalsGroup", dataFilt())
+  selectColorGroupmulti("countIntervalsGroup", dataFilt())
+})
+
+output$countIntervalsFacet <- renderUI({
+  selectFacetGroup("countIntervalsFacet", dataFilt())
 })
 
 # plot count intervals
-observeEvent(input$doCountInt, {
+#observeEvent(input$doCountInt, {
   output$CountInt <- renderPlot({
     validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "Select a group"))
-    plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL)    
+    validate(need(!(is.null(input$countIntervalsscale) || input$countIntervalsscale == ""), "Select a scale for fractions"))
+    validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "Select a group for colours"))
+    plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, fractions=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+                  grouped=TRUE, facetBy=input$countIntervalsFacet, show_stats=input$countIntervalsshowstats, label_colors = NULL)    
   }) 
-})
+#})
 
 output$downPlotCountInt <- renderUI({
-  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup)) & input$doCountInt==1) {
+  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup)) #& input$doCountInt==1
+      ) {
     downloadButton("PlotCountInt", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
@@ -170,13 +221,14 @@ output$PlotCountInt <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotCountIntervals(x = dataFilt(), level = input$countIntervalsLevel, groupBy = input$countIntervalsGroup, label_colors = NULL))
+    grid.draw( plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, fractions=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+                             grouped=TRUE, facetBy=input$countIntervalsFacet, show_stats=input$countIntervalsshowstats, label_colors = NULL))
     dev.off()
   }
 )
 
 output$CountIntHelp <- renderText({
-  createHelp(?plotCountIntervals)
+  createHelp(?plotIntervals)
 })
 
 observeEvent(input$CIHelp,
@@ -188,14 +240,21 @@ observeEvent(input$CIHelp,
              ))
 )
 
+
 output$multRankGroup <- renderUI({
-  selectGroupDE("multRankGroup", dataFilt())
+  selectColorGroupmulti("multRankGroup", dataFilt())
 })
+
+output$multRankFacet <- renderUI({
+  selectFacetGroup("multRankFacet", dataFilt())
+})
+
 output$multRank <- renderPlot({
   validate(need(!(is.null(input$multRankLevel) || input$multRankLevel == ""), "Select a level"))
   validate(need(!(is.null(input$multRankScale) || input$multRankScale == ""), "Select a scale"))
-  validate(need(!(is.null(input$multRankGroup) || input$multRankGroup == ""), "Select a group"))
-  plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = TRUE, label_colors = NULL)    
+  validate(need(!(is.null(input$multRankGroup) || input$multRankGroup == ""), "Select a group for colours"))
+  plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale,
+                  colorBy = input$multRankGroup, facetBy=input$multRankFacet, grouped = TRUE, label_colors = NULL)    
 }) 
 
 output$downPlotMultRank <- renderUI({
@@ -211,7 +270,9 @@ output$PlotMultRank <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, colorBy = input$multRankGroup, grouped = TRUE, label_colors = NULL))
+    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale,
+                              colorBy = input$multRankGroup, facetBy=input$multRankFacet, grouped = TRUE, label_colors = NULL)    
+    )
     dev.off()
   }
 )
@@ -230,23 +291,34 @@ observeEvent(input$mrankHelp,
 )
 
 output$geneUsageGroup <- renderUI({
-  selectMultGroupDE("geneUsageGroup", dataFilt())
+  selectColorGroupmulti("geneUsageGroup", dataFilt())
 })
+
+
+output$geneUsagefacet <- renderUI({
+  selectFacetGroup("geneUsagefacet", dataFilt())
+})
+
 # plot V and J gene usages
 observeEvent(input$dogeneUsage, {
   output$geneUsage <- plotly::renderPlotly({
     validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "Select a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "Select a group"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL)+
-                       ggplot2::theme(legend.position = "none"), 
-                     tooltip = c("x", "y")) %>%
+    validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "Select a group for colours"))
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, 
+                                   scale = input$geneUsageScale, 
+                                   colorBy = input$geneUsageGroup, 
+                                   facetBy= input$geneUsagefacet, 
+                                   label_colors = NULL,
+                                   show_stats=input$geneUsageshowstats)+
+                                   ggplot2::theme(legend.position = "none"), 
+                                   tooltip = c("x", "y")) %>%
       plotly::layout(boxmode = "group")
   })
 })
 
 output$downPlotgeneUsage <- renderUI({
-  if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale)) & input$dogeneUsage==1) {
+  if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale)) ) {
     downloadButton("PlotgeneUsage", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 })
@@ -259,7 +331,12 @@ output$PlotgeneUsage <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=5, width=20)
-    grid.draw(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, scale = input$geneUsageScale, groupBy = input$geneUsageGroup, label_colors = NULL))
+    grid.draw(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, 
+                            scale = input$geneUsageScale, 
+                            colorBy = input$geneUsageGroup, 
+                            facetBy=input$geneUsagefacet, 
+                            label_colors = NULL,
+                            show_stats=input$geneUsageshowstats))
     dev.off()
   }
 )
@@ -283,7 +360,7 @@ observeEvent(input$geneusageHelp,
 output$vennUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("vennSamples",
-                 "Select samples (maximum 7)",  #modified by VMH
+                 HTML("Select samples <i>(maximum 7)</i>"),  #modified by VMH
                  choices = choices,
                  options = list(maxItems = 7, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)  #VMH changed 3 to 4
@@ -334,7 +411,7 @@ observeEvent(input$eulerHelp,
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
-                 "Select samples (maximum 2)",  
+                 "Select samples <i>(maximum 2)</i>",  
                  choices = choices,
                  options = list(maxItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)

@@ -16,6 +16,7 @@ shinyServer(function(input, output, session) {
     output$renderedReport <- renderUI({
         includeMarkdown(knitr::knit("markdown/report_template.Rmd"))         
     })
+    
     output$report <- downloadHandler(
         filename = function() {
             paste('report', sep = '.', switch(

@@ -1,5 +1,5 @@
 <div id="about" class="section level2">
-<p><strong>Shiny AnalyzAIRR</strong> is a MiAIRR compliant web application for the analysis of bulk Ig/TCR repertoire datasets.</p>
+<p><strong>Shiny AnalyzAIRR</strong> is a AIRR compliant web application for the analysis of bulk Ig/TCR repertoire datasets.</p>
 <ul>
 <li>It proposes an analytical routine starting with data exploration, leading to in-depth statistical comparisons with the aim of answering defined biological questions.</li>
 <li>It allows the calculation of a set of diversity measures and statistical metrics applicable at any level of granularity.</li>
@@ -20,10 +20,10 @@
 <li><strong>Other</strong>: Alignment files should contain the following required column names: </li>
 <ul>
 <li><strong>sample_id</strong>: Sample names</li>
-<li><strong>CDR3nt</strong>: CDR3 nucleotide sequence</li>
-<li><strong>CDR3aa</strong>: CDR3 amino acid sequence</li>
 <li><strong>V</strong>: Variable gene name (IMGT nomenclature)</li>
 <li><strong>J</strong>: Joining gene name (IMGT nomenclature)</li>
+<li><strong>ntCDR3</strong>: Nucleotide CDR3 sequence</li>
+<li><strong>aaCDR3</strong>: Amino acid CDR3 sequence</li>
 <li><strong>count</strong>: the occurrence of each sequence within the sample</li>
 </ul>
 <strong>Note</strong>: The order of the columns must be respected. Input files can contain additional columns that will not be taken into account during the loading process.

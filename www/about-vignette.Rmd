@@ -48,7 +48,7 @@ body{
 </style>
 
 <br><br>
-**Shiny AnalyzAIRR** is a MiAIRR compliant web application for the analysis of bulk Ig/TCR repertoire datasets.
+**Shiny AnalyzAIRR** is a AIRR compliant web application for the analysis of bulk Ig/TCR repertoire datasets.
 
 * It proposes an analytical routine starting with data exploration, leading to in-depth statistical comparisons with the aim of answering defined biological questions.
 
@@ -77,13 +77,13 @@ A **RepSeqExperiment** object generated using the AnalyzAIRR R package and saved
 
       - **sample_id**: Sample names
       
-      - **CDR3nt**: CDR3 nucleotide sequence
-      
-      - **CDR3aa**: CDR3 amino acid sequence
-      
-      - **V**: Variable gene name (IMGT nomenclature)
+       - **V**: Variable gene name (IMGT nomenclature)
       
       - **J**: Joining gene name (IMGT nomenclature)
+      
+      - **ntCDR3**: Nucleotide CDR3 sequence
+      
+      - **aaCDR3**: Amino acid CDR3 sequence
       
       - **count**: the occurrence of each sequence within the sample
       

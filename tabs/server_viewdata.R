@@ -67,7 +67,7 @@ observeEvent(input$dataextractionHelp,
              showModal(modalDialog(
                  title = paste("Help"),
                  htmlOutput("dataExtractionHelp"),
-                 size = "l",
+                 size = "s",
                  easyClose = T
              ))
 )
@@ -84,7 +84,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   "Select a group and a subgroup (optional)",  
+                   "Select a group and a subgroup <i>(optional)</i>",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -129,7 +129,7 @@ observeEvent(input$filtercountHelp,
              showModal(modalDialog(
                  title = paste("Help"),
                  htmlOutput("FilterCountHelp"),
-                 size = "l",
+                 size = "s",
                  easyClose = T
              ))
 )
@@ -145,7 +145,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   "Select a group and a subgroup (optional)",  
+                   "Select a group and a subgroup <i>(optional)</i>",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -312,7 +312,7 @@ output$topSeqGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("topSeqGroup",
-                   "Select a group and a subgroup (optional)",  
+                   "Select a group and a subgroup <i>(optional)</i>",  
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),

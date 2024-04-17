@@ -6,9 +6,22 @@
 output$plotStats <- renderUI({
     selectGroupStat("plotStats", dataFilt())
 })
+
+output$plotcolorgroup <- renderUI({
+  selectColorGroup("plotcolorgroup", dataFilt())
+})
+
+output$plotfacetgroup <- renderUI({
+  selectFacetGroup("plotfacetgroup", dataFilt())
+})
+
+
 output$plotStatistic <- renderPlot({
         validate(need(!(is.null(input$plotStats) || input$plotStats == ""), "select a statistic"))
-        plotStatistics(x=dataFilt(), stat = input$plotStats, groupBy = NULL, label_colors = NULL)
+        validate(need(!(is.null(input$plotcolorgroup) || input$plotcolorgroup == ""), "select a group for colors"))
+        #validate(need(!(is.null(input$plotfacetgroup) || input$plotfacetgroup == ""), "select up to two groups for facets"))
+        
+        plotStatistics(x=dataFilt(), stat = input$plotStats, colorBy = input$plotcolorgroup , facetBy = input$plotfacetgroup, label_colors = NULL)
     })
 
 output$downPlotStatsBasic <- renderUI({
@@ -24,7 +37,8 @@ output$PlotStatsBasic <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotStatistics(x=dataFilt(), stat = input$plotStats, groupBy = NULL, label_colors = NULL))
+        grid.draw( plotStatistics(x=dataFilt(), stat = input$plotStats, colorBy = input$plotcolorgroup , facetBy = input$plotfacetgroup, label_colors = NULL)
+)
         dev.off()
     }
 )
@@ -68,7 +82,7 @@ observeEvent(input$countfeaturesHelp,
 )
 
 output$plotRare <- renderUI({
-    selectGroup("plotRare", dataFilt())
+  selectColorGroup("plotRare", dataFilt())
 })
 output$plotrarefaction <- plotly::renderPlotly({
     validate(need(!(is.null(input$plotRare) || input$plotRare == ""), "select a group"))
@@ -131,11 +145,22 @@ observeEvent(input$raretabHelp,
 )
 #### Diversity estimation ####
 
+output$divcolor <- renderUI({
+  selectColorGroup("divcolor", dataFilt())
+})
+
+output$divfacet <- renderUI({
+  selectFacetGroup("divfacet", dataFilt())
+})
+
 output$plotDiv <- renderPlot({
     validate(need(!(is.null(input$divIndex) || input$divIndex == ""), "select an index"))
     validate(need(!(is.null(input$divLevel) || input$divLevel == ""), "select a level"))
-    plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, groupBy = NULL, label_colors = NULL)
+    validate(need(!(is.null(input$divcolor) || input$divcolor == ""), "select a group for colors"))
+    
+    plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, colorBy=input$divcolor, facetBy=input$divfacet, label_colors = NULL)
 })
+
 output$downPlotDiv <- renderUI({
     if (!is.null(input$plotRare) & !is.null(input$divLevel)) {
         downloadButton("PlotDiv", "Download PDF", style="background-color:white; border-color: #022F5A;")
@@ -149,7 +174,8 @@ output$PlotDiv <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, groupBy = NULL, label_colors = NULL))
+        grid.draw(plotDiversity(x=dataFilt(), index = input$divIndex, level = input$divLevel, colorBy=input$divcolor, facetBy=input$divfacet, label_colors = NULL)
+)
         dev.off()
     }
 )
@@ -191,9 +217,23 @@ observeEvent(input$divtabHelp,
              ))
 )
 
+output$renyicolor <- renderUI({
+  selectColorGroup("renyicolor", dataFilt())
+})
+
+output$renyifacet <- renderUI({
+  selectFacetGroup("renyifacet", dataFilt())
+})
+
+output$renyishape <- renderUI({
+  selectShapeGroup("renyishape", dataFilt())
+})
+
 output$plotRenyi <- plotly::renderPlotly({
     validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select a level"))
-    plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
+    validate(need(!(is.null(input$renyicolor) || input$renyicolor == ""), "select a level"))
+  
+    plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,shapeBy=input$renyishape ,grouped = FALSE, label_colors = NULL))
 })
 output$downPlotRenyi2 <- renderUI({
     if (!is.null(input$renyiLevel)) {
@@ -208,7 +248,7 @@ output$PlotRenyi2 <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
+        grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,shapeBy=input$renyishape, grouped = FALSE, label_colors = NULL))
         dev.off()
     }
 )
@@ -250,9 +290,17 @@ observeEvent(input$rentabHelp,
              ))
 )
 
+
+output$countIntfacet <- renderUI({
+  selectFacetGroup("countIntfacet", dataFilt())
+})
+
 output$CountIntervals <- renderPlot({
     validate(need(!(is.null(input$countIntLevel) || input$countIntLevel == ""), "select a level"))
-    plotCountIntervals(x=dataFilt(), level = input$countIntLevel, groupBy = NULL, label_colors = NULL)
+    validate(need(!(is.null(input$countIntGroupMeth) || input$countIntGroupMeth == ""), "select a statistics scale"))
+
+    plotIntervals(x=dataFilt(), level = input$countIntLevel, grouped = F,colorBy=NULL, facetBy= input$countIntfacet,
+                       fractions=input$countIntGroupMeth, label_colors = NULL)
 })
 
 output$downPlotCountIntervals2 <- renderUI({
@@ -268,13 +316,14 @@ output$PlotCountIntervals2 <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotCountIntervals(x=dataFilt(), level = input$countIntLevel, groupBy = NULL, label_colors = NULL))
+        grid.draw(plotIntervals(x=dataFilt(), level = input$countIntLevel, grouped = F,colorBy=NULL, facetBy= input$countIntfacet,
+                                fractions=input$countIntGroupMeth, label_colors = NULL))
         dev.off()
     }
 )
 
 output$basicCountIntHelp <- renderText({
-    createHelp(?plotCountIntervals)
+    createHelp(?plotIntervals)
 })
 
 observeEvent(input$basiccountintHelp,
@@ -286,11 +335,23 @@ observeEvent(input$basiccountintHelp,
              ))
 )
 
-# plot VJ distribution
+# plot rank distribution
+
+output$rankDistribcolor <- renderUI({
+  selectColorGroup("rankDistribcolor", dataFilt())
+})
+
+output$rankDistribfacet <- renderUI({
+  selectFacetGroup("rankDistribfacet", dataFilt())
+})
+
+
 output$rankDistrib <- renderPlot({
     validate(need(!(is.null(input$rankDistribGroupMeth) || input$rankDistribGroupMeth == ""), "select a scale"))
     validate(need(!(is.null(input$rankDistribLevel) || input$rankDistribLevel == ""), "select a level"))
-    plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = "sample_id", grouped = FALSE, label_colors = NULL)
+    validate(need(!(is.null(input$rankDistribcolor) || input$rankDistribcolor == ""), "select a group for colors"))
+    
+    plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
 })
 
 output$downPlotrankDistrib <- renderUI({
@@ -305,7 +366,8 @@ output$PlotrankDistrib <- downloadHandler(
     },
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy = "sample_id", grouped = FALSE, label_colors = NULL))
+        grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
+)
         dev.off()
     }
 )

@@ -1,3 +1,0 @@
-sample	cell_subset	sex
-tripod-36-1003_R1	nTreg	M
-tripod-36-1005_R1	amTreg	M

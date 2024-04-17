@@ -162,24 +162,17 @@ p.caption {
 
 
 
-# Exploratory statistics
 
 
-## Basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/metadata stats-1.png" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
-<input id="metadatastatsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
 
 
 
@@ -279,21 +272,14 @@ p.caption {
 # Multi-sample analysis
 
 
-## Comparison of basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/stats-1.png" alt="plot of chunk stats" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="statsText-label" for="statsText">Enter text</label>
-<input id="statsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
 
 
 

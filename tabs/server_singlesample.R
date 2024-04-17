@@ -6,7 +6,8 @@
 output$IndCountIntervals <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$indLevel) ||  input$indLevel == ""), "Select a level"))
-    plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel)
+    validate(need(!(is.null(input$indMeth) || input$indMeth == ""), "select a statistics scale"))
+    plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel, fractions=input$indMeth)
 })
 
 output$downPlotIndCountIntervals <- renderUI({
@@ -22,13 +23,13 @@ output$PlotIndCountIntervals <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
+        grid.draw(plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
         dev.off()
     }
 )
 
 output$IndCountIntHelp <- renderText({
-    createHelp(?plotIndCountIntervals)
+    createHelp(?plotIndIntervals)
 })
 
 observeEvent(input$indcountintHelp,
