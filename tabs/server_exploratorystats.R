@@ -232,7 +232,11 @@ output$renyishape <- renderUI({
 output$plotRenyi <- plotly::renderPlotly({
     validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select a level"))
     validate(need(!(is.null(input$renyicolor) || input$renyicolor == ""), "select a level"))
-  
+    if(input$renyishape == ''){
+      shape <- NULL
+    } else {
+      shape <- input$renyishape
+    }
     plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,shapeBy=input$renyishape ,grouped = FALSE, label_colors = NULL))
 })
 output$downPlotRenyi2 <- renderUI({
@@ -356,7 +360,7 @@ output$rankDistrib <- renderPlot({
 
 output$downPlotrankDistrib <- renderUI({
     if (!is.null(input$rankDistribLevel) & !is.null(input$rankDistribGroupMeth)) {
-        downloadButton("PlotrankDistrib", "Download PDF", style="background-color:white; border-color: #022F5A;")
+        downloadButton("PlotrankDistrib", "Download PDF", style="background-color:white; border-color: #022F5A; margin-bottom: 14px;")
     }
 }) 
 

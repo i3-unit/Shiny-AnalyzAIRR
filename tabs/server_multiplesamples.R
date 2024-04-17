@@ -19,8 +19,8 @@ output$statisticsFacet <- renderUI({
 # plot statistics
 #observeEvent(input$doStats, {
   output$Statistics <- renderPlot({
-      validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "Statistic"))
-      validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "Colors"))
+      validate(need(!(is.null(input$statisticsStat) || input$statisticsStat == ""), "Select a statistic"))
+      validate(need(!(is.null(input$statisticsGroup) || input$statisticsGroup == ""), "Select a group for colors"))
       plotStatistics(x = dataFilt(), stat = input$statisticsStat, grouped=TRUE, colorBy = input$statisticsGroup, facetBy=input$statisticsFacet, show_stats=input$statisticsshowstats, label_colors = NULL)    
   })  
 #})
@@ -137,8 +137,8 @@ output$multrenshape <- renderUI({
   output$RenyiDiversity <- renderPlot({
     validate(need(!(is.null(input$multrenLevel) || input$multrenLevel == ""), "Select a level"))
     validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group for colours"))
-    print(input$multrenshape)
-    print(input$multrenfacet)
+    # print(input$multrenshape)
+    # print(input$multrenfacet)
     if(input$multrenshape == ''){
       shape <- NULL
     } else {
@@ -360,7 +360,7 @@ observeEvent(input$geneusageHelp,
 output$vennUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("vennSamples",
-                 HTML("Select samples <i>(maximum 7)</i>"),  #modified by VMH
+                 HTML("Select samples <i>(7 maximum)</i>"),  #modified by VMH
                  choices = choices,
                  options = list(maxItems = 7, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)  #VMH changed 3 to 4
@@ -411,7 +411,7 @@ observeEvent(input$eulerHelp,
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
-                 "Select samples <i>(maximum 2)</i>",  
+                 HTML("Select samples <i>(2 maximum)</i>"),  
                  choices = choices,
                  options = list(maxItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)

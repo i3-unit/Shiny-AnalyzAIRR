@@ -95,7 +95,7 @@ selectColorGroupmulti <- function(ID, y) {
   #id string
   colorgroup<- colnames(mData(y) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
   selectizeInput(ID,
-                 label = "Colors",
+                 label = "Select a group for colors",
                  choices = colorgroup,
                  options = list(onInitialize = I('function() { this.setValue(""); }')))
 }
@@ -117,7 +117,7 @@ selectFacetGroup <- function(ID, t) {
   #id string
   facetgroup<- colnames(mData(t) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
   selectizeInput(ID,
-                 label = HTML("Facets <i>(2 maximum, optional)</i>"),
+                 label = HTML("Select a group for facets <i>(2 maximum, optional)</i>"),
                  choices = facetgroup,
                  multiple = TRUE,
                  options = list(maxItems=2,onInitialize = I('function() { this.setValue(""); }')))
@@ -179,7 +179,7 @@ selectGroupStat <- function(ID, x){
   choices <- colnames(sdata)
   selectizeInput(
     ID,
-    "Statistic",
+    "Select a statistic",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )

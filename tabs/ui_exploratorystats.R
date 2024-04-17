@@ -15,7 +15,7 @@ basicstats <-
                        column(width = 2, style="margin-top: -22px;",
                                uiOutput("plotcolorgroup")
                         ),
-                        column(width = 3, style="margin-top: -22px;",
+                        column(width = 5, style="margin-top: -22px;",
                                uiOutput("plotfacetgroup")
                         )
                         # column(width = 2, style="margin-top: -22px;",
@@ -120,7 +120,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 2, style="margin-top: -22px;",
                                               uiOutput("divcolor")
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px;",
                                               uiOutput("divfacet")
                                        )
                                        # column(width = 2,
@@ -137,7 +137,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    # div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
                                    #  circleButton(inputId = "divtabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    # tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                   downloadButton("downloaddataDiv", "Export table", style="background-color:white; border-color: #022F5A;"),
+                                   downloadButton("downloaddataDiv", "Export table",style="background-color:white; border-color: #022F5A;"),
                                    dataTableOutput("dataDiv"),
                                    busyIndicator(wait = 500)
                                    ),
@@ -158,10 +158,10 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 2, style="margin-top: -22px;",
                                               uiOutput("renyicolor")
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 3, style="margin-top: -22px;",
                                               uiOutput("renyishape")
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px;",
                                               uiOutput("renyifacet")
                                        )
                                        # column(width = 2,
@@ -178,7 +178,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    # div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
                                    #     circleButton(inputId = "rentabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    # tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                   downloadButton("downloaddataRenyi", "Export table", style="background-color:white; border-color: #022F5A;"),
+                                   downloadButton("downloaddataRenyi", "Export table", style="background-color:white; border-color: #022F5A"),
                                    dataTableOutput("dataRenyi"),
                                    busyIndicator(wait = 500)
                           )
@@ -210,7 +210,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                                              choices = list("count" , "frequency"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px;",
                                               uiOutput("countIntfacet")
                                        )
                                        # column(width = 1,
@@ -245,7 +245,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        column(width = 2, style="margin-top: -22px;",
                                               uiOutput("rankDistribcolor")
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px;",
                                               uiOutput("rankDistribfacet")
                                        )
                                        # column(width = 2,

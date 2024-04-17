@@ -90,7 +90,14 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                   "Select a proportion",
                                                   value = 0.1,
                                                   min = 0, max = 1)
-                              )
+                              ),
+                       column(width = 2,   
+                              style = "margin-top: 2px;",
+                              tags$head(
+                                tags$style(HTML('#doSpectra{background-color:white; border-color: #022F5A;  border-radius: 50px;}'))
+                              ),
+                              actionButton("doSpectra", "Run")
+                       )
                      ),
                       uiOutput("downSpectra"),
                       plotly::plotlyOutput("spectraPlot"),
@@ -109,10 +116,17 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                   "Select a proportion",
                                                   value = 0.1,
                                                   min = 0, max = 1)
-                              )
+                              ),
+                       column(width = 2,   
+                              style = "margin-top: 2px;",
+                              tags$head(
+                                tags$style(HTML('#doSpectrabis{background-color:white; border-color: #022F5A;  border-radius: 50px;}'))
+                              ),
+                              actionButton("doSpectrabis", "Run")
+                       )
                       ),
                       uiOutput("downSpectrabis"),
-                      plotOutput("spectraPlotbis", height = "20%", width = "100%"),
+                      plotOutput("spectraPlotbis"),
                       busyIndicator(wait = 500),
                       value = "individualspectraTypetab"
                   )

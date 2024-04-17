@@ -25,9 +25,9 @@ CompBasicTab<-
                         column(width = 4, style="margin-top: -22px;",
                                uiOutput("statisticsFacet")
                         ),
-                        column(width = 4, style="margin-top: -22px;",
+                        column(width = 3, style="margin-top: -22px;",
                                selectizeInput("statisticsshowstats",
-                                              HTML("Statistical comparison <i>(optional)</i>"),
+                                              HTML("Perform a statistical test <i>(optional)</i>"),
                                               choices = list("yes"=TRUE, "no"=FALSE),
                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
                         )
@@ -73,7 +73,7 @@ CompBasicTab<-
                                  #        actionButton("doDiversity", "run")
                                  # ),
                                  
-                                  column(width = 4, style="margin-top: -22px;",
+                                  column(width = 3, style="margin-top: -22px;",
                                           uiOutput("diverfacet")
                                  ),
                                  column(width = 3, style="margin-top: -22px;",
@@ -109,7 +109,7 @@ CompBasicTab<-
                                    column(width = 2, style="margin-top: -22px;",
                                           uiOutput("multrenGroup")
                                    ), 
-                                   column(width = 2, style="margin-top: -22px;",
+                                   column(width = 3, style="margin-top: -22px;",
                                           uiOutput("multrenshape")
                                    ),
                                    column(width = 4, style="margin-top: -22px;",
@@ -163,10 +163,10 @@ CompBasicTab<-
                                  #        ),
                                  #        actionButton("doCountInt", "run")
                                  # ),
-                                 column(width = 4, style="margin-top: -22px;",
+                                 column(width = 3, style="margin-top: -22px;",
                                         uiOutput("countIntervalsFacet")
                                  ),
-                                 column(width = 4, style="margin-top: -22px;",
+                                 column(width = 3, style="margin-top: -22px;",
                                         selectizeInput("countIntervalsshowstats",
                                                        HTML("Perform a statistical test <i>(optional)</i>"),
                                                        choices = list("yes"=TRUE, "no"=FALSE),
@@ -205,7 +205,7 @@ CompBasicTab<-
                                  column(width = 2, style="margin-top: -22px;",
                                         uiOutput("multRankGroup")
                                  ),
-                                 column(width = 3, style="margin-top: -22px;",
+                                 column(width = 4, style="margin-top: -22px;",
                                         uiOutput("multRankFacet")
                                  )
                                  # column(width = 2,
@@ -244,7 +244,7 @@ CompBasicTab<-
                          column(width = 2, style="margin-top: -22px;",
                                 uiOutput("geneUsagefacet")
                          ),
-                         column(width = 4, style="margin-top: -22px;",
+                         column(width = 2, style="margin-top: -22px;",
                                 selectizeInput("geneUsageshowstats",
                                                HTML("Perform a statistical test <i>(optional)</i>"),
                                                choices = list("yes"=TRUE, "no"=FALSE),

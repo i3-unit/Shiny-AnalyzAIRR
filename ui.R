@@ -139,7 +139,7 @@ bodyTabs <-
                                                              choices = list("aaCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px;",
                                               tags$head(
                                                 tags$style(type="text/css",
                                                            '#filterCountGroup.shiny-output-error { visibility: hidden; }',
@@ -279,7 +279,7 @@ bodyTabs <-
                                                                     choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                      ), 
-                                     column(width = 3, style="margin-top: -22px;",
+                                     column(width = 4, style="margin-top: -22px;",
                                             tags$head(
                                               tags$style(type="text/css",
                                                          '#publicGroup.shiny-output-error { visibility: hidden; }',
@@ -354,7 +354,7 @@ bodyTabs <-
                                                                     choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                      ), 
-                                     column(width = 3, style="margin-top: -22px;",
+                                     column(width = 4, style="margin-top: -22px;",
                                             tags$head(
                                               tags$style(type="text/css",
                                                          '#topSeqGroup.shiny-output-error { visibility: hidden; }',
@@ -431,7 +431,7 @@ bodyTabs <-
                                                            label = "With replacement",
                                                            value = TRUE)
                                        ),
-                                       column(width=3, style="margin-top: -22px;",
+                                       column(width=4, style="margin-top: -22px;",
                                               switchButton(inputId = "doDown",
                                                            label = "Perform a down-sampling normalization",
                                                            value = FALSE)
