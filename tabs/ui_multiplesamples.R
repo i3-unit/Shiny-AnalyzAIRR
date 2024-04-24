@@ -205,6 +205,13 @@ CompBasicTab<-
                                  column(width = 2, style="margin-top: -22px;",
                                         uiOutput("multRankGroup")
                                  ),
+                                 column(width = 3, style="margin-top: -22px;",
+                                        sliderInput(inputId = "multRankSize",
+                                                    label = HTML("Select number of ranks <i>(optional)</i>"),
+                                                                 value = 1000,
+                                                                 min = 1,
+                                                                 max = 1000000)
+                                  ),
                                  column(width = 4, style="margin-top: -22px;",
                                         uiOutput("multRankFacet")
                                  )

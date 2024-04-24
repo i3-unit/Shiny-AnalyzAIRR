@@ -253,24 +253,26 @@ output$multRank <- renderPlot({
   validate(need(!(is.null(input$multRankLevel) || input$multRankLevel == ""), "Select a level"))
   validate(need(!(is.null(input$multRankScale) || input$multRankScale == ""), "Select a scale"))
   validate(need(!(is.null(input$multRankGroup) || input$multRankGroup == ""), "Select a group for colours"))
+  validate(need(!(is.null(input$multRankSize) || input$multRankSize == ""), "Select number of ranks"))
+  
   plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale,
-                  colorBy = input$multRankGroup, facetBy=input$multRankFacet, grouped = TRUE, label_colors = NULL)    
+                  colorBy = input$multRankGroup, facetBy=input$multRankFacet, grouped = TRUE, ranks=input$multRankSize, label_colors = NULL)    
 }) 
 
 output$downPlotMultRank <- renderUI({
-  if (!is.null(input$multRankLevel) & !(is.null(input$multRankScale)) & !(is.null(input$multRankGroup))) {
+  if (!is.null(input$multRankLevel) & !(is.null(input$multRankScale)) & !(is.null(input$multRankGroup)) &!(is.null(input$multRankSize))) {
     downloadButton("PlotMultRank", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotMultRank <- downloadHandler(
   filename =  function() {
-    paste0("rankDistrib_", input$multRankLevel, "_", input$multRankScale,"_",input$multRankGroup, ".pdf")
+    paste0("rankDistrib_", input$multRankLevel, "_", input$multRankScale,"_",input$multRankGroup,"_", input$multRankSize, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale,
+    grid.draw(plotRankDistrib(x = dataFilt(), level = input$multRankLevel, scale = input$multRankScale, ranks=input$multRankSize,
                               colorBy = input$multRankGroup, facetBy=input$multRankFacet, grouped = TRUE, label_colors = NULL)    
     )
     dev.off()

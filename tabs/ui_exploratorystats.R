@@ -245,6 +245,13 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        column(width = 2, style="margin-top: -22px;",
                                               uiOutput("rankDistribcolor")
                                        ),
+                                       column(width = 2, style="margin-top: -22px;",
+                                              sliderInput(inputId = "rankDistribSize",
+                                                          label = HTML("Select maximum rank <i>(optional)</i>"),
+                                                          value = 1000,
+                                                          min = 1,
+                                                          max = 1000000)
+                                       ),
                                        column(width = 4, style="margin-top: -22px;",
                                               uiOutput("rankDistribfacet")
                                        )

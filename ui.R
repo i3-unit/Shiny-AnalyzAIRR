@@ -433,7 +433,7 @@ bodyTabs <-
                                        ),
                                        column(width=4, style="margin-top: -22px;",
                                               switchButton(inputId = "doDown",
-                                                           label = "Perform a down-sampling normalization",
+                                                           label = "Perform down-sampling",
                                                            value = FALSE)
                                        )
                                        # column(width = 3,

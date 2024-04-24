@@ -354,8 +354,8 @@ output$rankDistrib <- renderPlot({
     validate(need(!(is.null(input$rankDistribGroupMeth) || input$rankDistribGroupMeth == ""), "select a scale"))
     validate(need(!(is.null(input$rankDistribLevel) || input$rankDistribLevel == ""), "select a level"))
     validate(need(!(is.null(input$rankDistribcolor) || input$rankDistribcolor == ""), "select a group for colors"))
-    
-    plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
+
+    plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize ,colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
 })
 
 output$downPlotrankDistrib <- renderUI({
@@ -366,11 +366,11 @@ output$downPlotrankDistrib <- renderUI({
 
 output$PlotrankDistrib <- downloadHandler(
     filename =  function() {
-        paste0("rankDistrib_", input$rankDistribLevel, "_", input$rankDistribGroupMeth, ".pdf")
+        paste0("rankDistrib_", input$rankDistribLevel, "_", input$rankDistribGroupMeth,"_", input$rankDistribSize, ".pdf")
     },
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
+        grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
 )
         dev.off()
     }

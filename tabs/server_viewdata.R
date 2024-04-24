@@ -423,7 +423,7 @@ observeEvent(input$filterseqHelp,
 
 
 downSampling <- reactive({
-    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
+    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform down-sampling?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "Replacement"))
 
