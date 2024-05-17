@@ -302,22 +302,22 @@ output$geneUsagefacet <- renderUI({
 })
 
 # plot V and J gene usages
-observeEvent(input$dogeneUsage, {
+#observeEvent(input$dogeneUsage, {
   output$geneUsage <- plotly::renderPlotly({
     validate(need(!(is.null(input$geneUsageScale) ||  input$geneUsageScale == ""), "Select a scale"))
     validate(need(!(is.null(input$geneUsageLevel) ||  input$geneUsageLevel == ""), "Select a level"))
     validate(need(!(is.null(input$geneUsageGroup) ||  input$geneUsageGroup == ""), "Select a group for colours"))
-    plotly::ggplotly(plotGeneUsage(x = dataFilt(), level = input$geneUsageLevel, 
+    plotly::ggplotly(plotGeneUsage(x = dataFilt(), 
+                                   level = input$geneUsageLevel, 
                                    scale = input$geneUsageScale, 
                                    colorBy = input$geneUsageGroup, 
                                    facetBy= input$geneUsagefacet, 
                                    label_colors = NULL,
                                    show_stats=input$geneUsageshowstats)+
                                    ggplot2::theme(legend.position = "none"), 
-                                   tooltip = c("x", "y")) %>%
-      plotly::layout(boxmode = "group")
+                                   tooltip = c("x", "y")) 
   })
-})
+#})
 
 output$downPlotgeneUsage <- renderUI({
   if (!is.null(input$geneUsageGroup) & !(is.null(input$geneUsageLevel)) & !(is.null(input$geneUsageScale)) ) {
