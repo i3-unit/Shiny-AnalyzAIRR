@@ -23,6 +23,8 @@ source("tabs/ui_report.R")
 #-------------------------------------------------------------------------------# 
 header <- dashboardHeader(titleWidth = "20%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("redo", verify_fa = FALSE))))
 #-------------------------------------------------------------------------------#
+data<- readRDS("data/RepSeqData.rds")
+#-------------------------------------------------------------------------------# 
 # Dashboard body
 #-------------------------------------------------------------------------------# 
 bodyTabs <- 

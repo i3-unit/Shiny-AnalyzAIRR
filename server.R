@@ -6,12 +6,29 @@ shinyServer(function(input, output, session) {
     # render session information
     output$session <- renderPrint({ sessionInfo() })
     
+    #load example data
+    # data <- reactive({
+    #   url <- "https://github.com/vanessajmh/Shiny-AnalyzAIRR/tree/master/data/RepSeqData.rds"
+    #   readRDS(url)
+    # })
+    
     # upload aligned & annotated CSV data 
     output$canUpload <- reactive(
         return(!(is.null(input$chain) || input$source == ""))
     )
     #
+  
+    #
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
+    
+    # upload rds 
+    output$canUploadrds <- reactive(
+      return(input$userdata==TRUE) 
+    )
+    
+    outputOptions(output, "canUploadrds", suspendWhenHidden = FALSE) 
+    
+    #
     
     output$renderedReport <- renderUI({
         includeMarkdown(knitr::knit("markdown/report_template.Rmd"))         
@@ -160,12 +177,16 @@ shinyServer(function(input, output, session) {
     )
     
     # load RDS 
-    RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile), {
+    RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile, input$loadExample), {
         validate(need(!(is.null(input$sInfofile) && input$putInfofile == "Yes") || 
                           (is.null(input$sInfofile) && input$putInfofile == "No") ||
-                          !(is.null(input$RDSfile)), ""))
+                        !is.null(input$RDSfile) && input$loadExample==FALSE ||
+                        is.null(input$RDSfile) && input$loadExample==TRUE , ""))
+                     
         if (!is.null(input$RDSfile)) {
         RepSeqDT <- readRDS(input$RDSfile$datapath)
+        } else if( input$loadExample== TRUE){
+          RepSeqDT<-  readRDS("data/RepSeqData.rds")
         } else if(input$source != "Other"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
@@ -282,6 +303,17 @@ source("tabs/server_exploratorystats.R", local = TRUE)
         session$reload()
         return()
     })
+    
+    #load example data
+    # observeEvent(input$loadExample, {
+    #   reactive({
+    #     url <- "https://github.com/vanessajmh/Shiny-AnalyzAIRR/tree/master/data/RepSeqData.rds"
+    #     readRDS(url)
+    #   })
+    #  # showNotification(paste("Message", "Data Has been loaded"), duration = NULL)
+    #   
+    # })
+    
 }) 
 
 

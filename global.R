@@ -19,7 +19,6 @@ graphics.off()
 # options
 #------------------------------------------------------------------------------#
 options(shiny.maxRequestSize = 900*1024 ^ 3, repos = BiocManager::repositories()) # limite la taille des fichiers input, a modifier
-
 #------------------------------------------------------------------------------#
 # additional functions
 #------------------------------------------------------------------------------#

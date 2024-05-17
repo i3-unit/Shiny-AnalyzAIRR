@@ -12,16 +12,45 @@ sideMenu <- sidebarMenu(id = "sideTabs",
         menuItem(
             text = "Upload RepSeqExperiment",
             icon = icon("upload", verify_fa = FALSE),
-            fileInput(
-                "RDSfile",
-                NULL,
-                multiple = T,
-                accept = c("rds",
-                           ".rds"),
-                buttonLabel = "Choose RDS file",
-                placeholder = "No file selected"
-            ), tabName = "uploadRDStab"
-        ), tabName = "uploadRDStab"
+            # fileInput(
+            #   inputId= "RDSfile",
+            #    label= "Use your RepSeqExperiment file",
+            #     multiple =F,
+            #     accept = c("rds",
+            #                ".rds"),
+            #     buttonLabel = "Browse",
+            #     placeholder = "No file selected"
+            # ),
+            checkboxInput(
+              "userdata",
+              "Use my RepSeqExperiment data", 
+              value = FALSE
+            ),
+            conditionalPanel(
+              condition = "output.canUploadrds",
+              fileInput(
+                inputId= "RDSfile",
+                 label= "",
+                  multiple =F,
+                  accept = c("rds",
+                             ".rds"),
+                  buttonLabel = "Browse",
+                  placeholder = "No file selected"
+              ),
+            ),
+            # selectizeInput(inputId = "loadExample",
+            #                'Or use example data',
+            #                choices = list("Yes", "No"),
+            #                options = list(onInitialize = I('function() { this.setValue("No"); }'))
+            # ),
+            checkboxInput(
+              "loadExample",
+              "Use example data", 
+              value = FALSE
+            ),
+            # actionButton(inputId="loadExample",label="Use example data" , icon = icon("redo")),
+            tabName = "uploadRDStab"), 
+        tabName = "uploadRDStab"
     ),
     convertMenuItem(
         menuItem(
