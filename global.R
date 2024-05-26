@@ -214,6 +214,7 @@ printHtml <- function(obj){
   HTML(paste("<p style='font-size:15px;'>", paste0(capture.output(print(obj)), collapse="<br/>"), "</p>"))
 }
 
+
 # Plot histograms
 histSums<- function(dat=NULL, xlab="",ylab=""){
   p<-ggplot2::ggplot(data.frame(sums=dat), ggplot2::aes(x=sums))+
@@ -227,6 +228,33 @@ histSums<- function(dat=NULL, xlab="",ylab=""){
            axis.text.x = ggplot2::element_text(size=15),
            axis.text.y = ggplot2::element_text(size=15))
   return(p)
+}
+
+selectGrp <- function( ID,x) {
+  #x RepSeqExperiment object
+  metadata<- AnalyzAIRR::mData(x)
+  cols<- c("nSequences","V","J","VJ","ntCDR3","aaCDR3","ntClone", "aaClone")
+  p<- as.list(colnames(metadata)[!as.factor(colnames(metadata)) %in% cols])
+  
+  selectizeInput(ID,
+                 label = "Select a biological group",
+                 choices = p,
+                 width = "50%",
+                # options = list(onInitialize = I('function() { this.setValue(""); }'))
+                )
+}
+
+selectID <- function( ID,x) {
+  #x RepSeqExperiment object
+  metadata<- AnalyzAIRR::mData(x)
+ ids<- as.list(as.character(metadata$sample_id))
+  
+  selectizeInput(ID,
+                 label = "Select a sample ID",
+                 choices = ids,
+                 width = "50%",
+                 #options = list(onInitialize = I('function() { this.setValue(""); }'))
+                 )
 }
 
 # Generate dashboard header

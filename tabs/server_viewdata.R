@@ -504,17 +504,17 @@ output$Plothistdownlibsizes <- downloadHandler(
         pdf(file, height=3.5, width=7)
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Orignial data")+
+            ggplot2::ggtitle("Orignial data")+
             theme_RepSeq()+
-            theme( axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme( axis.title.x = ggplot2::element_text(size=15),
                    axis.title.y = ggplot2::element_text(size=15),
                    axis.text.x = ggplot2::element_text(size=15),
                    axis.text.y = ggplot2::element_text(size=15))
         cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Downsampled data") +
+          ggplot2::ggtitle("Downsampled data") +
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))

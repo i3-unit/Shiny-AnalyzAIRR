@@ -35,46 +35,56 @@ bodyTabs <-
             )
     ),
     tabItem(tabName = "uploadRDStab",
-            h2("Data overview"),
-            htmlOutput("summaryRDS"),
+           # h2("Data overview"),
+            # htmlOutput("summaryRDS"),
             busyIndicator(wait = 50),
-            uiOutput("downPlothistlibsizesp1"),
-            plotOutput("histlibsizesp1"),
-            h4(""),
+            # uiOutput("downPlothistlibsizesp1"),
+            # plotOutput("histlibsizesp1"),
+            # h4(""),
             fluidRow(
-              column(width = 3,
-                     tags$head(
-                       tags$style(HTML('#format.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, #format.shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
-                                            .selectize-input{background-color:white; border-color: #022F5A;}
-                                            .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A; border-radius: 0px;}
-                                            .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
-                                            .progress-bar{border-color: #022F5A; border-radius: 0px;}
-                                            .irs--shiny .irs-min, .irs--shiny .irs-max{background-color: aliceblue;}
-                                            .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}
-                                            .onoffswitch {margin-top: 3px; position: relative; width: 69px;-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;}
-                                            .onoffswitch-checkbox {position: absolute; opacity: 0;pointer-events: none;}
-                                            .onoffswitch-label {display: block; overflow: hidden; cursor: pointer;border: 1.5px solid #022F5A; border-radius: 12px;}
-                                            .onoffswitch-inner {display: block; width: 200%; margin-left: -100%;transition: margin 0.3s ease-in 0s;}
-                                            .onoffswitch-inner:before, .onoffswitch-inner:after {display: block; float: left; width: 50%; height: 23px; padding: 0; line-height: 23px;font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;box-sizing: border-box;}
-                                            .onoffswitch-inner:before {content: "Yes";padding-left: 10px;background-color: #FFFFFF; color: #428BCA;}
-                                            .onoffswitch-inner:after {content: "No";padding-right: 10px;background-color: #FFFFFF; color: #999999;text-align: right;}
-                                            .onoffswitch-switch {display: block; width: 10px; height: 10px; margin: 8px; background: #A1A1A1;position: absolute; top: 0; bottom: 0;right: 42px;border: 2px solid #022F5A; border-radius: 12px;transition: all 0.3s ease-in 0s; }
-                                            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {margin-left: 0;}
-                                            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {right: 0px; background-color: #428BCA;}'))
-                     ),
-                     tags$div(
-                       tags$style(".renderedReport.shiny-html-output.shiny-bound-output{color: white;}")
-                     ),
-                     selectizeInput("summaryLevel",
-                                    "Select a level",
-                                    choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
-                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
-                     )
-              )
+              valueBoxOutput("summaryNb"),
+              valueBoxOutput("summaryGrp"),
+              valueBoxOutput("summarySeq")
+              ),
+           fluidRow(
+            box(title = "Sequence number overview", status = "primary", 
+              # column(width = 3,
+              #        tags$head(
+              #          tags$style(HTML('#format.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, #format.shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
+              #                               .selectize-input{background-color:white; border-color: #022F5A;}
+              #                               .input-group .form-control, .input-group-addon, .input-group-btn{background-color:white; border-color: #022F5A; border-radius: 0px;}
+              #                               .btn-file{background-color:white; border-color: #022F5A; border-radius: 0px;}
+              #                               .progress-bar{border-color: #022F5A; border-radius: 0px;}
+              #                               .irs--shiny .irs-min, .irs--shiny .irs-max{background-color: aliceblue;}
+              #                               .shiny-input-checkboxgroup label~.shiny-options-group, .shiny-input-radiogroup label~.shiny-options-group{mix-blend-mode: hard-light;}
+              #                               .onoffswitch {margin-top: 3px; position: relative; width: 69px;-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;}
+              #                               .onoffswitch-checkbox {position: absolute; opacity: 0;pointer-events: none;}
+              #                               .onoffswitch-label {display: block; overflow: hidden; cursor: pointer;border: 1.5px solid #022F5A; border-radius: 12px;}
+              #                               .onoffswitch-inner {display: block; width: 200%; margin-left: -100%;transition: margin 0.3s ease-in 0s;}
+              #                               .onoffswitch-inner:before, .onoffswitch-inner:after {display: block; float: left; width: 50%; height: 23px; padding: 0; line-height: 23px;font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;box-sizing: border-box;}
+              #                               .onoffswitch-inner:before {content: "Yes";padding-left: 10px;background-color: #FFFFFF; color: #428BCA;}
+              #                               .onoffswitch-inner:after {content: "No";padding-right: 10px;background-color: #FFFFFF; color: #999999;text-align: right;}
+              #                               .onoffswitch-switch {display: block; width: 10px; height: 10px; margin: 8px; background: #A1A1A1;position: absolute; top: 0; bottom: 0;right: 42px;border: 2px solid #022F5A; border-radius: 12px;transition: all 0.3s ease-in 0s; }
+              #                               .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {margin-left: 0;}
+              #                               .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {right: 0px; background-color: #428BCA;}'))
+              #        ),
+              #        tags$div(
+              #          tags$style(".renderedReport.shiny-html-output.shiny-bound-output{color: white;}")
+              #        ),
+                     # selectizeInput("summaryLevel",
+                     #                "Select a bilogical group",
+                     #                choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                     #                options = list(onInitialize = I('function() { this.setValue(""); }'))
+
+              uiOutput("selectGrp1"), div(style = "width: 95%;margin-left: 0px;",
+                                          plotly::plotlyOutput("plotGrp1" ))
+              ),
+            box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp1"), plotOutput("Plothistlibsizesp1"))
+            
             ),
-            uiOutput("downPlothistlibsizesp2"),
-            plotOutput("histlibsizesp2"),
-            busyIndicator(wait = 50),
+          #  uiOutput("downPlothistlibsizesp2"),
+           # plotOutput("histlibsizesp2"),
+            #busyIndicator(wait = 50),
     ),
     tabItem(tabName = "uploadTXTtab",
             h2("Data overview"),
@@ -531,7 +541,8 @@ bodyTabs <-
 #-------------------------------------------------------------------------------# 
 dashboardPage(skin = "blue",
               mydashboardHeader(title = "Shiny AnalyzAIRR", titleWidth = "19%", tags$li(class = "dropdown", actionLink("resetApp", "New analysis", icon = icon("sync", verify_fa = FALSE)))),
-              dashboardSidebar(width = "19%", sideMenu, 
+              dashboardSidebar(tags$style(HTML(".main-sidebar { font-size: 13px; }")),
+                                width = "19%", sideMenu, 
                                div(style="position: absolute; bottom: 0;", hr(), tags$i(class="fa fa-user"), "V. Mhanna, G. Pires, G. Bohl, K. el Soufi,", br(), "N. Tchitchek, D. Klatzmann, A. Six, H. P. Pham, E. Mariotti-Ferrandiz")),
               dashboardBody(tags$script(HTML("$('body').addClass('fixed');")), 
                             busyIndicator(wait = 500), 
