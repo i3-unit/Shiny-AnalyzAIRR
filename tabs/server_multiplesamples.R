@@ -139,13 +139,13 @@ output$multrenshape <- renderUI({
     validate(need(!(is.null(input$multrenGroup) || input$multrenGroup == ""), "Select a group for colours"))
     # print(input$multrenshape)
     # print(input$multrenfacet)
-    if(input$multrenshape == ''){
-      shape <- NULL
-    } else {
-      shape <- input$multrenshape
-    }
+    # if(input$multrenshape == ''){
+    #   shape <- NULL
+    # } else {
+    #   shape <- input$multrenshape
+    # }
     plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
-                   grouped = TRUE, shapeBy=shape, 
+                   grouped = TRUE, 
                    facetBy=input$multrenfacet,
                    label_colors = NULL)    
     })  
@@ -167,7 +167,7 @@ output$PlotRenyi <- downloadHandler(
   content = function(file) {
     pdf(file, height=4, width=6)
     grid.draw(plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
-                             grouped = TRUE, shapeBy=input$multrenshape, label_colors = NULL,
+                             grouped = TRUE,  label_colors = NULL,
                              facetBy=input$multrenfacet
                              )    
 )

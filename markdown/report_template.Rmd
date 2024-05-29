@@ -105,6 +105,7 @@ knitr::opts_chunk$set(echo = TRUE)
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) &&
  !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
    (input$doProductive == 1) ||
+    (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
    (!is.null(input$dropSampleNames)) || 
    (!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1) || 
    (!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1) || 
@@ -117,6 +118,7 @@ if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) &&
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
    (input$doProductive == 1) ||
+    (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
    (!is.null(input$dropSampleNames)) || 
    (!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1) || 
    (!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1) || 
@@ -138,6 +140,29 @@ if(!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(
                         position = "center",
                         font_size = 10) %>%
         kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
+}
+      
+```
+
+
+```{r show filter seq title, results='asis', echo=FALSE}
+if((!is.null(input$filterSeqLevel) && !is.null(input$filterSeqName) && input$doFilterSeq == 1)){cat("**Filter out a sequence**")}
+```
+
+```{r repcount, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+if(!is.null(input$filterSeqLevel) && !is.null(input$filterSeqName) && input$doFilterSeq == 1){
+    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+    filterSeqGroup <- input$filterSeqGroup
+  } else {
+    filterSeqGroup <- NULL
+  }
+  filterSequence(x = RepSeqDT(), level = input$filterSeqLevel, name = input$filterSeqName, group =  
+                   filterSeqGroup)
+ 
+   historydata <- AnalyzAIRR::History(input$dataFiltered)
+   flextable::flextable(head(historydata)) %>%
+     flextable::theme_vanilla() %>%
+     flextable::color(color="#022f5a", part="header")   
 }
       
 ```
@@ -352,7 +377,7 @@ if((input$plotStats != ""  &&  !is.null(input$plotcolorgroup)) ||
    (!is.null(input$plotRare)) ||
    (!is.null(input$divIndex) && input$divLevel != "" && !is.null(input$divcolor) &&
     !is.null(input$divfacet)) || 
-   (input$renyiLevel != "" && !is.null(input$renyicolor) && !is.null(input$renyishape) &&
+   (input$renyiLevel != "" && !is.null(input$renyicolor) && 
     !is.null(input$renyifacet)) || 
    (input$countIntLevel != "" && input$countIntGroupMeth != "" && !is.null(input$countIntfacet)) || 
    (input$rankDistribLevel != "" && input$rankDistribGroupMeth != "" &&
@@ -394,18 +419,18 @@ if((!(is.null(params$plotStats) || params$plotStats == "")) &&
 if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed repertoire level statistics")}
 ```
 
-```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(input$countLevel != "" && !is.null(input$countScale)){
-   countfeatures <- countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL)
-   knitr::kable(head(countfeatures)) %>%
-    kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-    kableExtra::row_spec(0, color="#022f5a", font_size = 12)      
-}
-      
-```
+<!-- ```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
+<!--    countfeatures <- countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL) -->
+<!--    knitr::kable(head(countfeatures)) %>% -->
+<!--     kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--     kableExtra::row_spec(0, color="#022f5a", font_size = 12)       -->
+<!-- } -->
+
+<!-- ``` -->
 
 ```{r show count features text entry,echo = FALSE}
 if(input$countLevel != "" && !is.null(input$countScale)){
@@ -442,18 +467,18 @@ if(!is.null(input$plotRare)){
 ```
 
 
-```{r rarefaction tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$plotRare)){
-   raretab <- rarefactionTab(x = dataFilt())
-   knitr::kable(head(raretab)) %>%
-            kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-            kableExtra::row_spec(0, color="#022f5a", font_size = 12)
-}
-      
-```
+<!-- ```{r rarefaction tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$plotRare)){ -->
+<!--    raretab <- rarefactionTab(x = dataFilt()) -->
+<!--    knitr::kable(head(raretab)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12) -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Diversity indices title, results='asis', echo=FALSE}
@@ -477,18 +502,18 @@ if(!is.null(input$divIndex) && input$divLevel != ""  && input$divcolor != ""){
 ```
 
 
-```{r div ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(input$divLevel != ""){
-   divind <- diversityIndices(x=dataFilt(), level = input$divLevel)
-   knitr::kable(head(divind)) %>%
-            kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-}
-      
-```
+<!-- ```{r div ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$divLevel != ""){ -->
+<!--    divind <- diversityIndices(x=dataFilt(), level = input$divLevel) -->
+<!--    knitr::kable(head(divind)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Renyi index title, results='asis', echo=FALSE}
@@ -498,7 +523,7 @@ if(input$renyiLevel != "" && input$renyicolor != ""){cat("### Renyi index")}
 ```{r renyi ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(input$renyiLevel != "" && input$renyicolor !=""){
    plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, 
-                  facetBy=input$renyifacet, shapeBy=input$renyishape, grouped = FALSE, label_colors = NULL)
+                  facetBy=input$renyifacet,  grouped = FALSE, label_colors = NULL)
 }
       
 ```
@@ -512,18 +537,18 @@ if(input$renyiLevel != "" && input$renyicolor !=""){
 ```
 
 
-```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(input$renyiLevel != ""){
-   renind <- renyiIndex(x=dataFilt(), level = input$renyiLevel)
-   knitr::kable(head(renind)) %>%
-            kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-}
-      
-```
+<!-- ```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$renyiLevel != ""){ -->
+<!--    renind <- renyiIndex(x=dataFilt(), level = input$renyiLevel) -->
+<!--    knitr::kable(head(renind)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Clonal distribution title, results='asis', echo=FALSE}
@@ -763,12 +788,12 @@ if(!is.null(input$multrenLevel) && !is.null(input$multrenGroup)){cat("### Renyi 
 
 ```{r renyi, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$multrenLevel) && !is.null(input$multrenGroup)){
-   if(input$multrenshape == ''){
-      shape <- NULL
-    } else {
-      shape <- input$multrenshape
-    }
-    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, facetBy=input$multrenfacet, shapeBy=shape, grouped = TRUE, label_colors = NULL)
+   # if(input$multrenshape == ''){
+   #    shape <- NULL
+   #  } else {
+   #    shape <- input$multrenshape
+   #  }
+    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, facetBy=input$multrenfacet, grouped = TRUE, label_colors = NULL)
 }
     
 ```
@@ -959,18 +984,18 @@ if(!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diff
 ```
 
 
-```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$diffGroup) && !is.null(input$diffLevel)){
-    diffexp <- diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup)
-    knitr::kable(head(diffexp)) %>%
-            kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-}
-    
-```
+<!-- ```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$diffGroup) && !is.null(input$diffLevel)){ -->
+<!--     diffexp <- diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup) -->
+<!--     knitr::kable(head(diffexp)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Spectractyping comparison title, results='asis', echo=FALSE}
@@ -996,19 +1021,19 @@ if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(in
 ```
 
 
-```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1){
-    sampleinfo <- mData(dataFilt())
-    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-    pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2)
-    knitr::kable(head(pertscore)) %>%
-            kableExtra::kable_styling(
-                    full_width = FALSE,
-                    position = "center",
-                    font_size = 10) %>%
-            kableExtra::row_spec(0, color="#022f5a", font_size = 12) 
-}
-    
-```
+<!-- ```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1){ -->
+<!--     sampleinfo <- mData(dataFilt()) -->
+<!--     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)] -->
+<!--     pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2) -->
+<!--     knitr::kable(head(pertscore)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 

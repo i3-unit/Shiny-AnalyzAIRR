@@ -379,7 +379,8 @@ output$filterSeqGroup <- renderUI({
 
 dataFilterSeq <- eventReactive(input$doFilterSeq, {
   validate(need(!(is.null(input$filterSeqLevel) || input$filterSeqLevel == ""), "select a level"))
-  validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "enter a sequence")) 
+  validate(need(!(is.null(input$filterSeqGroup) || input$filterSeqGroup == ""), "select a group")) 
+
   if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
     filterSeqGroup <- input$filterSeqGroup
   } else {

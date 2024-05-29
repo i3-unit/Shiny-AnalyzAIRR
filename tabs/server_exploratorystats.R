@@ -56,10 +56,44 @@ observeEvent(input$basicstatsHelp,
              ))
 )
 
-output$dataCountFeatures <- renderDataTable({
+output$dataCountFeatures <- renderReactable({
     validate(need(!(is.null(input$countLevel) || input$countLevel == ""), "select a level"))
     validate(need(!(is.null(input$countScale) || input$countScale == ""), "select a scale"))
-    countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL)
+   
+   dt<-countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL)
+   name<-colnames(dt)[1]
+   
+   dtb <- as.matrix(dt, rownames = name)
+   if(input$countScale == "count") dtb <- apply(dtb, 2, function(y) (y - min(dtb)) / (max(dtb) - min(dtb)))
+   
+   color_list = lapply(1:ncol(dtb), function(x){
+     rgb(colorRamp(c("#7fb7d7", "#ffffbf", "#fc8d59"), bias=.5)(dtb[,x]), maxColorValue = 255)
+   })
+   names(color_list) = LETTERS[1:ncol(dtb)]
+   
+   style_list = lapply(1:ncol(dtb), function(x){
+     colDef(style = JS(paste0("function(rowInfo, column, state) {
+                                      const { ", LETTERS[x], " } = state.meta
+                                        return { backgroundColor: ", LETTERS[x], "[rowInfo.index] }
+                                    }")))
+   })
+   names(style_list) <- colnames(dtb)
+ 
+   reactable( dt, showSortable = TRUE,
+              meta = color_list,
+              columns =c(setNames(list(colDef(filterable = TRUE,
+                                     sticky = "left",
+                                     # Add a right border style to visually distinguish the sticky column
+                                     style = list(borderRight = "1px solid #eee"),
+                                     headerStyle = list(borderRight = "1px solid #eee"))), name), style_list),
+              
+              highlight = TRUE,
+              showPageSizeOptions = TRUE,
+              pageSizeOptions = c(5,10),
+              defaultPageSize = 5,
+              paginationType = "simple"
+             
+    )
 })
 output$downloadCountFeatures <- downloadHandler(
     "RepSeq_detailedStatistics.csv",
@@ -225,19 +259,15 @@ output$renyifacet <- renderUI({
   selectFacetGroup("renyifacet", dataFilt())
 })
 
-output$renyishape <- renderUI({
-  selectShapeGroup("renyishape", dataFilt())
-})
+# output$renyishape <- renderUI({
+#   selectShapeGroup("renyishape", dataFilt())
+# })
 
 output$plotRenyi <- plotly::renderPlotly({
     validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select a level"))
     validate(need(!(is.null(input$renyicolor) || input$renyicolor == ""), "select a level"))
-    if(input$renyishape == ''){
-      shape <- NULL
-    } else {
-      shape <- input$renyishape
-    }
-    plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,shapeBy=input$renyishape ,grouped = FALSE, label_colors = NULL))
+    
+    plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,grouped = FALSE, label_colors = NULL))
 })
 output$downPlotRenyi2 <- renderUI({
     if (!is.null(input$renyiLevel)) {
@@ -252,7 +282,7 @@ output$PlotRenyi2 <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,shapeBy=input$renyishape, grouped = FALSE, label_colors = NULL))
+        grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet , grouped = FALSE, label_colors = NULL))
         dev.off()
     }
 )

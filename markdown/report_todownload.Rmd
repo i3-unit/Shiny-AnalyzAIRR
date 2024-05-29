@@ -21,6 +21,9 @@ params:
   filterCountLevel: NA
   filterCountN: NA
   filterCountGroup : NA
+  filterSeqLevel: NA
+  filterSeqName: NA
+  filterSeqGroup: NA
   doFilterCount: NA
   doProductive: NA 
   dropSampleNames: NA 
@@ -53,7 +56,6 @@ params:
   divfacet: NA
   renyiLevel: NA
   renyicolor: NA
-  renyishape: NA
   renyifacet: NA
   countIntLevel: NA
   countIntGroupMeth: NA
@@ -230,6 +232,7 @@ knitr::opts_chunk$set(echo = TRUE)
 if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && 
 !is.null(params$filterCountGroup) && params$doFilterCount == 1) ||
    (params$doProductive == 1) ||
+   (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
    (!is.null(params$dropSampleNames)) || 
    (!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPublic == 1) || 
    (!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params$doPrivate == 1) || 
@@ -242,6 +245,7 @@ if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) &&
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.null(params$filterCountGroup) && params$doFilterCount == 1) ||
    (params$doProductive == 1) ||
+   (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
    (!is.null(params$dropSampleNames)) || 
    (!is.null(params$publicLevel) && !is.null(params$publicGroup) && params$doPublic == 1) || 
    (!is.null(params$privateLevel) && !is.null(params$privateSingletons) && params$doPrivate == 1) || 
@@ -263,6 +267,30 @@ if(!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.nul
 }
       
 ```
+
+
+```{r show filter seq title, results='asis', echo=FALSE}
+if((!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1)){cat("**Filter out a sequence**")}
+```
+
+```{r repcount, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+if(!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1){
+    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+    filterSeqGroup <- input$filterSeqGroup
+  } else {
+    filterSeqGroup <- NULL
+  }
+  filterSequence(x = RepSeqDT(), level = input$filterSeqLevel, name = input$filterSeqName, group =  
+                   filterSeqGroup)
+ 
+   historydata <- AnalyzAIRR::History(params$dataFiltered)
+   flextable::flextable(head(historydata)) %>%
+     flextable::theme_vanilla() %>%
+     flextable::color(color="#022f5a", part="header")   
+}
+      
+```
+
 
 
 ```{r show filter prod title, results='asis', echo=FALSE}
@@ -450,7 +478,7 @@ if((params$plotStats != ""  &&  !is.null(params$plotcolorgroup)) ||
    (!is.null(params$plotRare)) ||
    (!is.null(params$divIndex) && params$divLevel != "" && !is.null(params$divcolor) && 
    !is.null(params$divfacet)) || 
-   (params$renyiLevel != "" && !is.null(params$renyicolor) && !is.null(params$renyishape) &&
+   (params$renyiLevel != "" && !is.null(params$renyicolor) && 
     !is.null(params$renyifacet)) || 
    (params$countIntLevel != "" && params$countIntGroupMeth != "" && !is.null(params$countIntfacet)) || 
    (params$rankDistribLevel != "" && params$rankDistribGroupMeth != "" &&
@@ -487,19 +515,19 @@ if((!(is.null(params$plotStats) || params$plotStats == "")) &&
 ```
 
 
-```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE}
-if(params$countLevel != "" && !is.null(params$countScale)){cat("### Detailed repertoire level statistics")}
-```
+<!-- ```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE} -->
+<!-- if(params$countLevel != "" && !is.null(params$countScale)){cat("### Detailed repertoire level statistics")} -->
+<!-- ``` -->
 
-```{r countfeatures, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(params$countLevel != "" && !is.null(params$countScale)){
-   countfeatures <- countFeatures(x=params$dataFiltered, level = params$countLevel, scale = params$countScale, group = NULL)
-   flextable::flextable(head(countfeatures)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header")   
-}
-      
-```
+<!-- ```{r countfeatures, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(params$countLevel != "" && !is.null(params$countScale)){ -->
+<!--    countfeatures <- countFeatures(x=params$dataFiltered, level = params$countLevel, scale = params$countScale, group = NULL) -->
+<!--    flextable::flextable(head(countfeatures)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")    -->
+<!-- } -->
+
+<!-- ``` -->
 
 ```{r show count features text entry, echo = FALSE, results='asis'}
 if(params$countLevel != "" && !is.null(params$countScale)){
@@ -532,15 +560,15 @@ if(!is.null(params$plotRare)){
 ```
 
 
-```{r rarefactiontab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(params$plotRare)){
-   raretab <- rarefactionTab(x = params$dataFiltered)
-   flextable::flextable(head(raretab)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header")  
-}
-      
-```
+<!-- ```{r rarefactiontab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(params$plotRare)){ -->
+<!--    raretab <- rarefactionTab(x = params$dataFiltered) -->
+<!--    flextable::flextable(head(raretab)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")   -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Diversity indices title, results='asis', echo=FALSE}
@@ -564,15 +592,15 @@ if(!is.null(params$divIndex) && params$divLevel != "" && params$divcolor != ""){
 ```
 
 
-```{r divindtab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(params$divLevel != ""){
-   divind <- diversityIndices(x=params$dataFiltered, level = params$divLevel)
-   flextable::flextable(head(divind)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header") 
-}
-      
-```
+<!-- ```{r divindtab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(params$divLevel != ""){ -->
+<!--    divind <- diversityIndices(x=params$dataFiltered, level = params$divLevel) -->
+<!--    flextable::flextable(head(divind)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Renyi index title, results='asis', echo=FALSE}
@@ -583,7 +611,7 @@ if(params$renyiLevel != "" && params$renyicolor != ""){cat("### Renyi index")}
 if(params$renyiLevel != "" && params$renyicolor != ""){
    plotRenyiIndex(x=params$dataFiltered, level = params$renyiLevel,
                   colorBy = params$renyicolor, facetBy=params$renyifacet, 
-                  shapeBy=params$renyishape, grouped = FALSE, label_colors = NULL)
+                  grouped = FALSE, label_colors = NULL)
 }
       
 ```
@@ -595,15 +623,15 @@ if(params$renyiLevel != "" && params$renyicolor !=""){
 ```
 
 
-```{r renyiindtab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(params$renyiLevel != ""){
-   renind <- renyiIndex(x=params$dataFiltered, level = params$renyiLevel)
-   flextable::flextable(head(renind)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header") 
-}
-      
-```
+<!-- ```{r renyiindtab, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(params$renyiLevel != ""){ -->
+<!--    renind <- renyiIndex(x=params$dataFiltered, level = params$renyiLevel) -->
+<!--    flextable::flextable(head(renind)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Clonal distribution title, results='asis', echo=FALSE}
@@ -825,13 +853,9 @@ if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){cat("### Reny
 
 ```{r renyi, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){
-    if(is.null(params$multrenshape)){
-      shape <- NULL
-    } else {
-      shape <- params$multrenshape
-    }
+   
     plotRenyiIndex(x = params$dataFiltered, level = params$multrenLevel, 
-                    colorBy = params$multrenGroup, shapeBy=shape, grouped = TRUE, 
+                    colorBy = params$multrenGroup,  grouped = TRUE, 
                     facetBy=params$multrenfacet, label_colors = NULL)
 }
     
@@ -1011,15 +1035,15 @@ if(!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$d
 ```
 
 
-```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(params$diffGroup) && !is.null(params$diffLevel)){
-    diffexp <- diffExpGroup(x = params$dataFiltered, colGrp = params$diffGroup[[1]], level = params$diffLevel, group = params$diffGroup)
-   flextable::flextable(head(diffexp)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header")  
-}
-    
-```
+<!-- ```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(params$diffGroup) && !is.null(params$diffLevel)){ -->
+<!--     diffexp <- diffExpGroup(x = params$dataFiltered, colGrp = params$diffGroup[[1]], level = params$diffLevel, group = params$diffGroup) -->
+<!--    flextable::flextable(head(diffexp)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")   -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r show Spectractyping comparison title, results='asis', echo=FALSE}
@@ -1043,15 +1067,15 @@ if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(
 ```
 
 
-```{r spectratypingcomparisontable, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1){
-    sampleinfo <- mData(params$dataFiltered)
-    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, params$PertGroupSelected] %in% params$CtrlGroup)]
-    pertscore <- perturbationScore(x = params$dataFiltered, ctrl.names = ctrnames, distance = params$pertDist, p = 2)
-    flextable::flextable(head(pertscore)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header")  
-}
-    
-```
+<!-- ```{r spectratypingcomparisontable, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1){ -->
+<!--     sampleinfo <- mData(params$dataFiltered) -->
+<!--     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, params$PertGroupSelected] %in% params$CtrlGroup)] -->
+<!--     pertscore <- perturbationScore(x = params$dataFiltered, ctrl.names = ctrnames, distance = params$pertDist, p = 2) -->
+<!--     flextable::flextable(head(pertscore)) %>% -->
+<!--      flextable::theme_vanilla() %>% -->
+<!--      flextable::color(color="#022f5a", part="header")   -->
+<!-- } -->
+
+<!-- ``` -->
 

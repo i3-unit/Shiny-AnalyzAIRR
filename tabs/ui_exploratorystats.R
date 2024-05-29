@@ -56,7 +56,7 @@ basicstats <-
                              # )
                          ),
                          downloadButton("downloadCountFeatures", "Export table", style="background-color:white; border-color: #022F5A;"),
-                         dataTableOutput("dataCountFeatures"),
+                         reactableOutput("dataCountFeatures"),
                          busyIndicator(wait = 500)
 
                 )
@@ -158,9 +158,9 @@ divstats<- tabItem(tabName = "showDivTab",
                                        column(width = 2, style="margin-top: -22px;",
                                               uiOutput("renyicolor")
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
-                                              uiOutput("renyishape")
-                                       ),
+                                       # column(width = 3, style="margin-top: -22px;",
+                                       #        uiOutput("renyishape")
+                                       #),
                                        column(width = 4, style="margin-top: -22px;",
                                               uiOutput("renyifacet")
                                        )

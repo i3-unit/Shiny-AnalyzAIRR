@@ -7,6 +7,7 @@ library(shinydashboard)
 library(AnalyzAIRR)
 library(shinysky)
 library(DT)
+library(reactable)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
@@ -274,8 +275,7 @@ mydashboardHeader <- function(..., title = NULL, titleWidth = NULL, disable = FA
                        title.navbar,
                        div(class = "navbar-custom-menu",
                            tags$ul(class = "nav navbar-nav",
-                                   items
-                           )
+                                   items)
                        )
               )
   )
