@@ -117,7 +117,8 @@ selectFacetGroup <- function(ID, t) {
   #id string
   facetgroup<- colnames(mData(t) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
   selectizeInput(ID,
-                 label = HTML("Select a group for facets <i>(2 maximum, optional)</i>"),
+                 # label = HTML("Select a group for facets <i>(2 maximum, optional)</i>"),
+                 label=HTML("Select a group for facets <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(2 maximum, optional)</span>"),
                  choices = facetgroup,
                  multiple = TRUE,
                  options = list(maxItems=2,onInitialize = I('function() { this.setValue(""); }')))

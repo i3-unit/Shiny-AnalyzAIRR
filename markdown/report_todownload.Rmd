@@ -275,12 +275,12 @@ if((!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$
 
 ```{r repcount, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1){
-    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
-    filterSeqGroup <- input$filterSeqGroup
+    if(params$putInfofile == "Yes" || !is.null(params$RDSfile)){
+    filterSeqGroup <- params$filterSeqGroup
   } else {
     filterSeqGroup <- NULL
   }
-  filterSequence(x = RepSeqDT(), level = input$filterSeqLevel, name = input$filterSeqName, group =  
+  filterSequence(x = RepSeqDT(), level = params$filterSeqLevel, name = params$filterSeqName, group =  
                    filterSeqGroup)
  
    historydata <- AnalyzAIRR::History(params$dataFiltered)

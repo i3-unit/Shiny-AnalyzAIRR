@@ -154,14 +154,33 @@ observeEvent(input$rareHelp,
              ))
 )
 
-output$dataRare <- renderDataTable({
+output$dataRare <- renderReactable({
     validate(need(!(is.null(input$plotRare) || input$plotRare == ""), "select a group"))
-    rarefactionTab(x = dataFilt())
+    tbl<- rarefactionTab(x = dataFilt())
+    reactable( tbl,
+               showSortable = TRUE,
+               columns = list(
+                 sample_id = colDef(filterable = TRUE,
+                                               sticky = "left",
+                                               # Add a right border style to visually distinguish the sticky column
+                                               style = list(borderRight = "1px solid #eee"),
+                                               headerStyle = list(borderRight = "1px solid #eee"))),
+               
+               highlight = TRUE,
+               showPageSizeOptions = TRUE,
+               fullWidth = FALSE,
+               pageSizeOptions = c(5,10),
+               defaultPageSize = 5,
+               paginationType = "simple"
+               
+    )
+    
 })
+
 output$downloaddataRare <- downloadHandler(
     "RepSeq_rarefactionData.csv",
     content = function(file) {
-        write.table(    rarefactionTab(x = dataFilt()), file, row.names = F, sep = '\t')
+        write.table(rarefactionTab(x = dataFilt()), file, row.names = F, sep = '\t')
     }, contentType = "text/csv"
 ) 
 
@@ -330,8 +349,8 @@ output$countIntfacet <- renderUI({
 })
 
 output$CountIntervals <- renderPlot({
-    validate(need(!(is.null(input$countIntLevel) || input$countIntLevel == ""), "select a level"))
-    validate(need(!(is.null(input$countIntGroupMeth) || input$countIntGroupMeth == ""), "select a statistics scale"))
+    validate(need(!(is.null(input$countIntLevel) || input$countIntLevel == ""), " "))
+    validate(need(!(is.null(input$countIntGroupMeth) || input$countIntGroupMeth == ""), " "))
 
     plotIntervals(x=dataFilt(), level = input$countIntLevel, grouped = F,colorBy=NULL, facetBy= input$countIntfacet,
                        fractions=input$countIntGroupMeth, label_colors = NULL)

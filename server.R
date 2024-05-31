@@ -312,15 +312,51 @@ source("tabs/server_exploratorystats.R", local = TRUE)
 #  download RDS section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
     # sample info render
-    output$singleInfoDT <- renderDataTable(mData(dataFilt())[input$singleSample,], options=list(scrollX=TRUE))
+    output$singleInfoDT <- renderReactable({
+     meta<- mData(dataFilt())[input$singleSample,]
+     rownames(meta) <- NULL
+      reactable( meta,  columns = list( 
+                            sample_id =colDef(
+                            sticky = "left",
+                            maxWidth = 120,
+                            # Add a right border style to visually distinguish the sticky column
+                            style = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"),
+                            headerStyle = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"))),
+                 # showSortable = TRUE,
+                 # showPageSizeOptions = TRUE,
+                 # pageSizeOptions = c(5,10),
+                 # defaultPageSize = 5,
+                 pagination = FALSE,
+                 bordered = TRUE
+                 
+      ) 
+      })
     # count assay render 
-    output$singleAssayDT <- renderDataTable(assay(dataFilt())[sample_id == input$singleSample], options=list(scrollX=TRUE))
+    output$singleAssayDT <- renderReactable({
+      ass<-assay(dataFilt())[sample_id == input$singleSample]
+      reactable( ass, 
+                 filterable = TRUE,
+                 bordered = TRUE, 
+                columns = list( sample_id =colDef(
+                sticky = "left",
+                maxWidth = 120,
+                # Add a right border style to visually distinguish the sticky column
+                style = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"),
+                headerStyle = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"))),
+                showSortable = TRUE,
+                showPageSizeOptions = TRUE,
+                pageSizeOptions = c(5,10, 15),
+                defaultPageSize = 5,
+
+      ) 
+    })
     # 
     observeEvent(input$showsampleInfo,
         showModal(modalDialog(
-            title = paste(input$singleSample," info"),
-            dataTableOutput("singleInfoDT"),
-            dataTableOutput("singleAssayDT"),
+          htmltools::div(htmltools::h2("MetaData"), 
+          reactableOutput("singleInfoDT")),
+          htmltools::div(htmltools::h2("AssayData"), 
+                         reactableOutput("singleAssayDT")),
             size = "l",
             easyClose = T
         ))

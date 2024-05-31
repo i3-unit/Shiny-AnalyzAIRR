@@ -9,13 +9,13 @@ basicstats <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                   tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                        column(width = 2, style="margin-top: -22px;",
+                        column(width = 2, style="margin-top: -22px; font-size:14px",
                                uiOutput("plotStats")
                         ),
-                       column(width = 2, style="margin-top: -22px;",
+                       column(width = 2,style="margin-top: -22px; font-size:14px",
                                uiOutput("plotcolorgroup")
                         ),
-                        column(width = 5, style="margin-top: -22px;",
+                        column(width = 5, style="margin-top: -22px; font-size:14px",
                                uiOutput("plotfacetgroup")
                         )
                         # column(width = 2, style="margin-top: -22px;",
@@ -35,14 +35,14 @@ basicstats <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                   tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                             column(width = 2, style="margin-top: -22px;",
+                             column(width = 2, style="margin-top: -22px; font-size:14px",
                                     selectizeInput(
                                         "countLevel",
                                         "Select a level",
                                         choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                              ),
-                             column(width = 2, style="margin-top: -22px;",
+                             column(width = 2, style="margin-top: -22px; font-size:14px",
                                     selectizeInput(
                                         "countScale",
                                         "Select a scale",
@@ -75,7 +75,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                             tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                     column(width = 2, style="margin-top: -22px;",
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
                                             uiOutput("plotRare")
                                      )
                                      # column(width = 10,
@@ -88,12 +88,12 @@ divstats<- tabItem(tabName = "showDivTab",
                                 plotly::plotlyOutput("plotrarefaction"), 
                                 busyIndicator(wait = 50),
                                 hr(),
-                                h4("Table of values"),
+                                h4("Value table"),
                                 # div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
                                 #     circleButton(inputId = "raretabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                 # tags$head(tags$style(".modal-dialog{ width:1200px}")),
                                 downloadButton("downloaddataRare", "Export table", style="background-color:white; border-color: #022F5A;"),
-                                dataTableOutput("dataRare"),
+                                reactableOutput("dataRare"),
                                 busyIndicator(wait = 500)
                                 ),
                           tabPanel("Diversity indices",
@@ -102,25 +102,25 @@ divstats<- tabItem(tabName = "showDivTab",
                                                              style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                            tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                            tags$head(tags$style(".modal-dialog{ width:1200px;}")),
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput(
                                                   "divIndex",
                                                   "Select an index",
                                                   choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker", "gini", "iChao"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput(
                                                   "divLevel",
                                                   "Select a level",
                                                   choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2,  style="margin-top: -22px; font-size:14px",
                                               uiOutput("divcolor")
                                        ),
-                                       column(width = 4, style="margin-top: -22px;",
+                                       column(width = 5,  style="margin-top: -22px; font-size:14px",
                                               uiOutput("divfacet")
                                        )
                                        # column(width = 2,
@@ -133,7 +133,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    plotOutput("plotDiv"), 
                                    busyIndicator(wait = 500),
                                    hr(),
-                                   h4("Table of values"),
+                                   h4("Value table"),
                                    # div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
                                    #  circleButton(inputId = "divtabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    # tags$head(tags$style(".modal-dialog{ width:1200px}")),
@@ -148,20 +148,20 @@ divstats<- tabItem(tabName = "showDivTab",
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                             tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput(
                                                   "renyiLevel",
                                                   "Select a level",
                                                   choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               uiOutput("renyicolor")
                                        ),
                                        # column(width = 3, style="margin-top: -22px;",
                                        #        uiOutput("renyishape")
                                        #),
-                                       column(width = 4, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px; font-size:14px",
                                               uiOutput("renyifacet")
                                        )
                                        # column(width = 2,
@@ -174,7 +174,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                    plotly::plotlyOutput("plotRenyi"),
                                    busyIndicator(wait = 500),
                                    hr(),                                
-                                   h4("Table of values"),
+                                   h4("Value table"),
                                    # div(style="display:block;margin-left: 97.25%;padding-bottom: 10px;",
                                    #     circleButton(inputId = "rentabHelp", icon = icon("question", verify_fa = FALSE), size="sm")),
                                    # tags$head(tags$style(".modal-dialog{ width:1200px}")),
@@ -197,20 +197,20 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                             tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput(
                                                   "countIntLevel",
                                                   "Select a level",
                                                   choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2,  style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput("countIntGroupMeth", 
                                                              "Select a statistics scale",
                                                              choices = list("count" , "frequency"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 4, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px; font-size:14px",
                                               uiOutput("countIntfacet")
                                        )
                                        # column(width = 1,
@@ -220,7 +220,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        # )
                                    ),
                                    uiOutput("downPlotCountIntervals2"),
-                                   plotOutput("CountIntervals"),
+                                   div(plotOutput("CountIntervals", width = "50%", height="600px"), align = "center"),
                                    busyIndicator(wait = 500)
                                    ),
                           tabPanel("Rank distribution", 
@@ -230,29 +230,29 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                             tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2,  style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput("rankDistribGroupMeth", 
                                                           "Select a scale",
                                                           choices = list("count" = "count", "frequency" = "frequency"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2,  style="margin-top: -22px;",
+                                       column(width = 2,  style="margin-top: -22px; font-size:14px",
                                               selectizeInput("rankDistribLevel", 
                                                           "Select a level",
                                                           choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               uiOutput("rankDistribcolor")
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               sliderInput(inputId = "rankDistribSize",
-                                                          label = HTML("Select maximum rank <i>(optional)</i>"),
+                                                          label = HTML("Select maximum rank <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
                                                           value = 1000,
                                                           min = 1,
                                                           max = 1000000)
                                        ),
-                                       column(width = 4, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px; font-size:14px",
                                               uiOutput("rankDistribfacet")
                                        )
                                        # column(width = 2,

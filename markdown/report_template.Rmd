@@ -442,24 +442,24 @@ if(input$countLevel != "" && !is.null(input$countScale)){
 
 
 ```{r show Diversity estimation title, results='asis', echo=FALSE}
-if((!is.null(input$plotRare)) ||
+if((input$plotRare !="") ||
    (!is.null(input$divIndex) && input$divLevel != "" && input$divcolor != "") || 
    (input$renyiLevel != "" && input$renyicolor != "")){cat("## Diversity estimation ")}
 ```
 
 ```{r show Rarefaction analysis title, results='asis', echo=FALSE}
-if(!is.null(input$plotRare)){cat("### Rarefaction analysis")}
+if(input$plotRare !=""){cat("### Rarefaction analysis")}
 ```
 
 ```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$plotRare)){
+if(input$plotRare !=""){
    plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
 }
       
 ```
 
 ```{r show rarefaction text entry,echo = FALSE}
-if(!is.null(input$plotRare)){
+if(input$plotRare !=""){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("rarefactionText", "Enter text", value="")))
@@ -714,38 +714,38 @@ if(!is.null(input$singleSample) && !is.null(input$singleScale) && !is.null(input
 
 
 ```{r show Multi-sample analysis title, results='asis', echo=FALSE}
-if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)) || 
-   (!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)) || 
-   (!is.null(input$multrenLevel) && !is.null(input$multrenGroup)) || 
-   (!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && !is.null(input$countIntervalsscale)) || 
-   (!is.null(input$multRankLevel) && !is.null(input$multRankScale) && !is.null(input$multRankGroup) && !is.null(input$multRankSize)) || 
-   (!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)) ||
-   (!is.null(input$vennLevel) && !is.null(input$vennSamples)) || 
-   (!is.null(input$scatterUISample) && !is.null(input$scatterLevel) && !is.null(input$scatterScale)) || 
-   (!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && !is.null(input$multdissGroup) && input$doHm1 == 1) || 
-   (!is.null(input$MDSLevel) && !is.null(input$MDSMethod)) || 
-   (!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)) || 
-  # (!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup)) || 
-   (!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1)){cat("# Multi-sample analysis")}
+if((input$statisticsStat !="" && !is.null(input$statisticsGroup)) || 
+   (input$diverLevel !="" && !is.null(input$diverGroup) && !is.null(input$diverIndex)) || 
+   (input$multrenLevel !="" && !is.null(input$multrenGroup)) || 
+   (input$countIntervalsLevel !="" && !is.null(input$countIntervalsGroup) && !is.null(input$countIntervalsscale)) || 
+   (input$multRankLevel !="" && !is.null(input$multRankScale) && !is.null(input$multRankGroup) && !is.null(input$multRankSize)) || 
+   (input$geneUsageLevel !="" && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup)) ||
+   (input$vennLevel !="" && !is.null(input$vennSamples)) || 
+   (input$scatterLevel !="" && !is.null(input$scatterUISample) && !is.null(input$scatterScale)) || 
+   (input$dissimilarityLevel !="" && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && !is.null(input$multdissGroup) && input$doHm1 == 1) || 
+   (input$MDSLevel !=""  && !is.null(input$MDSMethod)) && !is.null(input$multMDSGroup) || 
+   (input$diffLevel !=""  && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)) || 
+   (input$PertGroupSelected !=""  && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1)){cat("# Multi-sample analysis")}
+
 ```
 
 
 ```{r show Comparison of basic statistics title, results='asis', echo=FALSE}
-if((!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)) || 
-   (!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)) || 
-   (!is.null(input$multrenLevel) && !is.null(input$multrenGroup)) || 
-   (!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup)) || 
-   (!is.null(input$multRankLevel) && !is.null(input$multRankScale) && !is.null(input$multRankGroup)) || 
-   (!is.null(input$geneUsageLevel) && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup))){cat("## Comparison of basic statistics")}
+if((input$statisticsStat !="" && !is.null(input$statisticsGroup)) || 
+   (input$diverLevel !="" && !is.null(input$diverGroup) && !is.null(input$diverIndex)) || 
+   (input$multrenLevel !="" && !is.null(input$multrenGroup)) || 
+   (input$countIntervalsLevel !="" && !is.null(input$countIntervalsGroup) && !is.null(input$countIntervalsscale)) || 
+   (input$multRankLevel !="" && !is.null(input$multRankScale) && !is.null(input$multRankGroup) && !is.null(input$multRankSize)) || 
+   (input$geneUsageLevel !="" && !is.null(input$geneUsageScale) && !is.null(input$geneUsageGroup))){cat("## Comparison of basic statistics")}
 ```
 
 
 ```{r show Metadata statistics multiple title, results='asis', echo=FALSE}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){cat("### Metadata statistics")}
+if((input$statisticsStat !="" && !is.null(input$statisticsGroup))){cat("### Metadata statistics")}
 ```
 
 ```{r stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
+if(input$statisticsStat !="" && !is.null(input$statisticsGroup)){
     plotStatistics(x = dataFilt(), stat = input$statisticsStat, colorBy = input$statisticsGroup,
                    facetBy=input$statisticsFacet, show_stats=input$statisticsshowstats, grouped=TRUE, label_colors = NULL)
 }
@@ -753,7 +753,7 @@ if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
 ```
 
 ```{r show stats text entry,echo = FALSE}
-if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
+if(input$plotStats != "" && !is.null(input$statisticsGroup)){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("statsText", "Enter text", value="")))
@@ -762,11 +762,11 @@ if(!is.null(input$statisticsStat) && !is.null(input$statisticsGroup)){
 
 
 ```{r show Diversity indices multiple title, results='asis', echo=FALSE}
-if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){cat("### Diversity indices")}
+if(input$diverLevel !="" && !is.null(input$diverGroup) && !is.null(input$diverIndex)){cat("### Diversity indices")}
 ```
 
 ```{r div, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(!is.null(input$diverLevel) && !is.null(input$diverGroup) && !is.null(input$diverIndex)){
+if(input$diverLevel !="" && !is.null(input$diverGroup) && !is.null(input$diverIndex)){
     plotDiversity(x = dataFilt(), index = input$diverIndex, level = input$diverLevel, 
                   grouped=TRUE, colorBy = input$diverGroup, facetBy=input$diverfacet, show_stats=input$divshowstats, label_colors = NULL)
 }
@@ -959,8 +959,7 @@ if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$multM
 ```
 
 ```{r show Differential analysis title, results='asis', echo=FALSE}
-if((!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV)) || 
-   (!is.null(input$diffPCALevel) && !is.null(input$PCAMethod) && !is.null(input$diffPCAGroup))){cat("## Differential analysis")}
+if((!is.null(input$diffLevel) && !is.null(input$diffGroup) && !is.null(input$diffFC) && !is.null(input$diffPV))){cat("## Differential analysis")}
 ```
 
 
@@ -1031,7 +1030,7 @@ if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(in
 <!--                     full_width = FALSE, -->
 <!--                     position = "center", -->
 <!--                     font_size = 10) %>% -->
-<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12) -->
 <!-- } -->
 
 <!-- ``` -->

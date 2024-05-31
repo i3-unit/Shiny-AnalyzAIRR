@@ -145,13 +145,13 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput("filterCountLevel",
                                                              "Select a level",
                                                              choices = list("aaCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 4, style="margin-top: -22px;",
+                                       column(width = 4, style="margin-top: -22px; font-size:14px",
                                               tags$head(
                                                 tags$style(type="text/css",
                                                            '#filterCountGroup.shiny-output-error { visibility: hidden; }',
@@ -159,7 +159,7 @@ bodyTabs <-
                                               ),
                                               uiOutput("filterCountGroup")
                                        ), 
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               sliderInput(inputId = "filterCountN",
                                                           label = "Set a count threshold",
                                                           value = 1,
@@ -167,7 +167,7 @@ bodyTabs <-
                                                           max = 1000)
                                        ),
                                        column(width = 2, 
-                                              style = "margin-top: 2px;",
+                                              style = "margin-top: 1px;",
                                               tags$head(
                                                 tags$style(HTML('#doFilterCount{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
                                               ),
@@ -191,13 +191,13 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2,  style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               selectizeInput("filterSeqLevel",
                                                              "Select a level",
                                                              choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
-                                       column(width = 3, style="margin-top: -22px;",
+                                       column(width = 3, style="margin-top: -22px; font-size:14px",
                                               tags$head(
                                                 tags$style(type="text/css",
                                                            '#filterCountGroup.shiny-output-error { visibility: hidden; }',
@@ -205,7 +205,7 @@ bodyTabs <-
                                               ),
                                               uiOutput("filterSeqGroup")
                                        ), 
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               tags$head(
                                                 tags$style(".form-control{ box-shadow: none; border-color: #000; border-radius: 4px;}")
                                               ),
@@ -213,7 +213,7 @@ bodyTabs <-
                                               textInput(inputId = "filterSeqName",
                                                         label = "Enter a sequence",
                                                         value = "", 
-                                                        placeholder = "TRAV11 CVVGDRGSALGRLHF TRAJ18")
+                                                        placeholder = "")
                                        ),
                                        column(width = 2, 
                                               style = "margin-top: 2px;",
@@ -264,7 +264,7 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px;",
                                                      uiOutput("dropSampleNames")
                                      ),
                                      # column(width = 10,
@@ -285,13 +285,13 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2,  style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                                      selectizeInput("publicLevel",
                                                                     "Select a level",
                                                                     choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                      ), 
-                                     column(width = 4, style="margin-top: -22px;",
+                                     column(width = 4,style="margin-top: -22px; font-size:14px",
                                             tags$head(
                                               tags$style(type="text/css",
                                                          '#publicGroup.shiny-output-error { visibility: hidden; }',
@@ -300,7 +300,7 @@ bodyTabs <-
                                             uiOutput("publicGroup")
                                      ),
                                      column(width = 2, 
-                                            style = "margin-top: 2px;",
+                                            style = "margin-top: 1px;",
                                             tags$head(
                                               tags$style(HTML('#doPublic{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
                                             ),
@@ -324,19 +324,19 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                                      selectizeInput("privateLevel",
                                                                     "Select a level",
                                                                     choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                      ), 
-                                     column(width = 2, style="margin-top: -22px;",
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
                                             switchButton(inputId = "privateSingletons",
                                                          label = "Private singletons",
                                                          value = FALSE)
                                      ),
                                      column(width = 2, 
-                                            style = "margin-top: 2px;",
+                                            style = "margin-top: 1px;",
                                             tags$head(
                                               tags$style(HTML('#doPrivate{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
                                             ),
@@ -360,13 +360,13 @@ bodyTabs <-
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                               tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                                      selectizeInput("topSeqLevel",
                                                                     "Select a level",
                                                                     choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
                                      ), 
-                                     column(width = 4, style="margin-top: -22px;",
+                                     column(width = 4, style="margin-top: -22px; font-size:14px",
                                             tags$head(
                                               tags$style(type="text/css",
                                                          '#topSeqGroup.shiny-output-error { visibility: hidden; }',
@@ -374,7 +374,7 @@ bodyTabs <-
                                             ),
                                             uiOutput("topSeqGroup")
                                      ), 
-                                     column(width = 2, style="margin-top: -22px;",
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
                                             sliderInput(inputId = "topSeqProp",
                                                         label = "Set a proportion",
                                                         value = 0.1,
@@ -382,7 +382,7 @@ bodyTabs <-
                                                         max = 1)
                                      ),
                                      column(width = 2, 
-                                            style = "margin-top: 2px;",
+                                            style = "margin-top: 1px;",
                                             tags$head(
                                               tags$style(HTML('#doTopSeq{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
                                             ),
@@ -417,14 +417,15 @@ bodyTabs <-
                                        #                        options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        #  ),
                                        
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               sliderInput(inputId = "downSampleSize",
                                                           label = "Set a sample size",
                                                           value = 10000,
                                                           min = 0,
                                                           max = 1000000)
                                        ),
-                                       column(width = 2, style="margin-top: -22px;",
+                                       column(width = 1),
+                                       column(width = 2, style="margin-top: -22px; font-size:14px",
                                               sliderInput(inputId = "downseed",
                                                           label = "Set a seed",
                                                           value = 1234,
@@ -438,12 +439,12 @@ bodyTabs <-
                                        #                         choices = list(TRUE, FALSE),
                                        #                         options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        # ),
-                                       column(width=2, style="margin-top: -22px;",
+                                       column(width=2, style="margin-top: -22px; font-size:14px",
                                               switchButton(inputId = "downReplace",
                                                            label = "With replacement",
                                                            value = TRUE)
                                        ),
-                                       column(width=4, style="margin-top: -22px;",
+                                       column(width=4,style="margin-top: -22px; font-size:14px",
                                               switchButton(inputId = "doDown",
                                                            label = "Perform down-sampling",
                                                            value = FALSE)
@@ -460,7 +461,7 @@ bodyTabs <-
                                      busyIndicator(wait = 500),
                                      hr(),
                                      h4("Results"),
-                                     fluidRow(column(width = 3,
+                                     fluidRow(column(width = 3, style="font-size:14px",
                                                      selectizeInput(
                                                        "DownLevel",
                                                        "Select a level",
@@ -485,7 +486,7 @@ bodyTabs <-
                                        #                            choices = list("Yes", "No"),
                                        #                            options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        # ),
-                                       column(width=4,
+                                       column(width=4, style=" font-size:14px",
                                               switchButton(inputId = "doNorm",
                                                            label = "Perform a shannon normalization",
                                                            value = FALSE)
@@ -502,7 +503,7 @@ bodyTabs <-
                                      busyIndicator(wait = 500),
                                      hr(),
                                      h4("Results"),
-                                     fluidRow(column(width = 3,
+                                     fluidRow(column(width = 3,style="font-size:14px",
                                                      selectizeInput(
                                                        "NormLevel",
                                                        "Select a level",

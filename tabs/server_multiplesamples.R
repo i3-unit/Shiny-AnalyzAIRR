@@ -314,7 +314,9 @@ output$geneUsagefacet <- renderUI({
                                    facetBy= input$geneUsagefacet, 
                                    label_colors = NULL,
                                    show_stats=input$geneUsageshowstats)+
-                                   ggplot2::theme(legend.position = "none"), 
+                                   ggplot2::theme(legend.position = "none",
+                                                  panel.grid.minor = ggplot2::element_blank(),
+                                                  panel.grid.major = ggplot2::element_blank()),
                                    tooltip = c("x", "y")) 
   })
 #})
@@ -362,7 +364,7 @@ observeEvent(input$geneusageHelp,
 output$vennUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("vennSamples",
-                 HTML("Select samples <i>(7 maximum)</i>"),  #modified by VMH
+                 HTML("Select samples <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(7 maximum)</span>"),
                  choices = choices,
                  options = list(maxItems = 7, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)  #VMH changed 3 to 4
@@ -413,7 +415,7 @@ observeEvent(input$eulerHelp,
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
-                 HTML("Select samples <i>(2 maximum)</i>"),  
+                 HTML("Select samples <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(2 maximum)</span>"),
                  choices = choices,
                  options = list(maxItems = 2, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)

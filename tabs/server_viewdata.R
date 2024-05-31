@@ -84,7 +84,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   HTML("Select a group and a subgroup <i>(optional)</i>"),  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"), 
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -145,7 +145,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   HTML("Select a group and a subgroup <i>(optional)</i>"),  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -312,7 +312,7 @@ output$topSeqGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("topSeqGroup",
-                   HTML("Select a group and a subgroup <i>(optional)</i>"),  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
