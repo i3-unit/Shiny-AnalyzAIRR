@@ -58,7 +58,7 @@ sideMenu <- sidebarMenu(id = "sideTabs",
             icon = icon("folder-open", verify_fa = FALSE),
             selectizeInput(inputId = "source", 
                            'Source',
-                           choices = list("MiXCR", "immunoseq", "AIRR", "Other"),
+                           choices = list("MiXCR", "immunoseq", "MiAIRR", "Other"),
                            options = list(onInitialize = I('function() { this.setValue(""); }'))
             ),
             radioButtons(inputId = "chain", 

@@ -87,24 +87,21 @@ bodyTabs <-
             #busyIndicator(wait = 50),
     ),
     tabItem(tabName = "uploadTXTtab",
-            h2("Data overview"),
-            htmlOutput("summaryTXT"),
             busyIndicator(wait = 50),
-            uiOutput("downPlothisttxtlibsizesp1"),
-            plotOutput("histtxtlibsizesp1"),
-            h4(""),
             fluidRow(
-              column(width = 3,
-                     selectizeInput("summaryTXTLevel",
-                                    "Select a level",
-                                    choices = list("CDR3nt", "CDR3aa", "clone", "clonotype"),
-                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
-                     )
-              )
+              valueBoxOutput("summaryNb3"),
+              valueBoxOutput("summaryGrp3"),
+              valueBoxOutput("summarySeq3")
             ),
-            uiOutput("downPlothisttxtlibsizesp2"),
-            plotOutput("histtxtlibsizesp2"),
-            busyIndicator(wait = 50),
+            fluidRow(
+              box(title = "Sequence number overview", status = "primary", 
+                 
+                 uiOutput("selectGrp3"), div(style = "width: 95%;margin-left: 0px;",
+                                            plotly::plotlyOutput("plotGrp3" ))
+              ),
+              box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp3"), plotOutput("Plothistlibsizesp3"))
+              
+            ),
     ),
     tabItem(tabName = "showInfoTab",
             fluidRow(div(style="display:block;margin-left: 96%;padding-bottom: 5px;",

@@ -259,7 +259,6 @@ shinyServer(function(input, output, session) {
                                             raretab = FALSE,
                                             cores = 1L)
           file.remove(inFiles)
-        
           
         }
         return(RepSeqDT)

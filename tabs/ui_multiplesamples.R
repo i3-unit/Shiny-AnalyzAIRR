@@ -1,279 +1,280 @@
 CompBasicTab<- 
-    tabItem(tabName = "showCompBasicTab",
-        fluidRow(
+  tabItem(tabName = "showCompBasicTab",
+          fluidRow(
             tabBox(width = 12,
-                tabPanel("Metadata statistics",
-                         fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                      circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                   style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                   tabPanel("Metadata statistics",
+                            fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                         circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                      style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                  tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                        column(width = 2, style="margin-top: -22px; font-size:14px",
-                               uiOutput("statisticsStat")
-                        ),
-                        column(width = 2, style="margin-top: -22px; font-size:14px",
-                               uiOutput("statisticsGroup")
-                        ),
-                        # column(width = 1,
-                        #        style = "margin-top: 25px;",
-                        #        tags$head(
-                        #          tags$style(HTML('#doStats{background-color:white; border-color: #022F5A;}'))
-                        #        ),
-                        #        actionButton("doStats", "run")
-                        # ),
-                        column(width = 4, style="margin-top: -22px; font-size:14px",
-                               uiOutput("statisticsFacet")
-                        ),
-                        column(width = 3, style="margin-top: -22px; font-size:14px",
-                               selectizeInput("statisticsshowstats",
-                                              HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
-                                              choices = list("yes"=TRUE, "no"=FALSE),
-                                              options = list(onInitialize = I('function() { this.setValue(""); }')))
-                        )
-                      
-                        # column(width = 2,
-                        #        div(style="position: absolute; top: 0; right: 0;",
-                        #            circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                        #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                        # )
-                    ),
-                    uiOutput("downPlotStatistics"),
-                    plotOutput("Statistics"),
-                    busyIndicator(wait = 500)
-                ),
-                navbarMenu("Repertoire diversity",
-                    tabPanel("Diversity indices",
-                             fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                          circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                       style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+                                            uiOutput("statisticsStat")
+                                     ),
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+                                            uiOutput("statisticsGroup")
+                                     ),
+                                     # column(width = 1,
+                                     #        style = "margin-top: 25px;",
+                                     #        tags$head(
+                                     #          tags$style(HTML('#doStats{background-color:white; border-color: #022F5A;}'))
+                                     #        ),
+                                     #        actionButton("doStats", "run")
+                                     # ),
+                                     column(width = 4, style="margin-top: -22px; font-size:14px",
+                                            uiOutput("statisticsFacet")
+                                     ),
+                                     column(width = 3, style="margin-top: -22px; font-size:14px",
+                                            selectizeInput("statisticsshowstats",
+                                                           HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
+                                                           choices = list("yes"=TRUE, "no"=FALSE),
+                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                     )
+                                     
+                                     # column(width = 2,
+                                     #        div(style="position: absolute; top: 0; right: 0;",
+                                     #            circleButton(inputId = "statsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                     #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                     # )
+                            ),
+                            uiOutput("downPlotStatistics"),
+                            plotOutput("Statistics"),
+                            busyIndicator(wait = 500)
+                   ),
+                   navbarMenu("Repertoire diversity",
+                              tabPanel("Diversity indices",
+                                       fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                                    circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                                 style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                      tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("diverLevel",
-                                                       "Select a level",
-                                                       choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ), 
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("diverIndex",
-                                                       "Select an index",
-                                                       choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker","gini", "iChao"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ),
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        uiOutput("diverGroup")
-                                 ),
-                                 # column(width = 1, 
-                                 #        style = "margin-top: 25px;",
-                                 #        tags$head(
-                                 #          tags$style(HTML('#doDiversity{background-color:white; border-color: #022F5A;}'))
-                                 #        ),
-                                 #        actionButton("doDiversity", "run")
-                                 # ),
-                                 
-                                  column(width = 3, style="margin-top: -22px; font-size:14px",
-                                          uiOutput("diverfacet")
-                                 ),
-                                 column(width = 3, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("divshowstats",
-                                                       HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
-                                                       choices = list("yes"=TRUE, "no"=FALSE),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 )
-                                 #column(width = 1,
-                                 # tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                 #        div(style="position: absolute; top: 0; right: 0px;",
-                                 #            circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                 #       # tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                 # column(width = 1
-                             #)
-                             ),
-                             uiOutput("downPlotDiversity"),
-                             plotOutput("Diversity"),
-                             busyIndicator(wait = 500)),
-                      tabPanel("Renyi diversity",
-                               fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                            circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                         style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("diverLevel",
+                                                                      "Select a level",
+                                                                      choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ), 
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("diverIndex",
+                                                                      "Select an index",
+                                                                      choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker","gini", "iChao"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("diverGroup")
+                                                ),
+                                                # column(width = 1, 
+                                                #        style = "margin-top: 25px;",
+                                                #        tags$head(
+                                                #          tags$style(HTML('#doDiversity{background-color:white; border-color: #022F5A;}'))
+                                                #        ),
+                                                #        actionButton("doDiversity", "run")
+                                                # ),
+                                                
+                                                column(width = 3, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("diverfacet")
+                                                ),
+                                                column(width = 3, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("divshowstats",
+                                                                      HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
+                                                                      choices = list("yes"=TRUE, "no"=FALSE),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                )
+                                                #column(width = 1,
+                                                # tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                #        div(style="position: absolute; top: 0; right: 0px;",
+                                                #            circleButton(inputId = "DivHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                #       # tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                # column(width = 1
+                                                #)
+                                       ),
+                                       uiOutput("downPlotDiversity"),
+                                       plotOutput("Diversity"),
+                                       busyIndicator(wait = 500)),
+                              tabPanel("Renyi diversity",
+                                       fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                                    circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                                 style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                        tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                   column(width = 2, style="margin-top: -22px; font-size:14px",
-                                          selectizeInput("multrenLevel",
-                                                         "Select a level",
-                                                         choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
-                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                   ),
-                                   column(width = 2, style="margin-top: -22px; font-size:14px",
-                                          uiOutput("multrenGroup")
-                                   ), 
-                                   column(width = 4, style="margin-top: -22px; font-size:14px",
-                                          uiOutput("multrenfacet")
-                                   ),
-                                   # column(width = 2, 
-                                   #        style = "margin-top: 25px;",
-                                   #        tags$head(
-                                   #          tags$style(HTML('#doRenyi{background-color:white; border-color: #022F5A;}'))
-                                   #        ),
-                                   #        actionButton("doRenyi", "run")
-                                   # ),
-                                   # column(width = 2,
-                                   #        div(style="position: absolute; top: 0; right: 0;",
-                                   #            circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                   #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                   # )
-                               ),
-                             uiOutput("downPlotRenyi"),
-                             plotOutput("RenyiDiversity"),#, height = "600px"),
-                             busyIndicator(wait = 500)
-                    )
-                ),
-                navbarMenu("Clonal distribution",
-                    tabPanel("Count intervals",
-                             fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                          circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                       style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("multrenLevel",
+                                                                      "Select a level",
+                                                                      choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("multrenGroup")
+                                                ), 
+                                                column(width = 4, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("multrenfacet")
+                                                ),
+                                                # column(width = 2, 
+                                                #        style = "margin-top: 25px;",
+                                                #        tags$head(
+                                                #          tags$style(HTML('#doRenyi{background-color:white; border-color: #022F5A;}'))
+                                                #        ),
+                                                #        actionButton("doRenyi", "run")
+                                                # ),
+                                                # column(width = 2,
+                                                #        div(style="position: absolute; top: 0; right: 0;",
+                                                #            circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                # )
+                                       ),
+                                       uiOutput("downPlotRenyi"),
+                                       plotOutput("RenyiDiversity"),#, height = "600px"),
+                                       busyIndicator(wait = 500)
+                              )
+                   ),
+                   navbarMenu("Clonal distribution",
+                              tabPanel("Count intervals",
+                                       fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                                    circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                                 style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                      tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("countIntervalsLevel",
-                                                       "Select a level",
-                                                       choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ), 
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("countIntervalsscale",
-                                                       "Select a scale for fractions",
-                                                       choices = list("count", "frequency"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ),
-                                 column(width = 2,style="margin-top: -22px; font-size:14px",
-                                        uiOutput("countIntervalsGroup")
-                                 ),
-                                 # column(width = 1, 
-                                 #        style = "margin-top: 25px;",
-                                 #        tags$head(
-                                 #          tags$style(HTML('#doCountInt{background-color:white; border-color: #022F5A;}'))
-                                 #        ),
-                                 #        actionButton("doCountInt", "run")
-                                 # ),
-                                 column(width = 3, style="margin-top: -22px; font-size:14px",
-                                        uiOutput("countIntervalsFacet")
-                                 ),
-                                 column(width = 3, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("countIntervalsshowstats",
-                                                       HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
-                                                       choices = list("yes"=TRUE, "no"=FALSE),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 )
-                               
-                                 # column(width = 2,
-                                 #        div(style="position: absolute; top: 0; right: 0;",
-                                 #            circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                 #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                 # )
-                             ),
-                             uiOutput("downPlotCountInt"),
-                             plotOutput("CountInt" ),
-                             busyIndicator(wait = 500)
-                    ),
-                    tabPanel("Rank distribution",
-                             fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                          circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                       style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("countIntervalsLevel",
+                                                                      "Select a level",
+                                                                      choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ), 
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("countIntervalsscale",
+                                                                      "Select a scale for fractions",
+                                                                      choices = list("count", "frequency"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ),
+                                                column(width = 2,style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("countIntervalsGroup")
+                                                ),
+                                                # column(width = 1, 
+                                                #        style = "margin-top: 25px;",
+                                                #        tags$head(
+                                                #          tags$style(HTML('#doCountInt{background-color:white; border-color: #022F5A;}'))
+                                                #        ),
+                                                #        actionButton("doCountInt", "run")
+                                                # ),
+                                                column(width = 3, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("countIntervalsFacet")
+                                                ),
+                                                column(width = 3, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("countIntervalsshowstats",
+                                                                      HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
+                                                                      choices = list("yes"=TRUE, "no"=FALSE),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                )
+                                                
+                                                # column(width = 2,
+                                                #        div(style="position: absolute; top: 0; right: 0;",
+                                                #            circleButton(inputId = "CIHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                # )
+                                       ),
+                                       uiOutput("downPlotCountInt"),
+                                       plotOutput("CountInt" ),
+                                       busyIndicator(wait = 500)
+                              ),
+                              tabPanel("Rank distribution",
+                                       fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                                    circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                                 style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                      tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("multRankLevel",
-                                                       "Select a level",
-                                                       choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ), 
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        selectizeInput("multRankScale",
-                                                       "Select a scale",
-                                                       choices = list("count", "frequency"),
-                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
-                                 ), 
-                                 column(width = 2, style="margin-top: -22px; font-size:14px",
-                                        uiOutput("multRankGroup")
-                                 ),
-                                 column(width = 3, style="margin-top: -22px; font-size:14px",
-                                        sliderInput(inputId = "multRankSize",
-                                                    label = HTML("Select number of ranks <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
-                                                                 value = 1000,
-                                                                 min = 1,
-                                                                 max = 1000000)
-                                  ),
-                                 column(width = 4, style="margin-top: -22px; font-size:14px",
-                                        uiOutput("multRankFacet")
-                                 )
-                                 # column(width = 2,
-                                 #        div(style="position: absolute; top: 0; right: 0;",
-                                 #            circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                 #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                 # )
-                             ),
-                             uiOutput("downPlotMultRank"),
-                             plotOutput("multRank"),
-                             busyIndicator(wait = 500)
-                    )
-                ),
-                tabPanel("V/J usage",
-                         fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                      circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                   style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("multRankLevel",
+                                                                      "Select a level",
+                                                                      choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ), 
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("multRankScale",
+                                                                      "Select a scale",
+                                                                      choices = list("count", "frequency"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ), 
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("multRankGroup")
+                                                ),
+                                                column(width = 3, style="margin-top: -22px; font-size:14px",
+                                                       sliderInput(inputId = "multRankSize",
+                                                                   label = HTML("Select number of ranks <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
+                                                                   value = 1000,
+                                                                   min = 1,
+                                                                   max = 1000000)
+                                                ),
+                                                column(width = 4, style="margin-top: -22px; font-size:14px",
+                                                       uiOutput("multRankFacet")
+                                                )
+                                                # column(width = 2,
+                                                #        div(style="position: absolute; top: 0; right: 0;",
+                                                #            circleButton(inputId = "mrankHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                                #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                                # )
+                                       ),
+                                       uiOutput("downPlotMultRank"),
+                                       plotOutput("multRank"),
+                                       busyIndicator(wait = 500)
+                              )
+                   ),
+                   tabPanel("V/J usage",
+                            fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                         circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                      style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                  tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                           column(width = 2, style="margin-top: -22px; font-size:14px",
-                                         selectizeInput("geneUsageLevel",
-                                                        "Select a level",
-                                                        choices = list("V", "J"),
-                                                        options = list(onInitialize = I('function() { this.setValue(""); }')))
-                         ),
-                         column(width = 2, style="margin-top: -22px; font-size:14px",
-                                  selectizeInput("geneUsageScale",
-                                                 "Select a scale",
-                                                 choices = list("count", "frequency"),
-                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
-                         ), 
-                         column(width = 2, style="margin-top: -22px; font-size:14px",
-                                uiOutput("geneUsageGroup")
-                         ),
-                         column(width = 2, style="margin-top: -22px; font-size:14px",
-                                uiOutput("geneUsagefacet")
-                         ),
-                         column(width = 2, style="margin-top: -22px; font-size:14px",
-                                selectizeInput("geneUsageshowstats",
-                                               HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
-                                               choices = list("yes"=TRUE, "no"=FALSE),
-                                               options = list(onInitialize = I('function() { this.setValue(""); }')))
-                         )
-                         # column(width = 2, style="margin-top: -22px;",
-                         #        style = "margin-top: 25px;",
-                         #        tags$head(
-                         #            tags$style(HTML('#dogeneUsage{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
-                         #        ),
-                         #        actionButton("dogeneUsage", "Run")
-                         # )
-                         # column(width = 4,
-                         #        div(style="position: absolute; top: 0; right: 0;",
-                         #            circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                         #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                         # )
-                         ),
-                         uiOutput("downPlotgeneUsage"),
-                         plotly::plotlyOutput("geneUsage"),
-                         busyIndicator(wait = 500)
-                )
+                                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                     column(width = 1, style="margin-top: -22px; font-size:14px",
+                                            selectizeInput("geneUsageLevel",
+                                                           "Select a level",
+                                                           choices = list("V", "J"),
+                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                     ),
+                                     column(width = 1, style="margin-top: -22px; font-size:14px",
+                                            selectizeInput("geneUsageScale",
+                                                           "Select a scale",
+                                                           choices = list("count", "frequency"),
+                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                     ), 
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+                                            uiOutput("geneUsageGroup")
+                                     ),
+                                     column(width = 4, style="margin-top: -22px; font-size:14px",
+                                            uiOutput("geneUsagefacet")
+                                     ),
+                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+                                            selectizeInput("geneUsageshowstats",
+                                                           HTML("Perform a statistical test <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
+                                                           choices = list("yes"=TRUE, "no"=FALSE),
+                                                           options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                     )
+                                     # column(width = 2, style="margin-top: -22px;",
+                                     #        style = "margin-top: 25px;",
+                                     #        tags$head(
+                                     #            tags$style(HTML('#dogeneUsage{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
+                                     #        ),
+                                     #        actionButton("dogeneUsage", "Run")
+                                     # )
+                                     # column(width = 4,
+                                     #        div(style="position: absolute; top: 0; right: 0;",
+                                     #            circleButton(inputId = "geneusageHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                     #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                     # )
+                            ),
+                            uiOutput("downPlotgeneUsage"),
+                            plotly::plotlyOutput("geneUsage"),
+                            busyIndicator(wait = 500)
+                   )
             )
-        )
-    )
+          )
+  )
+
 
 SimTab<- 
     tabItem(tabName = "showSimTab",

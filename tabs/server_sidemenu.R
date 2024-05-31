@@ -101,8 +101,31 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       
     }) 
     
+    output$summaryNb3 <- renderValueBox({
+      
+      metadata <- AnalyzAIRR::mData(dataFilt())
+      p<- nrow(metadata)
+      
+      valueBox(p, "Samples", icon = icon("vial"),
+               color = "purple",width = 2
+      )
+      
+    }) 
+    
     # number of group
     output$summaryGrp <- renderValueBox({
+      
+      metadata <- AnalyzAIRR::mData(dataFilt())
+      cols<- c("sample_id","nSequences","V","J","VJ","ntCDR3","aaCDR3","ntClone", "aaClone")
+      p<- length(as.factor(colnames(metadata)[!colnames(metadata) %in% cols]))
+      
+      valueBox(p, "Biological groups", icon = icon("people-group"),
+               color = "yellow",width = 2
+      )
+      
+    }) 
+    
+    output$summaryGrp3 <- renderValueBox({
       
       metadata <- AnalyzAIRR::mData(dataFilt())
       cols<- c("sample_id","nSequences","V","J","VJ","ntCDR3","aaCDR3","ntClone", "aaClone")
@@ -127,6 +150,17 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       
     }) 
     
+    output$summarySeq3 <- renderValueBox({
+      
+      metadata <- AnalyzAIRR::assay(dataFilt())
+      p<- scales::comma(sum(metadata$count))
+      
+      valueBox(p, "Total sequences", icon = icon("rectangle-list"),
+               color = "blue",width = 2
+      )
+      
+    }) 
+    
     output$downloadNewRepSeq <- downloadHandler(
       "RepSeqData.rds",
       
@@ -140,6 +174,9 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       selectGrp("selectGrp1", dataFilt())
       })
     
+    output$selectGrp3 <- renderUI({
+      selectGrp("selectGrp3", dataFilt())
+    })
     
     output$plotGrp1 <-  plotly::renderPlotly({
       
@@ -168,6 +205,35 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
 
       p1
     }) 
+    
+    output$plotGrp3 <-  plotly::renderPlotly({
+      
+      validate(need(!(is.null(input$selectGrp3) || input$selectGrp3 == ""), ""))
+      
+      metadata<- AnalyzAIRR::mData(dataFilt())
+      # grp <- input$selectGrp1
+      data<-metadata %>% 
+        dplyr::select(nSequences, !!rlang::sym(input$selectGrp3)) %>%
+        dplyr::group_by(!!rlang::sym(input$selectGrp3)) %>%
+        dplyr::summarise(count=sum(nSequences)) 
+      colnames(data)<- c("group","value")
+      
+      # p1<-treemap::treemap(data, index="value", vSize="value", type="categorical", vColor = "group",
+      #                      palette=AnalyzAIRR::oData(dataFilt())$label_colors$sex, title="")
+      p1<-plotly::plot_ly(
+        type='treemap',
+        textinfo="label",
+        parents="",
+        labels=as.character(data$group),
+        values=as.numeric(data$value),
+        domain=list(column=0))
+      
+      p2<- p1 %>% plotly::layout(
+        margin=list(l=0, r=0, b=0, t=0))
+      
+      p1
+    }) 
+    
 
     # output$downPlothistlibsizesp1 <- renderUI({
     #     downloadButton("Plothistlibsizesp1", "Download PDF", style="background-color:white; border-color: #022F5A;")
@@ -185,7 +251,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     #     dev.off()
     #   }
     # )
-    
+    ##rdsupload
     output$histlibsizesp1 <- renderUI({
       selectID("histlibsizesp1", dataFilt())
     })
@@ -201,6 +267,28 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
       p2<-ggplot2::ggplot(cts1, ggplot2::aes( x=count))+
         ggplot2::geom_histogram(ggplot2::aes(y=ggplot2::after_stat(density)), alpha=0.5, fill="white",color="black",
                        position="identity")+
+        theme_RepSeq()+
+        ggplot2::xlab("count")+
+        ggplot2::scale_x_log10(labels = scales::comma)
+      p2
+    })
+    
+    #txtupload
+    output$histlibsizesp3 <- renderUI({
+      selectID("histlibsizesp3", dataFilt())
+    })
+    
+    
+    output$Plothistlibsizesp3 <- renderPlot({
+      
+      validate(need(!(is.null(input$histlibsizesp3) || input$histlibsizesp3 == ""), ""))
+      
+      cts<- AnalyzAIRR::assay(dataFilt())
+      cts1<- cts %>% dplyr::filter(sample_id  %in% input$histlibsizesp3)
+      
+      p2<-ggplot2::ggplot(cts1, ggplot2::aes( x=count))+
+        ggplot2::geom_histogram(ggplot2::aes(y=ggplot2::after_stat(density)), alpha=0.5, fill="white",color="black",
+                                position="identity")+
         theme_RepSeq()+
         ggplot2::xlab("count")+
         ggplot2::scale_x_log10(labels = scales::comma)

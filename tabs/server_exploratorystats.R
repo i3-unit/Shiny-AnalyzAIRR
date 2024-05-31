@@ -119,8 +119,10 @@ output$plotRare <- renderUI({
   selectColorGroup("plotRare", dataFilt())
 })
 output$plotrarefaction <- plotly::renderPlotly({
-    validate(need(!(is.null(input$plotRare) || input$plotRare == ""), "select a group"))
-    plotly::ggplotly(plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right"))
+    validate(need(!(is.null(input$plotRare) || input$plotRare =="" ), "select a group"))
+    plotly::ggplotly(
+      plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
+      )
 })
 
 output$downPlotRare <- renderUI({

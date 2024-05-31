@@ -105,7 +105,7 @@ knitr::opts_chunk$set(echo = TRUE)
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) &&
  !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
    (input$doProductive == 1) ||
-    (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
+    (!is.null(input$filterSeqLevel) && !is.null(input$filterSeqName) && input$doFilterSeq == 1) || 
    (!is.null(input$dropSampleNames)) || 
    (!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1) || 
    (!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1) || 
@@ -118,7 +118,7 @@ if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) &&
 ```{r show filtering title, results='asis', echo=FALSE}
 if((!is.null(input$filterCountLevel) && !is.null(input$filterCountN) && !is.null(input$filterCountGroup) && input$doFilterCount == 1) ||
    (input$doProductive == 1) ||
-    (!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1) || 
+    (!is.null(input$filterSeqLevel) && !is.null(input$filterSeqName) && input$doFilterSeq == 1) || 
    (!is.null(input$dropSampleNames)) || 
    (!is.null(input$publicLevel) && !is.null(input$publicGroup) && input$doPublic == 1) || 
    (!is.null(input$privateLevel) && !is.null(input$privateSingletons) && input$doPrivate == 1) || 
@@ -159,10 +159,13 @@ if(!is.null(input$filterSeqLevel) && !is.null(input$filterSeqName) && input$doFi
   filterSequence(x = RepSeqDT(), level = input$filterSeqLevel, name = input$filterSeqName, group =  
                    filterSeqGroup)
  
-   historydata <- AnalyzAIRR::History(input$dataFiltered)
-   flextable::flextable(head(historydata)) %>%
-     flextable::theme_vanilla() %>%
-     flextable::color(color="#022f5a", part="header")   
+   historydata <- AnalyzAIRR::History(dataFilt())
+   knitr::kable(historydata) %>%
+        kableExtra::kable_styling(
+                        full_width = FALSE,
+                        position = "center",
+                        font_size = 10) %>%
+        kableExtra::row_spec(0, color="#022f5a", font_size = 12)   
 }
       
 ```
@@ -406,8 +409,8 @@ if((!(is.null(input$plotStats) || input$plotStats == "")) &&
 ```
 
 ```{r show metadata stats text entry, echo = FALSE}
-if((!(is.null(params$plotStats) || params$plotStats == "")) &&
-   !(is.null(params$plotcolorgroup) || params$plotcolorgroup == "")){
+if((!(is.null(input$plotStats) || input$plotStats == "")) &&
+   !(is.null(input$plotcolorgroup) || input$plotcolorgroup == "")){
   tags$body(style="color: white;",
           p(style="color: white;",
   textInput("metadatastatsText", "Enter text", value="")))
@@ -442,24 +445,24 @@ if(input$countLevel != "" && !is.null(input$countScale)){
 
 
 ```{r show Diversity estimation title, results='asis', echo=FALSE}
-if((input$plotRare !="") ||
+if((!is.null(input$plotRare) || input$plotRare != "") ||
    (!is.null(input$divIndex) && input$divLevel != "" && input$divcolor != "") || 
    (input$renyiLevel != "" && input$renyicolor != "")){cat("## Diversity estimation ")}
 ```
 
 ```{r show Rarefaction analysis title, results='asis', echo=FALSE}
-if(input$plotRare !=""){cat("### Rarefaction analysis")}
+if(!is.null(input$plotRare) || input$plotRare != ""){cat("### Rarefaction analysis")}
 ```
 
 ```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if(input$plotRare !=""){
+if( input$plotRare != ""){
    plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
 }
       
 ```
 
 ```{r show rarefaction text entry,echo = FALSE}
-if(input$plotRare !=""){
+if(!is.null(input$plotRare) || input$plotRare != ""){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("rarefactionText", "Enter text", value="")))

@@ -105,16 +105,10 @@ p.caption {
 </body><!--/html_preserve-->
 
 
-
-```
-## Error in eval(expr, envir, enclos): object 'params' not found
-```
+# Data manipulation
 
 
-
-```
-## Error in eval(expr, envir, enclos): object 'params' not found
-```
+## Filtering
 
 
 
@@ -122,9 +116,29 @@ p.caption {
 
 
 
+**Filter out a sequence**
 
-
-
+<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Nextcloud/AnalyzAIRR/data </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiXCR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 345841 ntClone were filtered using filterCount: n= 1 and group= </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 33 aaClone were filtered using filterSequence: name= TRAV11 CVVGDRGSALGRLHF TRAJ18 group1= cell_subset and group2= Teff </td>
+  </tr>
+</tbody>
+</table>
 
 
 
@@ -176,6 +190,7 @@ p.caption {
 # Exploratory statistics
 
 
+## Basic statistics
 
 
 
@@ -184,12 +199,8 @@ p.caption {
 
 
 
-```
-## Error in eval(expr, envir, enclos): object 'params' not found
-```
 
-
-
+### Detailed repertoire level statistics
 
 <!-- ```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
 <!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
@@ -204,7 +215,14 @@ p.caption {
 
 <!-- ``` -->
 
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="countfeaturesText-label" for="countfeaturesText">Enter text</label>
+<input id="countfeaturesText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 ## Diversity estimation 
@@ -212,13 +230,6 @@ p.caption {
 ### Rarefaction analysis
 
 
-```
-## Error in `ggplot2::geom_line()`:
-## ! Problem while computing aesthetics.
-## ℹ Error occurred in the 1st layer.
-## Caused by error in `FUN()`:
-## ! object 'groupb' not found
-```
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
@@ -265,11 +276,18 @@ p.caption {
 <!-- ``` -->
 
 
+### Renyi index
 
+<img src="figure/renyi ind-1.png" alt="plot of chunk renyi ind" style="display: block; margin: auto;" />
 
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="renyiindText-label" for="renyiindText">Enter text</label>
+<input id="renyiindText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 <!-- ```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
@@ -303,7 +321,6 @@ p.caption {
 
 
 
-# One-sample analysis
 
 
 
@@ -327,32 +344,19 @@ p.caption {
 
 
 
-### Stacked spectratyping
-
-<img src="figure/cd3 spectra-1.png" alt="plot of chunk cd3 spectra" style="display: block; margin: auto;" />
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="cd3spectraText-label" for="cd3spectraText">Enter text</label>
-<input id="cd3spectraText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
-### Individual spectratyping
 
-<img src="figure/cd3 spectra ind-1.png" alt="plot of chunk cd3 spectra ind" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="cd3spectraindText-label" for="cd3spectraindText">Enter text</label>
-<input id="cd3spectraindText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
+
+
+
 
 
 # Multi-sample analysis
@@ -368,9 +372,9 @@ p.caption {
 
 
 
+### Diversity indices
 
-
-
+<img src="figure/div-1.png" alt="plot of chunk div" style="display: block; margin: auto;" />
 
 <!--html_preserve--><body style="color: white;">
 <p style="color: white;">
@@ -382,55 +386,25 @@ p.caption {
 </body><!--/html_preserve-->
 
 
-### Renyi index
 
 
-```
-## Error in match.arg(level): 'arg' should be one of "aaClone", "ntClone", "V", "J", "VJ", "ntCDR3", "aaCDR3"
-```
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="renyiText-label" for="renyiText">Enter text</label>
-<input id="renyiText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
-### Count intervals
 
 
-```
-## Error in `[.data.frame`(sdata, , colorBy): undefined columns selected
-```
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="countIntText-label" for="countIntText">Enter text</label>
-<input id="countIntText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
-### Rank distribution
 
 
-```
-## Error in match.arg(scale): 'arg' should be one of "count", "frequency"
-```
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="rankDistribText-label" for="rankDistribText">Enter text</label>
-<input id="rankDistribText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
+
+
 
 
 ### V/J usage
@@ -447,6 +421,7 @@ p.caption {
 </body><!--/html_preserve-->
 
 
+## Similarity analysis
 
 
 
@@ -463,12 +438,18 @@ p.caption {
 
 
 
+### Hierarchical clustering
 
+<img src="figure/disHM-1.png" alt="plot of chunk disHM" style="display: block; margin: auto;" />
 
-
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="disHMText-label" for="disHMText">Enter text</label>
+<input id="disHMText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
