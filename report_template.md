@@ -407,18 +407,11 @@ p.caption {
 
 
 
-### V/J usage
 
-<img src="figure/geneUsage-1.png" alt="plot of chunk geneUsage" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="geneUsageText-label" for="geneUsageText">Enter text</label>
-<input id="geneUsageText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
 
 
 ## Similarity analysis
