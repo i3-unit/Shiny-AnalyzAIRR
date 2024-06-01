@@ -418,9 +418,9 @@ if((!(is.null(input$plotStats) || input$plotStats == "")) &&
 ```
 
 
-```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE}
-if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed repertoire level statistics")}
-```
+<!-- ```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE} -->
+<!--if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed repertoire level statistics")} -->
+<!--``` -->
 
 <!-- ```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
 <!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
@@ -435,34 +435,34 @@ if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed reper
 
 <!-- ``` -->
 
-```{r show count features text entry,echo = FALSE}
-if(input$countLevel != "" && !is.null(input$countScale)){
-  tags$body(style="color: white;",
-       p(style="color: white;",
-  textInput("countfeaturesText", "Enter text", value="")))
-}
-```
+<!-- ```{r show count features text entry,echo = FALSE} -->
+<!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
+<!--   tags$body(style="color: white;", -->
+<!--        p(style="color: white;", -->
+<!--   textInput("countfeaturesText", "Enter text", value=""))) -->
+<!-- } -->
+<!-- ``` -->
 
 
 ```{r show Diversity estimation title, results='asis', echo=FALSE}
-if((!is.null(input$plotRare) || input$plotRare != "") ||
+if((!is.null(input$plotRare) && input$plotRare != "") ||
    (!is.null(input$divIndex) && input$divLevel != "" && input$divcolor != "") || 
    (input$renyiLevel != "" && input$renyicolor != "")){cat("## Diversity estimation ")}
 ```
 
 ```{r show Rarefaction analysis title, results='asis', echo=FALSE}
-if(!is.null(input$plotRare) || input$plotRare != ""){cat("### Rarefaction analysis")}
+if(!is.null(input$plotRare) && input$plotRare != ""){cat("### Rarefaction analysis")}
 ```
 
 ```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
-if( input$plotRare != ""){
+if( !is.null(input$plotRare) && input$plotRare != ""){
    plotRarefaction(x=dataFilt(), colorBy = input$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
 }
       
 ```
 
 ```{r show rarefaction text entry,echo = FALSE}
-if(!is.null(input$plotRare) || input$plotRare != ""){
+if(!is.null(input$plotRare) && input$plotRare != ""){
   tags$body(style="color: white;",
        p(style="color: white;",
   textInput("rarefactionText", "Enter text", value="")))

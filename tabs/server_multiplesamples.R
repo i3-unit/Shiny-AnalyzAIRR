@@ -128,9 +128,9 @@ output$multrenfacet <- renderUI({
 })
 
 
-output$multrenshape <- renderUI({
-  selectShapeGroup("multrenshape", dataFilt())
-})
+# output$multrenshape <- renderUI({
+#   selectShapeGroup("multrenshape", dataFilt())
+# })
 
 
 #observeEvent(input$doRenyi, {

@@ -25,6 +25,7 @@ params:
   filterSeqName: NA
   filterSeqGroup: NA
   doFilterCount: NA
+  doFilterSeq: NA
   doProductive: NA 
   dropSampleNames: NA 
   publicLevel: NA
@@ -96,6 +97,7 @@ params:
   multRankScale: NA
   multRankGroup: NA
   multRankFacet: NA
+  multRankSize: NA
   geneUsageLevel: NA
   geneUsageScale: NA
   geneUsageGroup: NA
@@ -273,7 +275,7 @@ if(!is.null(params$filterCountLevel) && !is.null(params$filterCountN) && !is.nul
 if((!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1)){cat("**Filter out a sequence**")}
 ```
 
-```{r repcount, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
+```{r rep seq, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE}
 if(!is.null(params$filterSeqLevel) && !is.null(params$filterSeqName) && params$doFilterSeq == 1){
     if(params$putInfofile == "Yes" || !is.null(params$RDSfile)){
     filterSeqGroup <- params$filterSeqGroup
@@ -529,32 +531,32 @@ if((!(is.null(params$plotStats) || params$plotStats == "")) &&
 
 <!-- ``` -->
 
-```{r show count features text entry, echo = FALSE, results='asis'}
-if(params$countLevel != "" && !is.null(params$countScale)){
-  cat(params$countfeaturesText)
-}
-```
+<!-- ```{r show count features text entry, echo = FALSE, results='asis'} -->
+<!-- if(params$countLevel != "" && !is.null(params$countScale)){ -->
+<!--   cat(params$countfeaturesText) -->
+<!-- } -->
+<!-- ``` -->
 
 
 ```{r show Diversity estimation title, results='asis', echo=FALSE}
-if((!is.null(params$plotRare)) ||
+if((!is.null(params$plotRare) && params$plotRare != "") ||
    (!is.null(params$divIndex) && params$divLevel != "" && params$divcolor != "") || 
    (params$renyiLevel != "" && params$renyicolor != "")){cat("## Diversity estimation ")}
 ```
 
 ```{r show Rarefaction analysis title, results='asis', echo=FALSE}
-if(!is.null(params$plotRare)){cat("### Rarefaction analysis")}
+if(!is.null(params$plotRare) && params$plotRare != ""){cat("### Rarefaction analysis")}
 ```
 
 ```{r rarefaction, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$plotRare)){
+if(!is.null(params$plotRare) && params$plotRare != ""){
    plotRarefaction(x=params$dataFiltered, colorBy = params$plotRare, label_colors = NULL)+ggplot2::theme(legend.position = "right")
 }
       
 ```
 
 ```{r show rarefaction text entry, echo = FALSE, results='asis'}
-if(!is.null(params$plotRare)){
+if(!is.null(params$plotRare) && params$plotRare != ""){
   cat(params$rarefactionText)
 }
 ```
@@ -729,7 +731,6 @@ if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$sing
 ```
 
 ```{r VJGeneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-
 if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$singleScale) && !is.null(params$VJProp)){
       if(params$VJViz == "Heatmap"){
         plotVJusage(x = dataFilt(), sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Heatmap")
@@ -784,38 +785,36 @@ if(!is.null(params$singleSample) && !is.null(params$singleScale) && !is.null(par
 
 
 ```{r show Multi-sample analysis title, results='asis', echo=FALSE}
-if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)) || 
-   (!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)) || 
-   (!is.null(params$multrenLevel) && !is.null(params$multrenGroup)) || 
-   (!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && !is.null(params$countIntervalsscale)) || 
-   (!is.null(params$multRankLevel) && !is.null(params$multRankScale) && !is.null(params$multRankGroup) && !is.null(params$multRankSize)) || 
-   (!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup)) || 
-   (!is.null(params$vennLevel) && !is.null(params$vennSamples)) || 
-   (!is.null(params$scatterUISample) && !is.null(params$scatterLevel) && !is.null(params$scatterScale)) || 
-   (!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && !is.null(params$multdissGroup) && params$doHm1 == 1) || 
-   (!is.null(params$MDSLevel) && !is.null(params$MDSMethod)) || 
-   (!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV)) || 
-   (!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup)) || 
-   (!is.null(params$PertGroupSelected) && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1)){cat("# Multi-sample analysis")}
+if((params$statisticsStat !="" && !is.null(params$statisticsGroup)) ||
+   (params$diverLevel != "" && !is.null(params$diverGroup) && params$diverIndex !="") ||
+   (params$multrenLevel != "" && !is.null(params$multrenGroup)) ||
+   (params$countIntervalsLevel != "" && !is.null(params$countIntervalsGroup) && params$countIntervalsscale !="") ||
+   (params$multRankLevel != "" && params$multRankScale !="" && !is.null(params$multRankGroup) && !is.null(params$multRankSize)) ||
+   (params$geneUsageLevel != "" && params$geneUsageScale !="" && !is.null(params$geneUsageGroup)) ||
+   (params$vennLevel != "" && !is.null(params$vennSamples)) ||
+   (!is.null(params$scatterUISample) && params$scatterLevel !="" && params$scatterScale !="") ||
+   (params$dissimilarityLevel != ""  && params$dissimilarityIndex !="" && params$dissimilarityClustering !="" && !is.null(params$multdissGroup) && params$doHm1 == 1) ||
+   (params$diffLevel != "" && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV)) ||
+   (params$PertGroupSelected != "" && !is.null(params$CtrlGroup) && !is.null(params$pertDist) && !is.null(params$pertOrder) && params$doHm == 1)){cat("# Multi-sample analysis")}
 ```
 
 
 ```{r show Comparison of basic statistics title, results='asis', echo=FALSE}
-if((!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)) || 
-   (!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)) || 
-   (!is.null(params$multrenLevel) && !is.null(params$multrenGroup)) || 
-   (!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup)) || 
-   (!is.null(params$multRankLevel) && !is.null(params$multRankScale) && !is.null(params$multRankGroup)) || 
-   (!is.null(params$geneUsageLevel) && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup))){cat("## Comparison of basic statistics")}
+if((params$statisticsStat !="" && !is.null(params$statisticsGroup)) || 
+   (params$diverLevel != "" && !is.null(params$diverGroup) && !is.null(params$diverIndex)) || 
+   (params$multrenLevel != "" && !is.null(params$multrenGroup)) || 
+   (params$countIntervalsLevel != "" && !is.null(params$countIntervalsGroup) && !is.null(params$countIntervalsscale)) || 
+   (params$multRankLevel != "" && !is.null(params$multRankScale) && !is.null(params$multRankGroup) && !is.null(params$multRankSize)) || 
+   (params$geneUsageLevel != "" && !is.null(params$geneUsageScale) && !is.null(params$geneUsageGroup))){cat("## Comparison of basic statistics")}
 ```
 
 
 ```{r show Metadata statistics multiple title, results='asis', echo=FALSE}
-if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){cat("### Metadata statistics")}
+if(params$statisticsStat != "" && !is.null(params$statisticsGroup)){cat("### Metadata statistics")}
 ```
 
 ```{r stats, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){
+if(params$statisticsStat != "" && !is.null(params$statisticsGroup)){
     plotStatistics(x = params$dataFiltered, stat = params$statisticsStat, colorBy = params$statisticsGroup, label_colors = NULL,
                    facetBy=params$statisticsFacet, show_stats=params$statisticsshowstats, grouped=TRUE )
 }
@@ -830,12 +829,12 @@ if(!is.null(params$statisticsStat) && !is.null(params$statisticsGroup)){
 
 
 ```{r show Diversity indices multiple title, results='asis', echo=FALSE}
-if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)){cat("### Diversity indices")}
+if(params$diverLevel !="" && !is.null(params$diverGroup) && !is.null(params$diverIndex)){cat("### Diversity indices")}
 ```
 
 ```{r div, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
-if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params$diverIndex)){
-    plotDiversity(x = params$dataFiltered, level = params$diverLevel, colorBy = params$diverGroup, index =                   params$diverIndex, facetBy=params$diverfacet, show_stats=params$divshowstats, grouped=TRUE, label_colors = NULL)
+if(params$diverLevel !="" && !is.null(params$diverGroup) && !is.null(params$diverIndex)){
+    plotDiversity(x = params$dataFiltered, level = params$diverLevel, colorBy = params$diverGroup, index = params$diverIndex, facetBy=params$diverfacet, show_stats=params$divshowstats, grouped=TRUE, label_colors = NULL)
 }
      
 ```
@@ -1012,8 +1011,7 @@ if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod)  && !is.null(params$m
 
 
 ```{r show Differential analysis title, results='asis', echo=FALSE}
-if((!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV)) || 
-   (!is.null(params$diffPCALevel) && !is.null(params$PCAMethod) && !is.null(params$diffPCAGroup))){cat("## Differential analysis")}
+if((!is.null(params$diffLevel) && !is.null(params$diffGroup) && !is.null(params$diffFC) && !is.null(params$diffPV))){cat("## Differential analysis")}
 ```
 
 

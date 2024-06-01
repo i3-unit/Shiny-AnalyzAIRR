@@ -79,7 +79,6 @@ shinyServer(function(input, output, session) {
                            divfacet = input$divfacet,
                            renyiLevel = input$renyiLevel, 
                            renyicolor = input$renyicolor, 
-                           renyishape = input$renyishape, 
                            renyifacet = input$renyifacet, 
                            countIntLevel = input$countIntLevel, 
                            countIntGroupMeth = input$countIntGroupMeth,

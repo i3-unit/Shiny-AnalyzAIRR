@@ -324,7 +324,12 @@ dataTopSeq <- eventReactive(input$doTopSeq,{
     validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
     # validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
     # validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
-    topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
+    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+      topSeqGroup <- input$topSeqGroup
+    } else {
+      topSeqGroup <- NULL
+    }
+    topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = topSeqGroup, prop = input$topSeqProp)
     return(topseqdata)
 })
 
@@ -370,7 +375,7 @@ output$filterSeqGroup <- renderUI({
     choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
   }
   selectizeInput("filterSeqGroup",
-                 "Select a group and a subgroup",  
+                 HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"), 
                  choices = choices,
                  selected = NULL,
                  options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -379,7 +384,7 @@ output$filterSeqGroup <- renderUI({
 
 dataFilterSeq <- eventReactive(input$doFilterSeq, {
   validate(need(!(is.null(input$filterSeqLevel) || input$filterSeqLevel == ""), "select a level"))
-  validate(need(!(is.null(input$filterSeqGroup) || input$filterSeqGroup == ""), "select a group")) 
+  validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "select a sequence")) 
 
   if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
     filterSeqGroup <- input$filterSeqGroup

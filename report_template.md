@@ -105,10 +105,6 @@ p.caption {
 </body><!--/html_preserve-->
 
 
-# Data manipulation
-
-
-## Filtering
 
 
 
@@ -116,29 +112,13 @@ p.caption {
 
 
 
-**Filter out a sequence**
 
-<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Nextcloud/AnalyzAIRR/data </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiXCR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 345841 ntClone were filtered using filterCount: n= 1 and group= </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 33 aaClone were filtered using filterSequence: name= TRAV11 CVVGDRGSALGRLHF TRAJ18 group1= cell_subset and group2= Teff </td>
-  </tr>
-</tbody>
-</table>
+
+
+
+
+
+
 
 
 
@@ -193,14 +173,23 @@ p.caption {
 ## Basic statistics
 
 
+### Metadata statistics
+
+<img src="figure/metadata stats-1.png" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
+
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
+<input id="metadatastatsText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
-
-
-
-
-
-### Detailed repertoire level statistics
+<!-- ```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE} -->
+<!--if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed repertoire level statistics")} -->
+<!--``` -->
 
 <!-- ```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
 <!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
@@ -215,30 +204,22 @@ p.caption {
 
 <!-- ``` -->
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="countfeaturesText-label" for="countfeaturesText">Enter text</label>
-<input id="countfeaturesText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
-
-
-## Diversity estimation 
-
-### Rarefaction analysis
+<!-- ```{r show count features text entry,echo = FALSE} -->
+<!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
+<!--   tags$body(style="color: white;", -->
+<!--        p(style="color: white;", -->
+<!--   textInput("countfeaturesText", "Enter text", value=""))) -->
+<!-- } -->
+<!-- ``` -->
 
 
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="rarefactionText-label" for="rarefactionText">Enter text</label>
-<input id="rarefactionText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
 
 
 <!-- ```{r rarefaction tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
@@ -276,18 +257,11 @@ p.caption {
 <!-- ``` -->
 
 
-### Renyi index
 
-<img src="figure/renyi ind-1.png" alt="plot of chunk renyi ind" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="renyiindText-label" for="renyiindText">Enter text</label>
-<input id="renyiindText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
 
 
 <!-- ```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
@@ -359,31 +333,6 @@ p.caption {
 
 
 
-# Multi-sample analysis
-
-
-## Comparison of basic statistics
-
-
-
-
-
-
-
-
-
-### Diversity indices
-
-<img src="figure/div-1.png" alt="plot of chunk div" style="display: block; margin: auto;" />
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="divText-label" for="divText">Enter text</label>
-<input id="divText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
 
@@ -414,7 +363,6 @@ p.caption {
 
 
 
-## Similarity analysis
 
 
 
@@ -431,18 +379,30 @@ p.caption {
 
 
 
-### Hierarchical clustering
 
-<img src="figure/disHM-1.png" alt="plot of chunk disHM" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="disHMText-label" for="disHMText">Enter text</label>
-<input id="disHMText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
