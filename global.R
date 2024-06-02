@@ -7,6 +7,7 @@ library(shinydashboard)
 library(AnalyzAIRR)
 library(shinysky)
 library(DT)
+library(reactable)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
@@ -19,7 +20,6 @@ graphics.off()
 # options
 #------------------------------------------------------------------------------#
 options(shiny.maxRequestSize = 900*1024 ^ 3, repos = BiocManager::repositories()) # limite la taille des fichiers input, a modifier
-
 #------------------------------------------------------------------------------#
 # additional functions
 #------------------------------------------------------------------------------#
@@ -27,13 +27,13 @@ options(shiny.maxRequestSize = 900*1024 ^ 3, repos = BiocManager::repositories()
 #' 
 #' function allows to get data from selected area of a plot 
 #' @param x an object of class RepSeqExperiment
-#' @param level choose between V, J, VJ, VpJ, CDR3aa
+#' @param level choose between V, J, VJ, aaClone, ntClone, ntCDR3, aaCDR3
 #' @param sample_ids a vector of sample names of length 2.
 #' @param plot name of the previous plot
 #' @return a data.table
 #' @export
 # @example
-brush2v2count <- function(x, level = c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa"), sample_ids = NULL, plot = NULL){
+brush2v2count <- function(x, level = c("V", "J", "VJ", "aaClone", "ntClone", "ntCDR3", "aaCDR3"), sample_ids = NULL, plot = NULL){
     if (missing(x)) stop("x is missing.")
     if (!is.RepSeqExperiment(x)) stop("an object of class RepSeqExperiment is expected.")
     levelChoice <- match.arg(level)
@@ -77,6 +77,53 @@ selectSample <- function(ID, sampleNames) {
                  choices = sampleNames,
                  options = list(onInitialize = I('function() { this.setValue(""); }')))
 }
+
+#Renvoie un selectizeInput
+selectColorGroup <- function(ID, y) {
+  #x RepSeqExperiment object
+  #id string
+  colorgroup<- colnames(mData(y) %>% dplyr::select(-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  selectizeInput(ID,
+                 label = "Select a group for colors",
+                 choices = colorgroup,
+                 options = list(onInitialize = I('function() { this.setValue(""); }')))
+}
+
+
+selectColorGroupmulti <- function(ID, y) {
+  #x RepSeqExperiment object
+  #id string
+  colorgroup<- colnames(mData(y) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  selectizeInput(ID,
+                 label = "Select a group for colors",
+                 choices = colorgroup,
+                 options = list(onInitialize = I('function() { this.setValue(""); }')))
+}
+
+
+selectShapeGroup <- function(ID, z) {
+  #x RepSeqExperiment object
+  #id string
+  shapegroup<- colnames(mData(z) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  selectizeInput(ID,
+                 label = "Select a group for shapes",
+                 choices = shapegroup, 
+                 options = list(onInitialize = I('function() { this.setValue(""); }')))
+  
+}
+
+selectFacetGroup <- function(ID, t) {
+  #t RepSeqExperiment object
+  #id string
+  facetgroup<- colnames(mData(t) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  selectizeInput(ID,
+                 # label = HTML("Select a group for facets <i>(2 maximum, optional)</i>"),
+                 label=HTML("Select a group for facets <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(2 maximum, optional)</span>"),
+                 choices = facetgroup,
+                 multiple = TRUE,
+                 options = list(maxItems=2,onInitialize = I('function() { this.setValue(""); }')))
+}
+
 
 # function generate selectizeInput for selecting biological groups
 selectGroup <- function(ID, x) {  
@@ -169,6 +216,7 @@ printHtml <- function(obj){
   HTML(paste("<p style='font-size:15px;'>", paste0(capture.output(print(obj)), collapse="<br/>"), "</p>"))
 }
 
+
 # Plot histograms
 histSums<- function(dat=NULL, xlab="",ylab=""){
   p<-ggplot2::ggplot(data.frame(sums=dat), ggplot2::aes(x=sums))+
@@ -182,6 +230,33 @@ histSums<- function(dat=NULL, xlab="",ylab=""){
            axis.text.x = ggplot2::element_text(size=15),
            axis.text.y = ggplot2::element_text(size=15))
   return(p)
+}
+
+selectGrp <- function( ID,x) {
+  #x RepSeqExperiment object
+  metadata<- AnalyzAIRR::mData(x)
+  cols<- c("nSequences","V","J","VJ","ntCDR3","aaCDR3","ntClone", "aaClone")
+  p<- as.list(colnames(metadata)[!as.factor(colnames(metadata)) %in% cols])
+  
+  selectizeInput(ID,
+                 label = "Select a biological group",
+                 choices = p,
+                 width = "50%",
+                # options = list(onInitialize = I('function() { this.setValue(""); }'))
+                )
+}
+
+selectID <- function( ID,x) {
+  #x RepSeqExperiment object
+  metadata<- AnalyzAIRR::mData(x)
+ ids<- as.list(as.character(metadata$sample_id))
+  
+  selectizeInput(ID,
+                 label = "Select a sample ID",
+                 choices = ids,
+                 width = "50%",
+                 #options = list(onInitialize = I('function() { this.setValue(""); }'))
+                 )
 }
 
 # Generate dashboard header
@@ -201,15 +276,14 @@ mydashboardHeader <- function(..., title = NULL, titleWidth = NULL, disable = FA
                        title.navbar,
                        div(class = "navbar-custom-menu",
                            tags$ul(class = "nav navbar-nav",
-                                   items
-                           )
+                                   items)
                        )
               )
   )
 }
 
 
-summary_hist <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
+summary_hist <- function(x, level=c("V", "J", "VJ", "aaClone", "ntClone", "ntCDR3", "aaCDR3")){
   
   metadata <- AnalyzAIRR::mData(x)
   freq <- data.frame(table(metadata[[level]]))
@@ -224,7 +298,7 @@ summary_hist <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3n
   return(p1)
 }
 
-summary_hist2 <- function(x, level=c("V", "J", "VJ", "clone", "clonotype", "CDR3nt", "CDR3aa")){
+summary_hist2 <- function(x, level=c("V", "J", "VJ", "aaClone", "ntClone", "ntCDR3", "aaCDR3")){
   
   cts <- AnalyzAIRR::assay(x)
   levelChoice <- match.arg(level)

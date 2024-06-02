@@ -162,6 +162,11 @@ p.caption {
 
 
 
+
+
+
+
+
 # Exploratory statistics
 
 
@@ -182,6 +187,30 @@ p.caption {
 </body><!--/html_preserve-->
 
 
+<!-- ```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE} -->
+<!--if(input$countLevel != "" && !is.null(input$countScale)){cat("### Detailed repertoire level statistics")} -->
+<!--``` -->
+
+<!-- ```{r count features, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
+<!--    countfeatures <- countFeatures(x=dataFilt(), level = input$countLevel, scale = input$countScale, group = NULL) -->
+<!--    knitr::kable(head(countfeatures)) %>% -->
+<!--     kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--     kableExtra::row_spec(0, color="#022f5a", font_size = 12)       -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r show count features text entry,echo = FALSE} -->
+<!-- if(input$countLevel != "" && !is.null(input$countScale)){ -->
+<!--   tags$body(style="color: white;", -->
+<!--        p(style="color: white;", -->
+<!--   textInput("countfeaturesText", "Enter text", value=""))) -->
+<!-- } -->
+<!-- ``` -->
 
 
 
@@ -193,6 +222,18 @@ p.caption {
 
 
 
+<!-- ```{r rarefaction tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$plotRare)){ -->
+<!--    raretab <- rarefactionTab(x = dataFilt()) -->
+<!--    knitr::kable(head(raretab)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12) -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 
@@ -202,6 +243,18 @@ p.caption {
 
 
 
+<!-- ```{r div ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$divLevel != ""){ -->
+<!--    divind <- diversityIndices(x=dataFilt(), level = input$divLevel) -->
+<!--    knitr::kable(head(divind)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 
@@ -211,6 +264,21 @@ p.caption {
 
 
 
+<!-- ```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(input$renyiLevel != ""){ -->
+<!--    renind <- renyiIndex(x=dataFilt(), level = input$renyiLevel) -->
+<!--    knitr::kable(head(renind)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
+
+
+## Clonal distribution
 
 
 
@@ -220,22 +288,18 @@ p.caption {
 
 
 
+### Per decreasing rank
 
+<img src="figure/rank distrib exp-1.png" alt="plot of chunk rank distrib exp" style="display: block; margin: auto;" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="rankdistribexpText-label" for="rankdistribexpText">Enter text</label>
+<input id="rankdistribexpText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
@@ -279,21 +343,14 @@ p.caption {
 # Multi-sample analysis
 
 
-## Comparison of basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/stats-1.png" alt="plot of chunk stats" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="statsText-label" for="statsText">Enter text</label>
-<input id="statsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
 
 
 
@@ -348,6 +405,32 @@ p.caption {
 
 
 
+### Hierarchical clustering
+
+<img src="figure/disHM-1.png" alt="plot of chunk disHM" style="display: block; margin: auto;" />
+
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="disHMText-label" for="disHMText">Enter text</label>
+<input id="disHMText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
+
+
+### Multidimensional scaling
+
+<img src="figure/MDS-1.png" alt="plot of chunk MDS" style="display: block; margin: auto;" />
+
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="MDSText-label" for="MDSText">Enter text</label>
+<input id="MDSText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
@@ -359,6 +442,18 @@ p.caption {
 
 
 
+<!-- ```{r diffExpGroup, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$diffGroup) && !is.null(input$diffLevel)){ -->
+<!--     diffexp <- diffExpGroup(x = dataFilt(), colGrp = input$diffGroup[[1]], level = input$diffLevel, group = input$diffGroup) -->
+<!--     knitr::kable(head(diffexp)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12)  -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 
@@ -368,17 +463,19 @@ p.caption {
 
 
 
+<!-- ```{r spectratyping comparison table, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
+<!-- if(!is.null(input$PertGroupSelected) && !is.null(input$CtrlGroup) && !is.null(input$pertDist) && !is.null(input$pertOrder) && input$doHm == 1){ -->
+<!--     sampleinfo <- mData(dataFilt()) -->
+<!--     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)] -->
+<!--     pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2) -->
+<!--     knitr::kable(head(pertscore)) %>% -->
+<!--             kableExtra::kable_styling( -->
+<!--                     full_width = FALSE, -->
+<!--                     position = "center", -->
+<!--                     font_size = 10) %>% -->
+<!--             kableExtra::row_spec(0, color="#022f5a", font_size = 12) -->
+<!-- } -->
 
-
-
-
-
-
-
-
-
-
-
-
+<!-- ``` -->
 
 

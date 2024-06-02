@@ -6,16 +6,34 @@ shinyServer(function(input, output, session) {
     # render session information
     output$session <- renderPrint({ sessionInfo() })
     
+    #load example data
+    # data <- reactive({
+    #   url <- "https://github.com/vanessajmh/Shiny-AnalyzAIRR/tree/master/data/RepSeqData.rds"
+    #   readRDS(url)
+    # })
+    
     # upload aligned & annotated CSV data 
     output$canUpload <- reactive(
         return(!(is.null(input$chain) || input$source == ""))
     )
     #
+  
+    #
     outputOptions(output, "canUpload", suspendWhenHidden = FALSE) 
+    
+    # upload rds 
+    output$canUploadrds <- reactive(
+      return(input$userdata==TRUE) 
+    )
+    
+    outputOptions(output, "canUploadrds", suspendWhenHidden = FALSE) 
+    
+    #
     
     output$renderedReport <- renderUI({
         includeMarkdown(knitr::knit("markdown/report_template.Rmd"))         
     })
+    
     output$report <- downloadHandler(
         filename = function() {
             paste('report', sep = '.', switch(
@@ -50,38 +68,65 @@ shinyServer(function(input, output, session) {
                            doNorm = input$doNorm, 
                            NormLevel = input$NormLevel, 
                            plotStats = input$plotStats, 
+                           plotcolorgroup = input$plotcolorgroup,
+                           plotfacetgroup = input$plotfacetgroup,
                            countLevel = input$countLevel, 
                            countScale = input$countScale, 
                            plotRare = input$plotRare, 
                            divIndex = input$divIndex, 
                            divLevel = input$divLevel, 
+                           divcolor = input$divcolor,
+                           divfacet = input$divfacet,
                            renyiLevel = input$renyiLevel, 
+                           renyicolor = input$renyicolor, 
+                           renyifacet = input$renyifacet, 
                            countIntLevel = input$countIntLevel, 
+                           countIntGroupMeth = input$countIntGroupMeth,
+                           countIntfacet = input$countIntfacet,
                            rankDistribLevel = input$rankDistribLevel, 
                            rankDistribGroupMeth = input$rankDistribGroupMeth, 
+                           rankDistribSize = input$rankDistribSize, 
+                           rankDistribcolor = input$rankDistribcolor, 
+                           rankDistribfacet = input$rankDistribfacet, 
                            singleSample = input$singleSample, 
                            indLevel = input$indLevel, 
                            indgeneUsageLevel = input$indgeneUsageLevel, 
+                           indMeth = input$indMeth, 
                            singleScale = input$singleScale, 
                            VJLevel = input$VJLevel, 
                            VJProp = input$VJProp, 
+                           VJViz = input$VJViz, 
                            singleProp = input$singleProp, 
                            spectraProp = input$spectraProp, 
                            statisticsStat = input$statisticsStat,
                            statisticsGroup = input$statisticsGroup, 
+                           statisticsFacet = input$statisticsFacet, 
                            diverLevel = input$diverLevel, 
+                           diverfacet = input$diverfacet, 
                            diverGroup = input$diverGroup, 
+                           divshowstats = input$divshowstats, 
                            diverIndex = input$diverIndex, 
+                           statisticsshowstats = input$statisticsshowstats,
+                           diverLevel = input$diverLevel,
+                           diverGroup = input$diverGroup, 
+                           diverIndex = input$diverIndex,
                            multrenLevel = input$multrenLevel, 
                            multrenGroup = input$multrenGroup, 
+                           multrenfacet = input$multrenfacet, 
                            countIntervalsLevel = input$countIntervalsLevel, 
                            countIntervalsGroup = input$countIntervalsGroup,
+                           countIntervalsscale = input$countIntervalsscale, 
+                           countIntervalsFacet = input$countIntervalsFacet,
+                           countIntervalsshowstats = input$countIntervalsshowstats,
                            multRankLevel = input$multRankLevel, 
                            multRankScale = input$multRankScale, 
                            multRankGroup = input$multRankGroup, 
+                           multRankFacet = input$multRankFacet, 
                            geneUsageLevel = input$geneUsageLevel, 
                            geneUsageScale = input$geneUsageScale, 
                            geneUsageGroup = input$geneUsageGroup,
+                           geneUsagefacet = input$geneUsagefacet,
+                           geneUsageshowstats = input$geneUsageshowstats,
                            vennLevel = input$vennLevel, 
                            vennSamples = input$vennSamples, 
                            scatterUISample = input$scatterUISample, 
@@ -159,12 +204,16 @@ shinyServer(function(input, output, session) {
     )
     
     # load RDS 
-    RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile), {
+    RepSeqDT <- eventReactive(c(input$samplefiles, input$RDSfile, input$putInfofile, input$sInfofile, input$loadExample), {
         validate(need(!(is.null(input$sInfofile) && input$putInfofile == "Yes") || 
                           (is.null(input$sInfofile) && input$putInfofile == "No") ||
-                          !(is.null(input$RDSfile)), ""))
+                        !is.null(input$RDSfile) && input$loadExample==FALSE ||
+                        is.null(input$RDSfile) && input$loadExample==TRUE , ""))
+                     
         if (!is.null(input$RDSfile)) {
         RepSeqDT <- readRDS(input$RDSfile$datapath)
+        } else if( input$loadExample== TRUE){
+          RepSeqDT<-  readRDS("data/RepSeqData.rds")
         } else if(input$source != "Other"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
@@ -209,7 +258,6 @@ shinyServer(function(input, output, session) {
                                             raretab = FALSE,
                                             cores = 1L)
           file.remove(inFiles)
-        
           
         }
         return(RepSeqDT)
@@ -262,15 +310,51 @@ source("tabs/server_exploratorystats.R", local = TRUE)
 #  download RDS section
 #-------------------------------------------------------------------------------------------------------------------------------------------#    
     # sample info render
-    output$singleInfoDT <- renderDataTable(mData(dataFilt())[input$singleSample,], options=list(scrollX=TRUE))
+    output$singleInfoDT <- renderReactable({
+     meta<- mData(dataFilt())[input$singleSample,]
+     rownames(meta) <- NULL
+      reactable( meta,  columns = list( 
+                            sample_id =colDef(
+                            sticky = "left",
+                            maxWidth = 120,
+                            # Add a right border style to visually distinguish the sticky column
+                            style = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"),
+                            headerStyle = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"))),
+                 # showSortable = TRUE,
+                 # showPageSizeOptions = TRUE,
+                 # pageSizeOptions = c(5,10),
+                 # defaultPageSize = 5,
+                 pagination = FALSE,
+                 bordered = TRUE
+                 
+      ) 
+      })
     # count assay render 
-    output$singleAssayDT <- renderDataTable(assay(dataFilt())[sample_id == input$singleSample], options=list(scrollX=TRUE))
+    output$singleAssayDT <- renderReactable({
+      ass<-assay(dataFilt())[sample_id == input$singleSample]
+      reactable( ass, 
+                 filterable = TRUE,
+                 bordered = TRUE, 
+                columns = list( sample_id =colDef(
+                sticky = "left",
+                maxWidth = 120,
+                # Add a right border style to visually distinguish the sticky column
+                style = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"),
+                headerStyle = list(borderRight = "1px solid #eee", backgroundColor = "#f7f7f7"))),
+                showSortable = TRUE,
+                showPageSizeOptions = TRUE,
+                pageSizeOptions = c(5,10, 15),
+                defaultPageSize = 5,
+
+      ) 
+    })
     # 
     observeEvent(input$showsampleInfo,
         showModal(modalDialog(
-            title = paste(input$singleSample," info"),
-            dataTableOutput("singleInfoDT"),
-            dataTableOutput("singleAssayDT"),
+          htmltools::div(htmltools::h2("MetaData"), 
+          reactableOutput("singleInfoDT")),
+          htmltools::div(htmltools::h2("AssayData"), 
+                         reactableOutput("singleAssayDT")),
             size = "l",
             easyClose = T
         ))
@@ -281,6 +365,17 @@ source("tabs/server_exploratorystats.R", local = TRUE)
         session$reload()
         return()
     })
+    
+    #load example data
+    # observeEvent(input$loadExample, {
+    #   reactive({
+    #     url <- "https://github.com/vanessajmh/Shiny-AnalyzAIRR/tree/master/data/RepSeqData.rds"
+    #     readRDS(url)
+    #   })
+    #  # showNotification(paste("Message", "Data Has been loaded"), duration = NULL)
+    #   
+    # })
+    
 }) 
 
 

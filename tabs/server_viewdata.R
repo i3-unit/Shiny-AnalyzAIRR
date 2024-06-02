@@ -67,7 +67,7 @@ observeEvent(input$dataextractionHelp,
              showModal(modalDialog(
                  title = paste("Help"),
                  htmlOutput("dataExtractionHelp"),
-                 size = "l",
+                 size = "s",
                  easyClose = T
              ))
 )
@@ -84,7 +84,7 @@ output$filterCountGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("filterCountGroup",
-                   "Select a group and a subgroup (optional)",  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"), 
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -129,7 +129,7 @@ observeEvent(input$filtercountHelp,
              showModal(modalDialog(
                  title = paste("Help"),
                  htmlOutput("FilterCountHelp"),
-                 size = "l",
+                 size = "s",
                  easyClose = T
              ))
 )
@@ -145,7 +145,7 @@ output$publicGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("publicGroup",
-                   "Select a group and a subgroup (optional)",  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -312,7 +312,7 @@ output$topSeqGroup <- renderUI({
         choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
     }
     selectizeInput("topSeqGroup",
-                   "Select a group and a subgroup (optional)",  
+                   HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"),
                    choices = choices,
                    selected = NULL,
                    options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -324,7 +324,12 @@ dataTopSeq <- eventReactive(input$doTopSeq,{
     validate(need(!(is.null(input$topSeqProp) || input$topSeqProp == ""), "select a prop"))
     # validate(need(!(is.null(input$topSeqGroup) || input$topSeqGroup == ""), "select a group and a subgroup")) 
     # validate(need(length(input$topSeqGroup)==2, "Need at least one group and one subgroup")) 
-    topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = input$topSeqGroup, prop = input$topSeqProp)
+    if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
+      topSeqGroup <- input$topSeqGroup
+    } else {
+      topSeqGroup <- NULL
+    }
+    topseqdata <- getTopSequences(x=RepSeqDT(), level = input$topSeqLevel, group = topSeqGroup, prop = input$topSeqProp)
     return(topseqdata)
 })
 
@@ -370,7 +375,7 @@ output$filterSeqGroup <- renderUI({
     choices[[names(idx)[i]]] <- c(names(idx)[i], as.character(idx[[i]]))
   }
   selectizeInput("filterSeqGroup",
-                 "Select a group and a subgroup",  
+                 HTML("Select a group and a subgroup <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(optional)</span>"), 
                  choices = choices,
                  selected = NULL,
                  options = list(maxItems = 2, minItems = 2, onInitialize = I('function() { this.setValue(""); }')),
@@ -379,7 +384,8 @@ output$filterSeqGroup <- renderUI({
 
 dataFilterSeq <- eventReactive(input$doFilterSeq, {
   validate(need(!(is.null(input$filterSeqLevel) || input$filterSeqLevel == ""), "select a level"))
-  validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "enter a sequence")) 
+  validate(need(!(is.null(input$filterSeqName) || input$filterSeqName == ""), "select a sequence")) 
+
   if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
     filterSeqGroup <- input$filterSeqGroup
   } else {
@@ -423,7 +429,7 @@ observeEvent(input$filterseqHelp,
 
 
 downSampling <- reactive({
-    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
+    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform down-sampling?"))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "Replacement"))
 
@@ -504,17 +510,17 @@ output$Plothistdownlibsizes <- downloadHandler(
         pdf(file, height=3.5, width=7)
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Orignial data")+
+            ggplot2::ggtitle("Orignial data")+
             theme_RepSeq()+
-            theme( axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme( axis.title.x = ggplot2::element_text(size=15),
                    axis.title.y = ggplot2::element_text(size=15),
                    axis.text.x = ggplot2::element_text(size=15),
                    axis.text.y = ggplot2::element_text(size=15))
         cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Downsampled data") +
+          ggplot2::ggtitle("Downsampled data") +
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))

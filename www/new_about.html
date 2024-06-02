@@ -1,5 +1,10 @@
+<div id="badge" class="section level2">
+<p><a href="https://docs.airr-community.org/en/stable/swtools/airr_swtools_standard.html">
+<img role="img" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkFJUlItQyBzdy10b29scyB2MTogY29tcGxpYW50Ij48dGl0bGU+QUlSUi1DIHN3LXRvb2xzIHYxOiBjb21wbGlhbnQ8L3RpdGxlPjxsaW5lYXJHcmFkaWVudCBpZD0icyIgeDI9IjAiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iLjciLz48c3RvcCBvZmZzZXQ9Ii4xIiBzdG9wLWNvbG9yPSIjYWFhIiBzdG9wLW9wYWNpdHk9Ii4xIi8+PHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iIzAwMCIgc3RvcC1vcGFjaXR5PSIuMyIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwMCIgc3RvcC1vcGFjaXR5PSIuNSIvPjwvbGluZWFyR3JhZGllbnQ+PGNsaXBQYXRoIGlkPSJyIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4IiByeD0iNCIgZmlsbD0iI2ZmZiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3IpIj48cmVjdCB3aWR0aD0iMTE3IiBoZWlnaHQ9IjE4IiBmaWxsPSIjMDAwMDAwIi8+PHJlY3QgeD0iMTE3IiB3aWR0aD0iNjMiIGhlaWdodD0iMTgiIGZpbGw9IiMwMDhhZmYiLz48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4IiBmaWxsPSJ1cmwoI3MpIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjExMCI+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjU5NSIgeT0iMTQwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iMTA3MCI+QUlSUi1DIHN3LXRvb2xzIHYxPC90ZXh0Pjx0ZXh0IHg9IjU5NSIgeT0iMTMwIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgZmlsbD0iI2ZmZiIgdGV4dExlbmd0aD0iMTA3MCI+QUlSUi1DIHN3LXRvb2xzIHYxPC90ZXh0Pjx0ZXh0IGFyaWEtaGlkZGVuPSJ0cnVlIiB4PSIxNDc1IiB5PSIxNDAiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB0ZXh0TGVuZ3RoPSI1MzAiPmNvbXBsaWFudDwvdGV4dD48dGV4dCB4PSIxNDc1IiB5PSIxMzAiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiBmaWxsPSIjZmZmIiB0ZXh0TGVuZ3RoPSI1MzAiPmNvbXBsaWFudDwvdGV4dD48L2c+PC9zdmc+">
+</a></p>
+</div>
 <div id="about" class="section level2">
-<p><strong>Shiny AnalyzAIRR</strong> is a MiAIRR compliant web application for the analysis of bulk Ig/TCR repertoire datasets.</p>
+<p><strong>Shiny AnalyzAIRR</strong> is the R shiny version of the AnalyzAIRR package developed for the analysis of bulk Ig/TCR repertoire datasets.</p>
 <ul>
 <li>It proposes an analytical routine starting with data exploration, leading to in-depth statistical comparisons with the aim of answering defined biological questions.</li>
 <li>It allows the calculation of a set of diversity measures and statistical metrics applicable at any level of granularity.</li>
@@ -20,10 +25,10 @@
 <li><strong>Other</strong>: Alignment files should contain the following required column names: </li>
 <ul>
 <li><strong>sample_id</strong>: Sample names</li>
-<li><strong>CDR3nt</strong>: CDR3 nucleotide sequence</li>
-<li><strong>CDR3aa</strong>: CDR3 amino acid sequence</li>
 <li><strong>V</strong>: Variable gene name (IMGT nomenclature)</li>
 <li><strong>J</strong>: Joining gene name (IMGT nomenclature)</li>
+<li><strong>ntCDR3</strong>: Nucleotide CDR3 sequence</li>
+<li><strong>aaCDR3</strong>: Amino acid CDR3 sequence</li>
 <li><strong>count</strong>: the occurrence of each sequence within the sample</li>
 </ul>
 <strong>Note</strong>: The order of the columns must be respected. Input files can contain additional columns that will not be taken into account during the loading process.
@@ -41,15 +46,18 @@ It is possible to provide a metadata if users wish to perform inter-group compar
 <p><strong>5. Download the RepSeqExperiment object</strong></p>
 Once files are successfully downloaded, a <strong>RepSeqExperiment</strong> object is built which can downloaded in a rds format for subsequent usage.
 
-<p> <strong> Note </strong>: If multiple filters are applied on the <strong>RepSeqExperiment</strong> object, only the last applied filter will be taken into account. In order to perform multiple filtering, the object must be downloaded in a rds format and re-uploaded into the interface.</p>
+<p> <strong> Note </strong>: If multiple filters are applied on the <strong>RepSeqExperiment</strong> object, only the last applied filter will be taken into account. 
+<br>
+In order to perform multiple filtering, the object must be downloaded in a rds format and re-uploaded into the interface.
 
 <p>Finally, you can visualize and download the complete analysis report in the <strong>Report session</strong> section.</p>
 
 <p>A description of all the proposed analyses can be obtained by clicking on the question mark located at the top right of each panel. For more details, visit the following links:</p>
 <ul>
-<li><a href="https://github.com/vanessajmh/AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/AnalyzAIRR</a></li>
-<li><a href="https://vanessajmh.github.io/AnalyzAIRR.github.io" style="color: #3C8DBC">https://vanessajmh.github.io/AnalyzAIRR.github.io</a></li>
-<li><a href="https://github.com/vanessajmh/Shiny-AnalyzAIRR" style="color: #3C8DBC">https://github.com/vanessajmh/Shiny-AnalyzAIRR</a></li>
+<li><a href="https://github.com/vanessajmh/Shiny-AnalyzAIRR" style="color: #3C8DBC">Shiny AnalyzAIRR installation</a></li>
+<li><a href="https://github.com/i3-unit/AnalyzAIRR" style="color: #3C8DBC">The AnalyzAIRR R package</a></li>
+<li><a href="https://vanessajmh.github.io/AnalyzAIRR.github.io" style="color: #3C8DBC"> Full package documentation</a></li>
+
   
 </ul>
 
@@ -57,14 +65,24 @@ Once files are successfully downloaded, a <strong>RepSeqExperiment</strong> obje
 
 
 <style type="text/css">
+body, h1, h2, h3, h4, h5, h6{
+  font-family: Arial, sans-serif; /* replace with your desired font */
+}
+
+body{
+  font-size: 15px;
+}
+
 .main-container {
   max-width: 1800px;
   margin-left: auto;
   margin-right: auto;
 }
+}
 
 h1 {
   color: #033c73;
+  size: 
 }
 h1.title {
   color: #033c73;

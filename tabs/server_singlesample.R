@@ -6,7 +6,8 @@
 output$IndCountIntervals <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$indLevel) ||  input$indLevel == ""), "Select a level"))
-    plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel)
+    validate(need(!(is.null(input$indMeth) || input$indMeth == ""), "select a statistics scale"))
+    plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel, fractions=input$indMeth)
 })
 
 output$downPlotIndCountIntervals <- renderUI({
@@ -22,13 +23,13 @@ output$PlotIndCountIntervals <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=4, width=6)
-        grid.draw(plotIndCountIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
+        grid.draw(plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indLevel))
         dev.off()
     }
 )
 
 output$IndCountIntHelp <- renderText({
-    createHelp(?plotIndCountIntervals)
+    createHelp(?plotIndIntervals)
 })
 
 observeEvent(input$indcountintHelp,
@@ -143,6 +144,7 @@ output$downSpectra <- renderUI({
     }
 }) 
 # plot overlay spectratype 
+observeEvent(input$doSpectra, {
 output$spectraPlot <- plotly::renderPlotly({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
@@ -150,6 +152,8 @@ output$spectraPlot <- plotly::renderPlotly({
     plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$singleProp)+
                        ggplot2::theme(legend.position = "none"))
 })
+})
+
 # download button for individual spectratype
 output$Spectra <- downloadHandler(
     filename =  function() {
@@ -185,6 +189,7 @@ output$downSpectrabis <- renderUI({
     }
 }) 
 # render plot individual spectratype
+observeEvent(input$doSpectrabis, {
 output$spectraPlotbis <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
@@ -195,10 +200,9 @@ output$spectraPlotbis <- renderPlot({
             if (is.null(input$singleSample) || input$singleSample == "") return(600)
             else { 
                 nrowsGrid <- ceiling(length(AnalyzAIRR::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
-                return(150 * nrowsGrid)
-            }
-        }
-)
+                return(150 * nrowsGrid) }
+        })
+})
 # download button for individual spectratype
 output$Spectrabis <- downloadHandler(
     filename =  function() {
