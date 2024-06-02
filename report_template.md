@@ -278,6 +278,7 @@ p.caption {
 <!-- ``` -->
 
 
+## Clonal distribution
 
 
 
@@ -287,8 +288,18 @@ p.caption {
 
 
 
+### Per decreasing rank
 
+<img src="figure/rank distrib exp-1.png" alt="plot of chunk rank distrib exp" style="display: block; margin: auto;" />
 
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="rankdistribexpText-label" for="rankdistribexpText">Enter text</label>
+<input id="rankdistribexpText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
@@ -329,6 +340,7 @@ p.caption {
 
 
 
+# Multi-sample analysis
 
 
 
@@ -376,6 +388,7 @@ p.caption {
 
 
 
+## Similarity analysis
 
 
 
@@ -392,24 +405,32 @@ p.caption {
 
 
 
+### Hierarchical clustering
 
+<img src="figure/disHM-1.png" alt="plot of chunk disHM" style="display: block; margin: auto;" />
 
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="disHMText-label" for="disHMText">Enter text</label>
+<input id="disHMText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
+### Multidimensional scaling
 
+<img src="figure/MDS-1.png" alt="plot of chunk MDS" style="display: block; margin: auto;" />
 
-
-
-
-
-
-
-
-
-
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="MDSText-label" for="MDSText">Enter text</label>
+<input id="MDSText" type="text" class="form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
