@@ -217,9 +217,10 @@ shinyServer(function(input, output, session) {
         } else if(input$source != "Other"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
-              sInfo <- read.table(input$sInfofile$datapath, 
-                         header=T,
-                         row.names = 1)
+              sInfo <- readr::read_delim(input$sInfofile$datapath)
+              sInfo <- sInfo %>% 
+                        tibble::column_to_rownames("sample_id") %>%
+                         dplyr::mutate_if(., is.character, as.factor)
             }
             tempFile <- input$samplefiles$datapath
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)

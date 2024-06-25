@@ -1,3 +1,5 @@
+[![](https://img.shields.io/static/v1?label=AIRR-C%20sw-tools%20v1&message=compliant&color=008AFF&labelColor=000000&style=plastic)](https://docs.airr-community.org/en/stable/swtools/airr_swtools_standard.html)
+
 # Shiny-AnalyzAIRR
 
 **Shiny-AnalyzAIRR** is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/vanessajmh/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
@@ -40,6 +42,7 @@ shiny::runApp("./")
 ```
 The interface can be opened in a web browser using the displayed hyper link address.
 
+
 # Data loading
 
 **Shiny-AnalyzAIRR** proposes two different data loading processes.
@@ -51,3 +54,10 @@ A **RepSeqExperiment** object generated using the **AnalyzAIRR** R package and s
 **2. Upload alignment files in AnalyzAIRR-compliant formats**
 
 More details on how to prepare the input data can be found [here](https://vanessajmh.github.io/AnalyzAIRR.github.io/)
+
+<br>
+
+<video width="920" height="520" controls>
+  <source src="/Users/vanessamhanna/Github/Shiny-AnalyzAIRR/video.mp4" type="video/mp4">
+</video>
+
