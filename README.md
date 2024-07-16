@@ -1,11 +1,11 @@
-[![](https://img.shields.io/static/v1?label=AIRR-C%20sw-tools%20v1&message=compliant&color=008AFF&labelColor=000000&style=plastic)](https://docs.airr-community.org/en/stable/swtools/airr_swtools_standard.html)
+[![](https://img.shields.io/static/v1?label=AIRR-C%20sw-tools%20v1&message=compliant&color=008AFF&labelColor=000000&style=plastic)]()
 
 # Shiny-AnalyzAIRR
 
 **Shiny-AnalyzAIRR** is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/vanessajmh/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
 
 **Shiny-AnalyzAIRR** can be download from the Github repository and run locally on any device.
-Alternatively, it was deployed on the Web and can thus be directly used at this [link](https://analyzairr.shinyapps.io/shiny-analyzairr/).
+Alternatively, it was deployed on the Web and can thus be directly used at this [link](https://i3lab.shinyapps.io/shiny-analyzairr/).
 
 
 # Package installation
@@ -56,7 +56,6 @@ A **RepSeqExperiment** object generated using the **AnalyzAIRR** R package and s
 More details on how to prepare the input data can be found [here](https://vanessajmh.github.io/AnalyzAIRR.github.io/)
 
 <br>
-
 <video width="920" height="520" controls>
   <source src="/Users/vanessamhanna/Github/Shiny-AnalyzAIRR/video.mp4" type="video/mp4">
 </video>

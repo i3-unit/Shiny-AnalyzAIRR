@@ -476,17 +476,17 @@ observeEvent(c(input$doDown, input$DownLevel), {
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Orignial data")+
+            ggplot2::ggtitle("Orignial data")+
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
         cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggtitle("Downsampled data") +
+            ggplot2::ggtitle("Downsampled data") +
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
@@ -510,8 +510,8 @@ output$Plothistdownlibsizes <- downloadHandler(
         pdf(file, height=3.5, width=7)
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
-            ggplot2::ggtitle("Orignial data")+
-            theme_RepSeq()+
+          ggplot2::ggtitle("Orignial data")+
+          theme_RepSeq()+
           ggplot2::theme( axis.title.x = ggplot2::element_text(size=15),
                    axis.title.y = ggplot2::element_text(size=15),
                    axis.text.x = ggplot2::element_text(size=15),
@@ -519,7 +519,7 @@ output$Plothistdownlibsizes <- downloadHandler(
         cts2 <- AnalyzAIRR::assay(downSampling())
         p2 <- histSums(cts2[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
           ggplot2::ggtitle("Downsampled data") +
-            theme_RepSeq()+
+          theme_RepSeq()+
           ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
@@ -574,17 +574,17 @@ observeEvent(c(input$doNorm, input$NormLevel), {
         validate(need(!(is.null(input$NormLevel) || input$NormLevel == ""), "select a level"))
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
-            ggtitle("Orignial data")+
+            ggplot2::ggtitle("Orignial data")+
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+            ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
         cts2 <- AnalyzAIRR::assay(shannonNormed())
         p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
-            ggtitle("Shannon normalized data") +
+            ggplot2::ggtitle("Shannon normalized data") +
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+            ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
@@ -608,17 +608,17 @@ output$Plothistshannonlibsizes <- downloadHandler(
         pdf(file, height=3.5, width=7)
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
-            ggtitle("Orignial data")+
+            ggplot2::ggtitle("Orignial data")+
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
         cts2 <- AnalyzAIRR::assay(shannonNormed())
         p2 <- histSums(cts2[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
-            ggtitle("Shannon normalized data") +
+            ggplot2::ggtitle("Shannon normalized data") +
             theme_RepSeq()+
-            theme(axis.title.x = ggplot2::element_text(size=15),
+          ggplot2::theme(axis.title.x = ggplot2::element_text(size=15),
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))

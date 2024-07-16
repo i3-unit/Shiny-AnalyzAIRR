@@ -373,7 +373,7 @@ output$vennUISample <- renderUI({
 observeEvent(input$doVenn, {
   output$plotEulerr <- renderPlot({
     validate(need(!(is.null(input$vennLevel) || input$vennLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$vennSamples) || input$vennSamples ==""), "Select samples"))
+    validate(need(all(sapply(input$vennSamples, function(x) !is.null(x) && x != "")), "Select samples"))
     validate(need(length(input$vennSamples)>1, "Select a second sample"))
     plotVenn(x = dataFilt(), level = input$vennLevel, sampleNames = input$vennSamples)
   })
@@ -424,7 +424,7 @@ output$scatterUISample <- renderUI({
 output$Scatter <- plotly::renderPlotly({
   validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "Select a level"))
   validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "Select a scale"))
-  validate(need(!(is.null(input$scatterUISample) || input$scatterUISample ==""), "Select samples"))
+  validate(need(all(sapply(input$scatterUISample, function(x) !is.null(x) && x != "")), "Select samples"))
   validate(need(length(input$scatterUISample)>1, "Select a second sample"))
   plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
 })
@@ -622,7 +622,7 @@ output$Volcano <- plotly::renderPlotly({
   validate(need(!(is.null(input$diffLevel) || input$diffLevel == ""), "Select a level"))
   validate(need(!(is.null(input$diffFC) || input$diffFC == ""), "Select a fold-change threshold")) 
   validate(need(!(is.null(input$diffPV) || input$diffPV == ""), "Select a pvalue threshold")) 
-  validate(need(!(is.null(input$diffGroup) || input$diffGroup == ""), "Select a group and subgroups")) 
+  validate(need(all(sapply(input$diffGroup, function(x) !is.null(x) && x != "")), "Select a group and subgroups"))
   validate(need(length(input$diffGroup)>=3, "Need at least one group and 2 subgroups"))
   plotly::ggplotly(plotDiffExp(x = dataFilt(), level = input$diffLevel, group =  input$diffGroup, FC.TH = input$diffFC, PV.TH = input$diffPV, top = 0))
 })
