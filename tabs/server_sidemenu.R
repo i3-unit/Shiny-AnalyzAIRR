@@ -29,7 +29,7 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                startExpanded = TRUE,
                menuSubItem("Basic statistics",
                            tabName = "showBasicTab", icon = icon("angle-double-right", verify_fa = FALSE)),
-               menuSubItem("Diversity estimation",
+               menuSubItem("Repertoire Diversity",
                            tabName = "showDivTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                menuSubItem("Clonal distribution",
                            tabName = "showClonalTab", icon = icon("angle-double-right", verify_fa = FALSE))
@@ -40,13 +40,13 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
     output$singleSampleTab <- renderMenu({
         convertMenuItem(
             menuItem(tabName = "singleSampleTab",
-                text = "One-sample analysis",
+                text = "Single sample analysis",
                 icon = icon("user", verify_fa = FALSE),
-                selectSample("singleSample", rownames(AnalyzAIRR::mData(dataFilt()))),
-                radioButtons("singleScale", "Choose a scale",
-                    choices = c("count", "frequency"), 
-                    selected = character(0),
-                    inline = T)
+                selectSample("singleSample", rownames(AnalyzAIRR::mData(dataFilt())))
+                # radioButtons("singleScale", "Choose a scale",
+                #     choices = c("count", "frequency"), 
+                #     selected = character(0),
+                #     inline = T)
             ), "singleSampleTab")
     })
     # render multiple samples comparison menu

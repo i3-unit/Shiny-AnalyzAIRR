@@ -411,29 +411,89 @@ observeEvent(input$eulerHelp,
              ))
 )
 
+### scatter
 
 output$scatterUISample <- renderUI({
   choices <- rownames(mData(dataFilt()))
   selectizeInput("scatterUISample",
-                 HTML("Select samples <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(2 maximum)</span>"),
+                 HTML("Select samples <span style='font-weight: normal;  font-size: 13px; font-style: italic;'>(10 maximum)</span>"),
                  choices = choices,
-                 options = list(maxItems = 2, onInitialize = I('function() { this.setValue(""); }')),
+                 options = list(maxItems = 10, onInitialize = I('function() { this.setValue(""); }')),
                  multiple = T)
 })
 
-output$Scatter <- plotly::renderPlotly({
+observeEvent(input$doScatter, {
   validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "Select a level"))
   validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "Select a scale"))
-  validate(need(all(sapply(input$scatterUISample, function(x) !is.null(x) && x != "")), "Select samples"))
-  validate(need(length(input$scatterUISample)>1, "Select a second sample"))
-  plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
+  validate(need(length(input$scatterUISample) > 0, "Select samples"))
+  
+  # print(paste("Number of samples selected:", length(input$scatterUISample)))
+  # print(paste("Selected samples:", paste(input$scatterUISample, collapse = ", ")))
+  # shiny::showNotification(paste("Number of samples selected:", length(input$scatterUISample)), type = "message")
+  # shiny::showNotification(paste("Selected samples:", paste(input$scatterUISample, collapse = ", ")), type = "message")
+  # 
+  output$dynamicPlotOutput <- renderUI({
+    if (length(input$scatterUISample) == 2) {
+      tagList(
+        uiOutput("downPlotScatter"),
+        plotly::plotlyOutput("Scatterly"),
+        busyIndicator(wait = 500)
+      )
+    } else if (length(input$scatterUISample) > 2) {
+      tagList(
+        uiOutput("downPlotScatter"),
+        plotOutput("Scatter"),
+        busyIndicator(wait = 500)
+      )
+    }
+  })
+  if (length(input$scatterUISample) == 2) {
+    # print("Rendering plotly plot")
+    # shiny::showNotification("Rendering plotly plot", type = "message")
+    output$Scatterly <- plotly::renderPlotly({
+      plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale, shiny=TRUE)) 
+    })
+    output$Scatter <- renderPlot({ NULL })  # Ensure static plot is not rendered
+  } else if (length(input$scatterUISample) > 2) {
+    # print("Rendering static plot")
+    # shiny::showNotification("Rendering static plot", type = "message")
+    output$Scatter <- renderPlot({
+      plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
+    })
+    output$Scatterly <- plotly::renderPlotly({ NULL })  # Ensure plotly plot is not rendered
+  }
 })
 
+# output$Scatter <- plotly::renderPlotly({
+# observeEvent(input$doScatter, {
+# output$Scatter <- renderPlot({
+#   validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "Select a level"))
+#   validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "Select a scale"))
+#   validate(need(all(sapply(input$scatterUISample, function(x) !is.null(x) && x != "")), "Select samples"))
+#   # validate(need(length(input$scatterUISample)>1, "Select a second sample"))
+#     # plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
+#     plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale)
+# })
+#})
+              
+# observeEvent(input$doScatter, {
+#   output$Scatterly <- plotly::renderPlotly({
+#     validate(need(!(is.null(input$scatterLevel) || input$scatterLevel == ""), "Select a level"))
+#     validate(need(!(is.null(input$scatterScale) || input$scatterScale == ""), "Select a scale"))
+#     validate(need(all(sapply(input$scatterUISample, function(x) !is.null(x) && x != "")), "Select samples"))
+#     # validate(need(length(input$scatterUISample)>1, "Select a second sample"))
+#     # plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
+#    
+#       plotly::ggplotly(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
+#   })
+# })
+
 output$downPlotScatter <- renderUI({
-  if (!is.null(input$scatterUISample) & !(is.null(input$scatterLevel)) & !(is.null(input$scatterScale))) {
+  if (!is.null(input$scatterUISample) & !(is.null(input$scatterLevel)) & !(is.null(input$scatterScale)) & input$doScatter >0) {
     downloadButton("PlotScatter", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
+
 
 output$PlotScatter <- downloadHandler(
   filename =  function() {
@@ -441,7 +501,7 @@ output$PlotScatter <- downloadHandler(
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
-    pdf(file, height=4, width=6)
+    pdf(file)
     grid.draw(plotScatter(x = dataFilt(), sampleNames = input$scatterUISample, level = input$scatterLevel, scale = input$scatterScale))
     dev.off()
   }
