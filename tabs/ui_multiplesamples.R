@@ -59,7 +59,7 @@ CompBasicTab<-
                                                 column(width = 2, style="margin-top: -22px; font-size:14px",
                                                        selectizeInput("diverIndex",
                                                                       "Select an index",
-                                                                      choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker","gini", "iChao"),
+                                                                      choices = list( "shannon", "simpson", "invsimpson", "bergerparker","gini"),
                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                 ),
                                                 column(width = 2, style="margin-top: -22px; font-size:14px",
@@ -332,23 +332,43 @@ SimTab<-
                                     column(width = 2, style="margin-top: -22px; font-size:14px",
                                            selectizeInput("scatterScale",
                                                           "Select a scale",
-                                                          choices = list("frequency", "log"),
+                                                          choices = list("frequency", "count"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
                                     column(width = 3, style="margin-top: -22px; font-size:14px",
                                            uiOutput("scatterUISample")
-                                    )
-                                    # column(width = 4, style="margin-top: -22px;",
-                                    #        div(style="position: absolute; top: 0; right: 0;",
-                                    #            circleButton(inputId = "scatterHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-                                    #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
-                                    # )
-                                    
                                 ),
-                                uiOutput("downPlotScatter"),
-                                plotly::plotlyOutput("Scatter"),
-                                busyIndicator(wait = 500)
+                                column(width = 2,
+                                       style = "margin-top: 2px;",
+                                       tags$head(
+                                         tags$style(HTML('#doScatter{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
+                                       ),
+                                       actionButton("doScatter", "Run")
+                                )
+                                ),
+                                # 
+                                # conditionalPanel( #condition ="output.plotly",
+                                # 
+                                #                 condition = "input.scatterUISample && input.scatterUISample.length > 2",
+                                #                 uiOutput("downPlotScatter"),
+                                #                 plotly::plotlyOutput("Scatterly"),
+                                #                 busyIndicator(wait = 500)
+                                # ),
+                                # conditionalPanel( #condition ="output.plotly",
+                                # condition = "input.scatterUISample && input.scatterUISample.length == 2",
+                                #   uiOutput("downPlotScatter"),
+                                #  plotOutput("Scatter"),
+                                #   busyIndicator(wait = 500)
+                                # )
+                                
+                                #   plotly::plotlyOutput("Scatter")
+                                # plotOutput("Scatter") ,
+                                #  uiOutput("downPlotScatter"),
+                                # busyIndicator(wait = 500)
+                                uiOutput("dynamicPlotOutput")
+                                
+                    
                        ),
                        navbarMenu("Dissimilarity indices",
                             tabPanel("Hierarchical clustering",

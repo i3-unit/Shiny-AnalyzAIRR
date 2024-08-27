@@ -128,6 +128,7 @@ params:
   repseqdt: null
   downText: null
   shannonText: null
+  shannonNormed: null
   metadatastatsText: null
   countfeaturesText: null
   rarefactionText: null
@@ -407,7 +408,7 @@ if(!is.null(params$DownLevel) && params$doDown == TRUE){
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- AnalyzAIRR::assay(downSampling())
+        cts2 <- AnalyzAIRR::assay(params$dataFiltered)
         p2 <- histSums(cts2[, sum(count), by=eval(params$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", params$DownLevel)) +
             ggplot2::ggtitle("Downsampled data") +
             theme_RepSeq()+
@@ -453,7 +454,7 @@ if(!is.null(params$NormLevel) && params$doNorm == TRUE){
                   axis.title.y = ggplot2::element_text(size=15),
                   axis.text.x = ggplot2::element_text(size=15),
                   axis.text.y = ggplot2::element_text(size=15))
-        cts2 <- AnalyzAIRR::assay(shannonNormed())
+        cts2 <- AnalyzAIRR::assay(params$dataFiltered)
         p2 <- histSums(cts2[, sum(count), by=eval(params$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", params$NormLevel)) +
             ggplot2::ggtitle("Shannon normalized data") +
             theme_RepSeq()+
@@ -733,9 +734,9 @@ if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$sing
 ```{r VJGeneUsage, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$singleSample) && params$VJLevel != "" && !is.null(params$singleScale) && !is.null(params$VJProp)){
       if(params$VJViz == "Heatmap"){
-        plotVJusage(x = dataFilt(), sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Heatmap")
+        plotVJusage(x = params$dataFiltered, sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Heatmap")
     } else {
-        plotVJusage(x = dataFilt(), sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Circos")    
+        plotVJusage(x = params$dataFiltered, sampleName = params$singleSample, scale = params$singleScale, level = params$VJLevel, prop = params$VJProp, plot = "Circos")    
     }
 }
       

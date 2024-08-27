@@ -82,7 +82,7 @@ selectSample <- function(ID, sampleNames) {
 selectColorGroup <- function(ID, y) {
   #x RepSeqExperiment object
   #id string
-  colorgroup<- colnames(mData(y) %>% dplyr::select(-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  colorgroup<- colnames(mData(y) %>% dplyr::select(-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone, -chao1, -iChao))
   selectizeInput(ID,
                  label = "Select a group for colors",
                  choices = colorgroup,
@@ -93,7 +93,7 @@ selectColorGroup <- function(ID, y) {
 selectColorGroupmulti <- function(ID, y) {
   #x RepSeqExperiment object
   #id string
-  colorgroup<- colnames(mData(y) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  colorgroup<- colnames(mData(y) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone, -chao1, -iChao))
   selectizeInput(ID,
                  label = "Select a group for colors",
                  choices = colorgroup,
@@ -104,7 +104,7 @@ selectColorGroupmulti <- function(ID, y) {
 selectShapeGroup <- function(ID, z) {
   #x RepSeqExperiment object
   #id string
-  shapegroup<- colnames(mData(z) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  shapegroup<- colnames(mData(z) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone, -chao1, -iChao))
   selectizeInput(ID,
                  label = "Select a group for shapes",
                  choices = shapegroup, 
@@ -115,7 +115,7 @@ selectShapeGroup <- function(ID, z) {
 selectFacetGroup <- function(ID, t) {
   #t RepSeqExperiment object
   #id string
-  facetgroup<- colnames(mData(t) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone))
+  facetgroup<- colnames(mData(t) %>% dplyr::select(-sample_id,-nSequences,-ntCDR3,-aaCDR3, -V,-J,-VJ,-aaClone,-ntClone, -chao1, -iChao))
   selectizeInput(ID,
                  # label = HTML("Select a group for facets <i>(2 maximum, optional)</i>"),
                  label=HTML("Select a group for facets <span style='font-weight: normal; font-size: 13px; font-style: italic;'>(2 maximum, optional)</span>"),
@@ -181,6 +181,29 @@ selectGroupStat <- function(ID, x){
   selectizeInput(
     ID,
     "Select a statistic",
+    choices = choices,
+    options = list(onInitialize = I('function() { this.setValue(""); }'))
+  )
+}
+
+
+selectGroupStat1 <- function(ID, x){
+  sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]
+  choices <- colnames(sdata)
+  selectizeInput(
+    ID,
+    "Select the first statistic",
+    choices = choices,
+    options = list(onInitialize = I('function() { this.setValue(""); }'))
+  )
+}
+
+selectGroupStat2 <- function(ID, x){
+  sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]
+  choices <- colnames(sdata)
+  selectizeInput(
+    ID,
+    "Select the second statistic",
     choices = choices,
     options = list(onInitialize = I('function() { this.setValue(""); }'))
   )

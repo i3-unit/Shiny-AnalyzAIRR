@@ -68,6 +68,11 @@ shinyServer(function(input, output, session) {
                            doNorm = input$doNorm, 
                            NormLevel = input$NormLevel, 
                            plotStats = input$plotStats, 
+                           plotStats1 = input$plotStats1,
+                           plotStats2 = input$plotStats2,
+                           plotcolorgrouppair = input$plotcolorgrouppair,
+                           chaoIndex = input$chaoIndex,
+                           chaocolor = input$chaocolor,
                            plotcolorgroup = input$plotcolorgroup,
                            plotfacetgroup = input$plotfacetgroup,
                            countLevel = input$countLevel, 
@@ -89,9 +94,13 @@ shinyServer(function(input, output, session) {
                            rankDistribcolor = input$rankDistribcolor, 
                            rankDistribfacet = input$rankDistribfacet, 
                            singleSample = input$singleSample, 
+                           indStat = input$indStat,
                            indLevel = input$indLevel, 
                            indgeneUsageLevel = input$indgeneUsageLevel, 
                            indMeth = input$indMeth, 
+                           indProp = input$indProp,
+                           indTreeLevel = input$indTreeLevel,
+                           indIntLevel = input$indIntLevel,
                            singleScale = input$singleScale, 
                            VJLevel = input$VJLevel, 
                            VJProp = input$VJProp, 
@@ -217,9 +226,10 @@ shinyServer(function(input, output, session) {
         } else if(input$source != "Other"){
             sInfo <- NULL
             if (!is.null(input$sInfofile)) { 
-              sInfo <- read.table(input$sInfofile$datapath, 
-                         header=T,
-                         row.names = 1)
+              sInfo <- readr::read_delim(input$sInfofile$datapath)
+              sInfo <- sInfo %>% 
+                        tibble::column_to_rownames("sample_id") %>%
+                         dplyr::mutate_if(., is.character, as.factor)
             }
             tempFile <- input$samplefiles$datapath
             inFiles <- unlist(sapply(input$samplefiles$name, renameFiles, x = dirname(tempFile[1])), recursive = F)
@@ -234,7 +244,6 @@ shinyServer(function(input, output, session) {
                                                 filter.singletons = FALSE,
                                                 aa.th = 8,
                                                 outFiltered = TRUE,
-                                                raretab = FALSE,
                                                 cores = 1L)
                 file.remove(inFiles)
         } else if(input$source == "Other"){
@@ -255,7 +264,6 @@ shinyServer(function(input, output, session) {
                                             filter.singletons = FALSE,
                                             aa.th = 8,
                                             outFiltered = TRUE,
-                                            raretab = FALSE,
                                             cores = 1L)
           file.remove(inFiles)
           

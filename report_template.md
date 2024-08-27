@@ -105,8 +105,10 @@ p.caption {
 </body><!--/html_preserve-->
 
 
+# Data manipulation
 
 
+## Filtering
 
 
 
@@ -124,10 +126,54 @@ p.caption {
 
 
 
+**Drop a sample**
 
+<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Github/generate-AnalyzAIRR/extdata/MiAIRR </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiAIRR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 113498 ntClone were filtered using filterCount: n= 1 and group= </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> sample tripod-30-815 was excluded from the RepSeqExperiment. </td>
+  </tr>
+</tbody>
+</table>
 
 
+**Extract shared sequences**
 
+<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Github/generate-AnalyzAIRR/extdata/MiAIRR </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiAIRR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 113498 ntClone were filtered using filterCount: n= 1 and group= </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> sample tripod-30-815 was excluded from the RepSeqExperiment. </td>
+  </tr>
+</tbody>
+</table>
 
 
 
@@ -167,24 +213,11 @@ p.caption {
 
 
 
-# Exploratory statistics
 
 
-## Basic statistics
 
 
-### Metadata statistics
 
-<img src="figure/metadata stats-1.png" alt="plot of chunk metadata stats" style="display: block; margin: auto;" />
-
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="metadatastatsText-label" for="metadatastatsText">Enter text</label>
-<input id="metadatastatsText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
 <!-- ```{r show Detailed repertoire level statistics title, results='asis', echo=FALSE} -->
@@ -278,7 +311,6 @@ p.caption {
 <!-- ``` -->
 
 
-## Clonal distribution
 
 
 
@@ -288,18 +320,8 @@ p.caption {
 
 
 
-### Per decreasing rank
 
-<img src="figure/rank distrib exp-1.png" alt="plot of chunk rank distrib exp" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="rankdistribexpText-label" for="rankdistribexpText">Enter text</label>
-<input id="rankdistribexpText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
 
@@ -340,7 +362,6 @@ p.caption {
 
 
 
-# Multi-sample analysis
 
 
 
@@ -388,7 +409,6 @@ p.caption {
 
 
 
-## Similarity analysis
 
 
 
@@ -405,32 +425,24 @@ p.caption {
 
 
 
-### Hierarchical clustering
 
-<img src="figure/disHM-1.png" alt="plot of chunk disHM" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="disHMText-label" for="disHMText">Enter text</label>
-<input id="disHMText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
 
 
-### Multidimensional scaling
 
-<img src="figure/MDS-1.png" alt="plot of chunk MDS" style="display: block; margin: auto;" />
 
-<!--html_preserve--><body style="color: white;">
-<p style="color: white;">
-<div class="form-group shiny-input-container">
-<label class="control-label" id="MDSText-label" for="MDSText">Enter text</label>
-<input id="MDSText" type="text" class="form-control" value=""/>
-</div>
-</p>
-</body><!--/html_preserve-->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

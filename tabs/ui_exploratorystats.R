@@ -2,7 +2,8 @@ basicstats <-
     tabItem(tabName = "showBasicTab", 
         fluidRow(
             tabBox(width = 12,
-                tabPanel("Metadata statistics",
+               navbarMenu("Metadata statistics",
+                tabPanel("Single statistic", 
                          fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
                                       circleButton(inputId = "basicstatsHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
                                                    style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
@@ -28,6 +29,33 @@ basicstats <-
                     plotOutput("plotStatistic"), 
                     busyIndicator(wait = 500)
                  ),
+                tabPanel("Pairwise statistics", 
+                         fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                      circleButton(inputId = "pairstatHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                   style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                                      border-radius: 25px;  font-size: 15px; height: 25px; color:white;
+                                                                      line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
+                                  tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                  column(width = 4, style="margin-top: -22px; font-size:14px",
+                                         uiOutput("plotStats1")
+                                  ),
+                                  column(width = 4, style="margin-top: -22px; font-size:14px",
+                                         uiOutput("plotStats2")
+                                  ),
+                                  column(width = 2,style="margin-top: -22px; font-size:14px",
+                                         uiOutput("plotcolorgrouppair")
+                                  )
+                                  # column(width = 2, style="margin-top: -22px;",
+                                  #        div(style="display:block;margin-left: 97%;padding-bottom: 20px;",
+                                  #            circleButton(inputId = "basicstatsHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+                                  #        tags$head(tags$style(".modal-dialog{ width:1200px}"))
+                                  # )
+                         ), 
+                         uiOutput("downPlotPairStatistic"),
+                         plotly::plotlyOutput("plotPairStatistic"), 
+                         busyIndicator(wait = 500)
+                ),
+               ),
                 tabPanel("Detailed repertoire level statistics",
                          fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
                                       circleButton(inputId = "countfeaturesHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
@@ -68,6 +96,7 @@ basicstats <-
 divstats<- tabItem(tabName = "showDivTab",
                       fluidRow(
                           tabBox(width = 12,
+                             navbarMenu("Richness estimation",
                           tabPanel("Rarefaction analysis",
                                    fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
                                                 circleButton(inputId = "raretabHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
@@ -96,7 +125,31 @@ divstats<- tabItem(tabName = "showDivTab",
                                 reactableOutput("dataRare"),
                                 busyIndicator(wait = 500)
                                 ),
-                          tabPanel("Diversity indices",
+                          tabPanel("Chao estimation",
+                                   fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+                                                circleButton(inputId = "Chaoesthelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+                                                             style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+                                                                      border-radius: 25px;  font-size: 15px; height: 25px; color:white;
+                                                                      line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
+                                            tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                            column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                   selectizeInput(
+                                                     "chaoIndex",
+                                                     "Select a Chao index",
+                                                     choices = list("chao1", "iChao"),
+                                                     options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                            ),
+                                            column(width = 2,  style="margin-top: -22px; font-size:14px",
+                                                   uiOutput("chaocolor")
+                                            )
+                                            ),
+                                            uiOutput("downPlotChaoest"),
+                                            plotly::plotlyOutput("plotChaoest"),
+                                            busyIndicator(wait = 500)
+                          ),
+                             ),
+                          navbarMenu("Diversity calculation",
+                          tabPanel("Single diversity index",
                                    fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
                                                 circleButton(inputId = "divtabHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
                                                              style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
@@ -107,7 +160,7 @@ divstats<- tabItem(tabName = "showDivTab",
                                               selectizeInput(
                                                   "divIndex",
                                                   "Select an index",
-                                                  choices = list("chao1", "shannon", "simpson", "invsimpson", "bergerparker", "gini", "iChao"),
+                                                  choices = list( "shannon", "simpson", "invsimpson", "bergerparker", "gini"),
                                                   options = list(onInitialize = I('function() { this.setValue(""); }')))
                                        ),
                                        column(width = 2, style="margin-top: -22px; font-size:14px",
@@ -184,6 +237,7 @@ divstats<- tabItem(tabName = "showDivTab",
                           )
                           )
                           )
+                      )
                    )
 
 
@@ -262,7 +316,7 @@ clonalstats<- tabItem(tabName = "showClonalTab",
                                        # )
                                    ),
                                    uiOutput("downPlotrankDistrib"),
-                                   plotOutput("rankDistrib"),
+                                   plotly::plotlyOutput("rankDistrib"),
                                    busyIndicator(wait = 500)
                           )
                           )
