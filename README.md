@@ -21,7 +21,7 @@ devtools::install_github("vanessajmh/AnalyzAIRR")
 **Shiny-AnalyzAIRR** should be cloned as follow:
 ```
 # Clone the repository in commande line:
-git clone https://github.com/vanessajmh/Shiny-AnalyzAIRR
+git clone https://github.com/i3-unit/Shiny-AnalyzAIRR.git
 ```
 
 
@@ -51,12 +51,8 @@ The interface can be opened in a web browser using the displayed hyper link addr
 
 A **RepSeqExperiment** object generated using the **AnalyzAIRR** R package and saved in an rds format can be used.
 
-**2. Upload alignment files in AnalyzAIRR-compliant formats**
+**2. Upload supported input formats**
 
 More details on how to prepare the input data can be found [here](https://vanessajmh.github.io/AnalyzAIRR.github.io/)
 
-<br>
-<video width="920" height="520" controls>
-  <source src="/Users/vanessamhanna/Github/Shiny-AnalyzAIRR/video.mp4" type="video/mp4">
-</video>
 

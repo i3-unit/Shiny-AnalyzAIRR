@@ -244,7 +244,6 @@ shinyServer(function(input, output, session) {
                                                 filter.singletons = FALSE,
                                                 aa.th = 8,
                                                 outFiltered = TRUE,
-                                                raretab = FALSE,
                                                 cores = 1L)
                 file.remove(inFiles)
         } else if(input$source == "Other"){
@@ -265,7 +264,6 @@ shinyServer(function(input, output, session) {
                                             filter.singletons = FALSE,
                                             aa.th = 8,
                                             outFiltered = TRUE,
-                                            raretab = FALSE,
                                             cores = 1L)
           file.remove(inFiles)
           
