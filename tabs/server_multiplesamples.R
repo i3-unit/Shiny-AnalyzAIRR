@@ -144,9 +144,10 @@ output$multrenfacet <- renderUI({
     # } else {
     #   shape <- input$multrenshape
     # }
-    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
+    plotGenDiversity(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
                    grouped = TRUE, 
                    facetBy=input$multrenfacet,
+                   Hill=input$multidoHill,
                    label_colors = NULL)    
     })  
 #})
@@ -161,13 +162,14 @@ output$downPlotRenyi <- renderUI({
 
 output$PlotRenyi <- downloadHandler(
   filename =  function() {
-    paste0("renyi_", input$multrenLevel, "_", input$multrenGroup, ".pdf")
+    paste0("generalizeddiversity_", input$multrenLevel, "_", input$multrenGroup, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
+    grid.draw(plotGenDiversity(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, 
                              grouped = TRUE,  label_colors = NULL,
+                             Hill=input$multidoHill,
                              facetBy=input$multrenfacet
                              )    
 )
@@ -176,7 +178,7 @@ output$PlotRenyi <- downloadHandler(
 )
 
 output$RenyiHelp <- renderText({
-  createHelp(?plotRenyiIndex)
+  createHelp(?plotGenDiversity)
 })
 
 observeEvent(input$RenHelp,
@@ -200,28 +202,34 @@ output$countIntervalsFacet <- renderUI({
 #observeEvent(input$doCountInt, {
   output$CountInt <- renderPlot({
     validate(need(!(is.null(input$countIntervalsLevel) || input$countIntervalsLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$countIntervalsscale) || input$countIntervalsscale == ""), "Select a scale for fractions"))
+    validate(need(!(is.null(input$countIntervalsscale) || input$countIntervalsscale == ""), "Select a scale for intervals"))
+    validate(need(!(is.null(input$countIntCalType) || input$countIntCalType == ""), "Select a calculation type"))
     validate(need(!(is.null(input$countIntervalsGroup) || input$countIntervalsGroup == ""), "Select a group for colours"))
-    plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, fractions=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+    plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, 
+                  interval_scale=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+                  calculation_type = input$countIntCalType,
                   grouped=TRUE, facetBy=input$countIntervalsFacet, show_stats=input$countIntervalsshowstats, label_colors = NULL)    
   }) 
 #})
 
 output$downPlotCountInt <- renderUI({
-  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup)) #& input$doCountInt==1
-      ) {
+  if (!is.null(input$countIntervalsLevel) & !(is.null(input$countIntervalsGroup)) & 
+      #& input$doCountInt==1
+      !(is.null(input$countIntCalType)) ) {
     downloadButton("PlotCountInt", "Download PDF", style="background-color:white; border-color: #022F5A;")
   }
 }) 
 
 output$PlotCountInt <- downloadHandler(
   filename =  function() {
-    paste0("countIntervals_", input$countIntervalsLevel, "_", input$countIntervalsGroup, ".pdf")
+    paste0("countIntervals_", input$countIntervalsLevel, "_", input$countIntervalsGroup, "_",input$countIntCalType,".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw( plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, fractions=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+    grid.draw( plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, 
+                             interval_scale=input$countIntervalsscale, colorBy = input$countIntervalsGroup, 
+                             calculation_type = input$countIntCalType,
                              grouped=TRUE, facetBy=input$countIntervalsFacet, show_stats=input$countIntervalsshowstats, label_colors = NULL))
     dev.off()
   }
@@ -529,9 +537,9 @@ observeEvent(input$doHm1, {
   validate(need(!(is.null(input$dissimilarityLevel) || input$dissimilarityLevel == ""), "Select a level"))
   validate(need(!(is.null(input$dissimilarityIndex) || input$dissimilarityIndex == ""), "Select a dissimilarity method"))
   validate(need(!(is.null(input$dissimilarityClustering) || input$dissimilarityClustering == ""), "Select a clustering method"))
-  validate(need(!(is.null(input$multdissGroup) || input$multdissGroup == ""), "Select one or multiple groups"))
+  validate(need(!(is.null(input$multdissGroup)), "Select one or multiple groups"))
   pdf(file = NULL)
-  hm1 <- plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, colorBy = input$multdissGroup, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL, plot = 'Heatmap')    
+  hm1 <- plotDissHeatmap(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, annotation_groups = input$multdissGroup, binary = FALSE, clustering = input$dissimilarityClustering, label_colors = NULL)    
   hm1@column_names_param$gp$fontsize <- 10
   hm1@row_names_param$gp$fontsize <- 10
   ht1 <- ComplexHeatmap::draw(hm1)
@@ -551,17 +559,17 @@ output$PlotDisHM <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=8, width=12)
-    hm <- plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel,
+    hm <- plotDissHeatmap(x = dataFilt(), level = input$dissimilarityLevel,
                             method = input$dissimilarityIndex, binary = FALSE,
                             clustering = input$dissimilarityClustering, 
-                            colorBy = input$multdissGroup, label_colors = NULL, plot = 'Heatmap')
+                          annotation_groups = input$multdissGroup, label_colors = NULL)
     ComplexHeatmap::draw(hm)
     dev.off()
   }
 )
 
 output$DisHMHelp <- renderText({
-  createHelp(?plotDissimilarity)
+  createHelp(?plotDissHeatmap)
 })
 
 observeEvent(input$disHMHelp,
@@ -579,15 +587,21 @@ output$NB_diss <- renderText({
 
 # plot MDS
 output$multMDSGroup <- renderUI({
-  selectMultGroupDE("multMDSGroup", dataFilt())
+  selectColorGroupmulti("multMDSGroup", dataFilt())
 })
+
+output$multMDSShape <- renderUI({
+  selectShapeGroup("multMDSShape", dataFilt())
+})
+
 
 observeEvent(input$doMds, {
 output$MDS <- plotly::renderPlotly({
   validate(need(!(is.null(input$MDSLevel) || input$MDSLevel == ""), "Select a level"))
   validate(need(!(is.null(input$MDSMethod) || input$MDSMethod == ""), "Select a dissimilarity method"))
-  validate(need(!(is.null(input$multMDSGroup) || input$multMDSGroup == ""), "Select one or multiple groups"))
-  plotly::ggplotly(plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = input$multMDSGroup, binary = FALSE, label_colors = NULL, plot = 'MDS'))  
+  validate(need(!(is.null(input$multMDSGroup) || input$multMDSGroup == ""), "Select one group"))
+
+  plotly::ggplotly(plotDissMDS(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = input$multMDSGroup, shapeBy=input$multMDSShape, binary = FALSE, label_colors = NULL))  
 })   
 })
 
@@ -604,13 +618,15 @@ output$PlotMDS <- downloadHandler(
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=8, width=12)
-    grid.draw(plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, binary = FALSE, colorBy = input$multMDSGroup, label_colors = NULL, plot = 'MDS'))
+    grid.draw(plotDissMDS(x = dataFilt(), level = input$MDSLevel,
+                          shapeBy=input$multMDSShape, 
+                          method = input$MDSMethod, binary = FALSE, colorBy = input$multMDSGroup, label_colors = NULL))
     dev.off()
   }
 )
 
 output$DisMDSHelp <- renderText({
-  createHelp(?plotDissimilarity)
+  createHelp(?plotDissMDS)
 })
 
 observeEvent(input$DisMDSHelp,
@@ -774,70 +790,70 @@ observeEvent(input$volcanoHelp,
 
 
 # render select group UI
-output$PertGroupUI <- renderUI({
-  selectGroupDE("PertGroupSelected", dataFilt())
-})
-# render selection control group
-output$CtrlGroupUI <- renderUI({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  selectizeInput("CtrlGroup",
-                 "Select a control group",
-                 choices = levels(mData(dataFilt())[, input$PertGroupSelected]),
-                 options = list(onInitialize = I('function() { this.setValue(""); }')),
-                 multiple = F
-  )
-})
-# render selection distance
-output$PertDistUI <- renderUI({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
-  selectizeInput("pertDist",
-                 "Select a distance",
-                 choices = list("manhattan", "euclidean"),
-                 options = list(onInitialize = I('function() { this.setValue(""); }')),
-                 multiple = F
-  )
-})
+# output$PertGroupUI <- renderUI({
+#   selectGroupDE("PertGroupSelected", dataFilt())
+# })
+# # render selection control group
+# output$CtrlGroupUI <- renderUI({
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+#   selectizeInput("CtrlGroup",
+#                  "Select a control group",
+#                  choices = levels(mData(dataFilt())[, input$PertGroupSelected]),
+#                  options = list(onInitialize = I('function() { this.setValue(""); }')),
+#                  multiple = F
+#   )
+# })
+# # render selection distance
+# output$PertDistUI <- renderUI({
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+#   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+#   selectizeInput("pertDist",
+#                  "Select a distance",
+#                  choices = list("manhattan", "euclidean"),
+#                  options = list(onInitialize = I('function() { this.setValue(""); }')),
+#                  multiple = F
+#   )
+# })
 # create perturbation data
-dataPert <- reactive({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
-  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
-  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
-  sampleinfo <- mData(dataFilt())
-  ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2)
-  return(pertscore)
-})
+# dataPert <- reactive({
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+#   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+#   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+#   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), ""))
+#   sampleinfo <- mData(dataFilt())
+#   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+#   pertscore <- perturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, p = 2)
+#   return(pertscore)
+# })
+# 
+# output$PertTabHelp <- renderText({
+#   createHelp(?perturbationScore)
+# })
+# 
+# observeEvent(input$perttabHelp,
+#              showModal(modalDialog(
+#                title = paste("Help"),
+#                htmlOutput("PertTabHelp"),
+#                size = "l",
+#                easyClose = T
+#              ))
+# )
 
-output$PertTabHelp <- renderText({
-  createHelp(?perturbationScore)
-})
-
-observeEvent(input$perttabHelp,
-             showModal(modalDialog(
-               title = paste("Help"),
-               htmlOutput("PertTabHelp"),
-               size = "l",
-               easyClose = T
-             ))
-)
-
-output$pertOrder <- renderUI({
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
-  #validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
-  sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-  idx <- sapply(sdata, function(i) nlevels(i)/length(i))
-  choices <- colnames(sdata)[which(idx < 1)]
-  
-  selectizeInput(
-    "pertOrder",
-    "Order labels by",
-    choices = choices,
-    options = list(onInitialize = I('function() { this.setValue(""); }'))
-  )
-})
+# output$pertOrder <- renderUI({
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), ""))
+#   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), ""))
+#   #validate(need(!(is.null(input$pertDist) || input$pertDist == ""), ""))
+#   sdata <- mData(dataFilt())[,unlist(lapply(mData(dataFilt()), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+#   idx <- sapply(sdata, function(i) nlevels(i)/length(i))
+#   choices <- colnames(sdata)[which(idx < 1)]
+#   
+#   selectizeInput(
+#     "pertOrder",
+#     "Order labels by",
+#     choices = choices,
+#     options = list(onInitialize = I('function() { this.setValue(""); }'))
+#   )
+# })
 
 # output$plotPerturbation <- renderPlot({
 #   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected ==""), "select a group"))
@@ -849,73 +865,73 @@ output$pertOrder <- renderUI({
 #   plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
 # })
 
-observeEvent(input$doHm, {
-  validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected == ""), "Select a group"))
-  validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "Select a control group"))
-  validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "Select a distance method"))
-  validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "Select an order sample by"))
-  sampleinfo <- mData(dataFilt())
-  ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-  pdf(file = NULL)
-  hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
-  hm@column_names_param$gp$fontsize <- 10
-  hm@row_names_param$gp$fontsize <- 10
-  ht <- ComplexHeatmap::draw(hm)
-  makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
-})
+# observeEvent(input$doHm, {
+#   validate(need(!(is.null(input$PertGroupSelected) || input$PertGroupSelected == ""), "Select a group"))
+#   validate(need(!(is.null(input$CtrlGroup) || input$CtrlGroup == ""), "Select a control group"))
+#   validate(need(!(is.null(input$pertDist) || input$pertDist == ""), "Select a distance method"))
+#   validate(need(!(is.null(input$pertOrder) || input$pertOrder == ""), "Select an order sample by"))
+#   sampleinfo <- mData(dataFilt())
+#   ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+#   pdf(file = NULL)
+#   hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+#   hm@column_names_param$gp$fontsize <- 10
+#   hm@row_names_param$gp$fontsize <- 10
+#   ht <- ComplexHeatmap::draw(hm)
+#   makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
+# })
 
 
 # data output
-output$PertTab <- renderDataTable({
-  validate(need(input$doHm==1, ""))
-  return(datatable(dataPert(), options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)) %>% formatRound(c(1: ncol(dataPert())), 2))
-})
+# output$PertTab <- renderDataTable({
+#   validate(need(input$doHm==1, ""))
+#   return(datatable(dataPert(), options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)) %>% formatRound(c(1: ncol(dataPert())), 2))
+# })
+# 
+# output$downloadPertTab <- downloadHandler(
+#   "RepSeq_pertubationScore.csv",
+#   content = function(file) {
+#     write.table(dataPert(), file, row.names = F, sep = '\t')
+#   }, contentType = "text/csv"
+# ) 
+# 
+# output$downPlotPert <- renderUI({
+#   if (!(is.null(input$pertDist)) & !(is.null(input$pertOrder))) {
+#     downloadButton("PlotPert", "Download PDF", style="background-color:white; border-color: #022F5A;")
+#   }
+# }) 
 
-output$downloadPertTab <- downloadHandler(
-  "RepSeq_pertubationScore.csv",
-  content = function(file) {
-    write.table(dataPert(), file, row.names = F, sep = '\t')
-  }, contentType = "text/csv"
-) 
+# output$PlotPert <- downloadHandler(
+#   filename =  function() {
+#     paste0("perturbation", "_", input$pertDist, "_", input$pertOrder, ".pdf")
+#   },
+#   # content is a function with argument file. content writes the plot to the device
+#   content = function(file) {
+#     #graphics.off()
+#     pdf(file, height=4, width=7)
+#     sampleinfo <- mData(dataFilt())
+#     ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
+#     hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
+#     ComplexHeatmap::draw(hm)
+#     dev.off()
+#   }
+# )
+# 
+# output$PertHelp <- renderText({
+#   createHelp(?plotPerturbationScore)
+# })
 
-output$downPlotPert <- renderUI({
-  if (!(is.null(input$pertDist)) & !(is.null(input$pertOrder))) {
-    downloadButton("PlotPert", "Download PDF", style="background-color:white; border-color: #022F5A;")
-  }
-}) 
-
-output$PlotPert <- downloadHandler(
-  filename =  function() {
-    paste0("perturbation", "_", input$pertDist, "_", input$pertOrder, ".pdf")
-  },
-  # content is a function with argument file. content writes the plot to the device
-  content = function(file) {
-    #graphics.off()
-    pdf(file, height=4, width=7)
-    sampleinfo <- mData(dataFilt())
-    ctrnames <- rownames(sampleinfo)[which(sampleinfo[, input$PertGroupSelected] %in% input$CtrlGroup)]
-    hm <- plotPerturbationScore(x = dataFilt(), ctrl.names = ctrnames, distance = input$pertDist, order = input$pertOrder, label_colors = NULL)
-    ComplexHeatmap::draw(hm)
-    dev.off()
-  }
-)
-
-output$PertHelp <- renderText({
-  createHelp(?plotPerturbationScore)
-})
-
-observeEvent(input$pertHelp,
-             showModal(modalDialog(
-               title = paste("Help"),
-               htmlOutput("PertHelp"),
-               size = "l",
-               easyClose = T
-             ))
-)
-
-output$NB_pert <- renderText({
-  "<b>Note: Do not use the interactivate sub-heatmap mode in the configure sub-heatmap tab.</b>"
-})
+# observeEvent(input$pertHelp,
+#              showModal(modalDialog(
+#                title = paste("Help"),
+#                htmlOutput("PertHelp"),
+#                size = "l",
+#                easyClose = T
+#              ))
+# )
+# 
+# output$NB_pert <- renderText({
+#   "<b>Note: Do not use the interactivate sub-heatmap mode in the configure sub-heatmap tab.</b>"
+# })
 
 # 
 # # render 2by2 comparison

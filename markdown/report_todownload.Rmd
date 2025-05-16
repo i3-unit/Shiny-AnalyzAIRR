@@ -92,6 +92,7 @@ params:
   countIntervalsGroup: NA
   countIntervalsscale: NA
   countIntervalsFacet: NA
+  countIntCalType: NA
   countIntervalsshowstats: NA
   multRankLevel: NA
   multRankScale: NA
@@ -111,6 +112,7 @@ params:
   dissimilarityLevel: NA
   dissimilarityIndex: NA
   dissimilarityClustering: NA
+  multMDSShape: NA
   doHm1: NA
   MDSLevel: NA
   MDSMethod: NA
@@ -124,6 +126,8 @@ params:
   pertDist: NA
   pertPower: NA
   pertOrder: NA
+  multidoHill: NA
+  doHill: NA
   dataFiltered: null
   repseqdt: null
   downText: null
@@ -612,7 +616,7 @@ if(params$renyiLevel != "" && params$renyicolor != ""){cat("### Renyi index")}
 
 ```{r renyi ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(params$renyiLevel != "" && params$renyicolor != ""){
-   plotRenyiIndex(x=params$dataFiltered, level = params$renyiLevel,
+   plotGenDiversity(x=params$dataFiltered, level = params$renyiLevel,
                   colorBy = params$renyicolor, facetBy=params$renyifacet, 
                   grouped = FALSE, label_colors = NULL)
 }
@@ -649,8 +653,8 @@ if(params$countIntLevel != "" && params$countIntGroupMeth != ""){cat("### Per co
 
 ```{r count ind exp, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(params$countIntLevel != "" && params$countIntGroupMeth != ""){
-    plotIntervals(x=params$dataFiltered, level = params$countIntLevel, 
-    grouped = FALSE, colorBy=NULL, facetBy= params$countIntfacet,  fractions=params$countIntGroupMeth, label_colors = NULL)
+    plotIntervals(x=params$dataFiltered, level = params$countIntLevel, calculation_type = params$countIntCalType,
+    grouped = FALSE, colorBy=NULL, facetBy= params$countIntfacet,  interval_scale=params$countIntGroupMeth, label_colors = NULL)
 }
       
 ```
@@ -854,8 +858,8 @@ if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){cat("### Reny
 ```{r renyi, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){
    
-    plotRenyiIndex(x = params$dataFiltered, level = params$multrenLevel, 
-                    colorBy = params$multrenGroup,  grouped = TRUE, 
+    plotGenDiversity(x = params$dataFiltered, level = params$multrenLevel, 
+                    colorBy = params$multrenGroup,  grouped = TRUE,  Hill=params$multidoHill,
                     facetBy=params$multrenfacet, label_colors = NULL)
 }
     
@@ -875,8 +879,9 @@ if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) 
 ```{r countInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$countIntervalsLevel) && !is.null(params$countIntervalsGroup) && !is.null(params$countIntervalsscale)){
     plotIntervals(x = params$dataFiltered, level = params$countIntervalsLevel, 
-    colorBy = params$countIntervalsGroup, fractions=params$countIntervalsscale, 
-    grouped=TRUE, facetBy=params$countIntervalsFacet, show_stats=params$countIntervalsshowstats, label_colors = NULL)
+                   calculation_type = params$countIntCalType,
+                  colorBy = params$countIntervalsGroup, interval_scale=params$countIntervalsscale, 
+                  grouped=TRUE, facetBy=params$countIntervalsFacet, show_stats=params$countIntervalsshowstats, label_colors = NULL)
 }
        
 ```
@@ -978,7 +983,7 @@ if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) &&
 
 ```{r disHM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityLevel) && !is.null(params$dissimilarityIndex) && !is.null(params$dissimilarityClustering) && !is.null(params$multdissGroup) && params$doHm1 == 1){
-    hm <- plotDissimilarity(x = params$dataFiltered, level = params$dissimilarityLevel, method = params$dissimilarityIndex, binary = FALSE, clustering = params$dissimilarityClustering, label_colors = NULL, colorBy=params$multdissGroup, plot="Heatmap")
+    hm <- plotDissHeatmap(x = params$dataFiltered, level = params$dissimilarityLevel, method = params$dissimilarityIndex, binary = FALSE, clustering = params$dissimilarityClustering, label_colors = NULL, annotation_groups=params$multdissGroup, plot="Heatmap")
     ComplexHeatmap::draw(hm)
 }
     
@@ -999,7 +1004,7 @@ if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod)
 
 ```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$multMDSGroup)){
-    plotDissimilarity(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, label_colors = NULL, colorBy=params$multMDSGroup , plot = "MDS")
+    plotDissMDS(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, label_colors = NULL, colorBy=params$multMDSGroup , shapeBy=params$multMDSShape, plot = "MDS")
 }
     
 ```

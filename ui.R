@@ -31,7 +31,7 @@ bodyTabs <-
   tabItems(
     tabItem(tabName = "aboutTab",
             fluidRow(
-              box(width = 12, htmlOutput("about")),
+              shinydashboard::box(width = 12, htmlOutput("about")),
             )
     ),
     tabItem(tabName = "uploadRDStab",
@@ -47,7 +47,7 @@ bodyTabs <-
               valueBoxOutput("summarySeq")
               ),
            fluidRow(
-            box(title = "Sequence number overview", status = "primary", 
+             shinydashboard::box(title = "Sequence number overview", status = "primary", 
               # column(width = 3,
               #        tags$head(
               #          tags$style(HTML('#format.shiny-input-checkboxgroup.shiny-input-container-inline label~.shiny-options-group, #format.shiny-input-radiogroup.shiny-input-container-inline label~.shiny-options-group {margin-top: -1px; accent-color: #022F5A;color: black; mix-blend-mode: unset;}
@@ -79,7 +79,7 @@ bodyTabs <-
               uiOutput("selectGrp1"), div(style = "width: 95%;margin-left: 0px;",
                                           plotly::plotlyOutput("plotGrp1" ))
               ),
-            box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp1"), plotOutput("Plothistlibsizesp1"))
+             shinydashboard::box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp1"), plotOutput("Plothistlibsizesp1"))
             
             ),
           #  uiOutput("downPlothistlibsizesp2"),
@@ -94,12 +94,12 @@ bodyTabs <-
               valueBoxOutput("summarySeq3")
             ),
             fluidRow(
-              box(title = "Sequence number overview", status = "primary", 
+              shinydashboard::box(title = "Sequence number overview", status = "primary", 
                  
                  uiOutput("selectGrp3"), div(style = "width: 95%;margin-left: 0px;",
                                             plotly::plotlyOutput("plotGrp3" ))
               ),
-              box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp3"), plotOutput("Plothistlibsizesp3"))
+              shinydashboard::box(title = "Count distribution", status = "primary", uiOutput("histlibsizesp3"), plotOutput("Plothistlibsizesp3"))
               
             ),
     ),
@@ -520,14 +520,14 @@ bodyTabs <-
     CompBasicTab,
     SimTab,
     DiffTab,
-    PertTab,
+    # PertTab,
     basicstats,
     divstats,
     clonalstats,
     tabItem(tabName = "sessionTab",
             fluidRow(
               tags$h2("Session info"), 
-              box(width = 12, verbatimTextOutput("session"))
+              shinydashboard::box(width = 12, verbatimTextOutput("session"))
             )
     ),
     sessionReportTab

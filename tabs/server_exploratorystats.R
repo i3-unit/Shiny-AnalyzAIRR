@@ -212,48 +212,48 @@ observeEvent(input$rareHelp,
              ))
 )
 
-output$dataRare <- renderReactable({
-  validate(need(!(is.null(input$plotRare) || input$plotRare == ""), "select a group"))
-  tbl<- rarefactionTab(x = dataFilt())
-  reactable( tbl,
-             showSortable = TRUE,
-             columns = list(
-               sample_id = colDef(filterable = TRUE,
-                                  sticky = "left",
-                                  # Add a right border style to visually distinguish the sticky column
-                                  style = list(borderRight = "1px solid #eee"),
-                                  headerStyle = list(borderRight = "1px solid #eee"))),
-             
-             highlight = TRUE,
-             showPageSizeOptions = TRUE,
-             fullWidth = FALSE,
-             pageSizeOptions = c(5,10),
-             defaultPageSize = 5,
-             paginationType = "simple"
-             
-  )
+# output$dataRare <- renderReactable({
+#   validate(need(!(is.null(input$plotRare) || input$plotRare == ""), "select a group"))
+#   tbl<- rarefactionTab(x = dataFilt())
+#   reactable( tbl,
+#              showSortable = TRUE,
+#              columns = list(
+#                sample_id = colDef(filterable = TRUE,
+#                                   sticky = "left",
+#                                   # Add a right border style to visually distinguish the sticky column
+#                                   style = list(borderRight = "1px solid #eee"),
+#                                   headerStyle = list(borderRight = "1px solid #eee"))),
+#              
+#              highlight = TRUE,
+#              showPageSizeOptions = TRUE,
+#              fullWidth = FALSE,
+#              pageSizeOptions = c(5,10),
+#              defaultPageSize = 5,
+#              paginationType = "simple"
+#              
+#   )
   
-})
+# })
 
-output$downloaddataRare <- downloadHandler(
-  "RepSeq_rarefactionData.csv",
-  content = function(file) {
-    write.table(rarefactionTab(x = dataFilt()), file, row.names = F, sep = '\t')
-  }, contentType = "text/csv"
-) 
+# output$downloaddataRare <- downloadHandler(
+#   "RepSeq_rarefactionData.csv",
+#   content = function(file) {
+#     write.table(rarefactionTab(x = dataFilt()), file, row.names = F, sep = '\t')
+#   }, contentType = "text/csv"
+# ) 
 
-output$dataRareHelp <- renderText({
-  createHelp(?rarefactionTab)
-})
+# output$dataRareHelp <- renderText({
+#   createHelp(?rarefactionTab)
+# })
 
-observeEvent(input$raretabHelp,
-             showModal(modalDialog(
-               title = paste("Help"),
-               htmlOutput("dataRareHelp"),
-               size = "l",
-               easyClose = T
-             ))
-)
+# observeEvent(input$raretabHelp,
+#              showModal(modalDialog(
+#                title = paste("Help"),
+#                htmlOutput("dataRareHelp"),
+#                size = "l",
+#                easyClose = T
+#              ))
+# )
 
 
 #
@@ -387,9 +387,9 @@ output$renyifacet <- renderUI({
 
 output$plotRenyi <- plotly::renderPlotly({
   validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select a level"))
-  validate(need(!(is.null(input$renyicolor) || input$renyicolor == ""), "select a level"))
+  validate(need(!(is.null(input$renyicolor) || input$renyicolor == ""), "select a color"))
   
-  plotly::ggplotly(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet ,grouped = FALSE, label_colors = NULL))
+  plotly::ggplotly(plotGenDiversity(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet, Hill=input$doHill ,grouped = FALSE, label_colors = NULL))
 })
 output$downPlotRenyi2 <- renderUI({
   if (!is.null(input$renyiLevel)) {
@@ -399,18 +399,18 @@ output$downPlotRenyi2 <- renderUI({
 
 output$PlotRenyi2 <- downloadHandler(
   filename =  function() {
-    paste0("RenyiPlot_", input$renyiLevel, ".pdf")
+    paste0("Generalizeddiversity_", input$renyiLevel, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet , grouped = FALSE, label_colors = NULL))
+    grid.draw(plotGenDiversity(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, facetBy=input$renyifacet, Hill=input$doHill, grouped = FALSE, label_colors = NULL))
     dev.off()
   }
 )
 
 output$basicRenyiHelp <- renderText({
-  createHelp(?plotRenyiIndex)
+  createHelp(?plotGenDiversity)
 })
 
 observeEvent(input$basicrenHelp,
@@ -424,17 +424,17 @@ observeEvent(input$basicrenHelp,
 
 output$dataRenyi <- renderDataTable({
   validate(need(!(is.null(input$renyiLevel) || input$renyiLevel == ""), "select a level"))
-  renyiIndex(x=dataFilt(), level = input$renyiLevel)
+  generalizedDiversity(x=dataFilt(), level = input$renyiLevel, Hill=input$doHill)
 })
 output$downloaddataRenyi <- downloadHandler(
-  "RepSeq_renyiIndex.csv",
+  "RepSeq_generalizedDiversity.csv",
   content = function(file) {
-    write.table(renyiIndex(x=dataFilt(), level = input$renyiLevel), file, row.names = F, sep = '\t')
+    write.table(generalizedDiversity(x=dataFilt(), level = input$renyiLevel), file, row.names = F, sep = '\t')
   }, contentType = "text/csv"
 ) 
 
 output$renyiTabHelp <- renderText({
-  createHelp(?renyiIndex)
+  createHelp(?generalizedDiversity)
 })
 
 observeEvent(input$rentabHelp,
@@ -454,9 +454,13 @@ output$countIntfacet <- renderUI({
 output$CountIntervals <- renderPlot({
   validate(need(!(is.null(input$countIntLevel) || input$countIntLevel == ""), " "))
   validate(need(!(is.null(input$countIntGroupMeth) || input$countIntGroupMeth == ""), " "))
+  validate(need(!(is.null(input$countIntCalType) || input$countIntCalType == ""), " "))
   
-  plotIntervals(x=dataFilt(), level = input$countIntLevel, grouped = F,colorBy=NULL, facetBy= input$countIntfacet,
-                fractions=input$countIntGroupMeth, label_colors = NULL)
+  
+  plotIntervals(x=dataFilt(), level = input$countIntLevel, 
+                colorBy=NULL, facetBy= input$countIntfacet,
+                calculation_type = input$countIntCalType,
+                interval_scale=input$countIntGroupMeth, label_colors = NULL)
 })
 
 output$downPlotCountIntervals2 <- renderUI({
@@ -467,13 +471,15 @@ output$downPlotCountIntervals2 <- renderUI({
 
 output$PlotCountIntervals2 <- downloadHandler(
   filename =  function() {
-    paste0("CountIntervals_", input$countIntLevel, ".pdf")
+    paste0("CountIntervals_", input$countIntLevel,"_",input$countIntCalType, ".pdf")
   },
   # content is a function with argument file. content writes the plot to the device
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotIntervals(x=dataFilt(), level = input$countIntLevel, grouped = F,colorBy=NULL, facetBy= input$countIntfacet,
-                            fractions=input$countIntGroupMeth, label_colors = NULL))
+    grid.draw(plotIntervals(x=dataFilt(), level = input$countIntLevel, 
+                            colorBy=NULL, facetBy= input$countIntfacet,
+                            calculation_type = input$countIntCalType,
+                            interval_scale=input$countIntGroupMeth, label_colors = NULL))
     dev.off()
   }
 )
@@ -507,22 +513,24 @@ output$rankDistrib <- plotly::renderPlotly({
   validate(need(!(is.null(input$rankDistribLevel) || input$rankDistribLevel == ""), "select a level"))
   validate(need(!(is.null(input$rankDistribcolor) || input$rankDistribcolor == ""), "select a group for colors"))
   
-  plotly::ggplotly(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize ,colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL))
+  plotly::ggplotly(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, 
+                                   scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize ,colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL))
 })
 
 output$downPlotrankDistrib <- renderUI({
-  if (!is.null(input$rankDistribLevel) & !is.null(input$rankDistribGroupMeth)) {
+  if (!is.null(input$rankDistribLevel) & !is.null(input$rankDistribGroupMeth) ) {
     downloadButton("PlotrankDistrib", "Download PDF", style="background-color:white; border-color: #022F5A; margin-bottom: 14px;")
   }
 }) 
 
 output$PlotrankDistrib <- downloadHandler(
   filename =  function() {
-    paste0("rankDistrib_", input$rankDistribLevel, "_", input$rankDistribGroupMeth,"_", input$rankDistribSize, ".pdf")
+    paste0("rankDistrib_", input$rankDistribLevel, "_",input$rankDistribGroupMeth,"_", input$rankDistribSize, ".pdf")
   },
   content = function(file) {
     pdf(file, height=4, width=6)
-    grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
+    grid.draw(plotRankDistrib(x = dataFilt(), level = input$rankDistribLevel, 
+                              scale = input$rankDistribGroupMeth, ranks=input$rankDistribSize, colorBy =input$rankDistribcolor, facetBy=input$rankDistribfacet, grouped = FALSE, label_colors = NULL)
     )
     dev.off()
   }
