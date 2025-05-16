@@ -138,7 +138,7 @@ selectGroup <- function(ID, x) {
 }
 
 selectList <- function(ID, x) {  
-  choices <- names(AnalyzAIRR::oData(x))[-3]
+  choices <- setdiff(names(AnalyzAIRR::oData(x)), "label_colors")
   selectizeInput(
     ID,
     "Select a table",
@@ -163,8 +163,9 @@ selectGroupDE <- function(ID, x){
 
 selectMultGroupDE <- function(ID, x){
   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
-  idx <- sapply(sdata, function(i) nlevels(i)/length(i))
-  choices <- colnames(sdata)[which(idx < 1)]
+  # idx <- sapply(sdata, function(i) nlevels(i)/length(i))
+  # choices <- colnames(sdata)[which(idx < 1)]
+  choices <- colnames(sdata)
   selectizeInput(
     ID,
     "Select one or multiple groups",
@@ -174,6 +175,18 @@ selectMultGroupDE <- function(ID, x){
   )
 }
 
+# selectMultShapeDE <- function(ID, x){
+#   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.character(y) | is.factor(y)} )), drop = FALSE]
+#   idx <- sapply(sdata, function(i) nlevels(i)/length(i))
+#   choices <- colnames(sdata)[which(idx < 1)]
+#   selectizeInput(
+#     ID,
+#     "Select one group",
+#     choices = choices,
+#     multiple = FALSE,
+#     options = list(onInitialize = I('function() { this.setValue(""); }'))
+#   )
+# }
 
 selectGroupStat <- function(ID, x){
   sdata <- mData(x)[,unlist(lapply(mData(x), function(y) { is.integer(y) } )), drop = FALSE]

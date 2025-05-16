@@ -118,30 +118,30 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                              layout = "1|(2-3)"),
              busyIndicator(wait = 500)
           ),
-         tabPanel("CDR3 Spectratyping",
-                fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                                         circleButton(inputId = "spectHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                                      style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
-                                                                  border-radius: 25px;  font-size: 15px; height: 25px; color:white;
-                                                                  line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                   column(width = 2, style="margin-top: -22px; font-size:14px",
-                          selectizeInput("singleScale",
-                                      "Select a statistics scale",
-                                      choices = list("count" , "frequency"),
-                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
-                   ),
-                   column(width = 2, style="margin-top: -22px; font-size:14px",
-                          sliderInput("spectraProp",
-                                      "Select a proportion",
-                                      value = 0.1,
-                                      min = 0, max = 1)
-                   )
-                 ),
-                  uiOutput("downSpectra"),
-                  plotly::plotlyOutput("spectraPlot"),
-                  busyIndicator(wait = 500)
-                )
+         # tabPanel("CDR3 Spectratyping",
+         #        fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+         #                                 circleButton(inputId = "spectHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+         #                                              style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+         #                                                          border-radius: 25px;  font-size: 15px; height: 25px; color:white;
+         #                                                          line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
+         #                             tags$head(tags$style(".modal-dialog{ width:1200px}")),
+         #           column(width = 2, style="margin-top: -22px; font-size:14px",
+         #                  selectizeInput("singleScale",
+         #                              "Select a statistics scale",
+         #                              choices = list("count" , "frequency"),
+         #                              options = list(onInitialize = I('function() { this.setValue(""); }')))
+         #           ),
+         #           column(width = 2, style="margin-top: -22px; font-size:14px",
+         #                  sliderInput("spectraProp",
+         #                              "Select a proportion",
+         #                              value = 0.1,
+         #                              min = 0, max = 1)
+         #           )
+         #         ),
+         #          uiOutput("downSpectra"),
+         #          plotly::plotlyOutput("spectraPlot"),
+         #          busyIndicator(wait = 500)
+         #        )
 
         ) # end tabBox 
       ) # end fluidRow

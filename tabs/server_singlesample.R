@@ -262,91 +262,91 @@ observeEvent(input$indgeneusageHelp,
 ##### Plot stacked spectratype #####
 
 #render UI download button for individual spectratype
-output$downSpectra <- renderUI({
-    if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectra", "Download PDF", style="background-color:white; border-color: #022F5A;")
-    }
-}) 
+# output$downSpectra <- renderUI({
+#     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
+#         downloadButton("Spectra", "Download PDF", style="background-color:white; border-color: #022F5A;")
+#     }
+# }) 
 # plot overlay spectratype 
-output$spectraPlot <- plotly::renderPlotly({
-    sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
-    validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "select a proportion"))    
-    plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)+
-                       ggplot2::theme(legend.position = "none"))
-})
+# output$spectraPlot <- plotly::renderPlotly({
+#     sampleError(input$singleSample)
+#     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
+#     validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "select a proportion"))    
+#     plotly::ggplotly(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)+
+#                        ggplot2::theme(legend.position = "none"))
+# })
+# 
+# # download button for individual spectratype
+# output$Spectra <- downloadHandler(
+#     filename =  function() {
+#         paste0("stacked_spectratype_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".pdf")
+#     },
+#     # content is a function with argument file. content writes the plot to the device
+#     content = function(file) {
+#         pdf(file, height=4, width=6)
+#         grid.draw(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
+#         dev.off()
+#     }
+# )
+# 
+# output$spectraHelp <- renderText({
+#     createHelp(?plotSpectratyping)
+# })
 
-# download button for individual spectratype
-output$Spectra <- downloadHandler(
-    filename =  function() {
-        paste0("stacked_spectratype_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".pdf")
-    },
-    # content is a function with argument file. content writes the plot to the device
-    content = function(file) {
-        pdf(file, height=4, width=6)
-        grid.draw(plotSpectratyping(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
-        dev.off()
-    }
-)
-
-output$spectraHelp <- renderText({
-    createHelp(?plotSpectratyping)
-})
-
-observeEvent(input$spectHelp,
-             showModal(modalDialog(
-                 title = paste("Help"),
-                 htmlOutput("spectraHelp"),
-                 size = "l",
-                 easyClose = T
-             ))
-)
+# observeEvent(input$spectHelp,
+#              showModal(modalDialog(
+#                  title = paste("Help"),
+#                  htmlOutput("spectraHelp"),
+#                  size = "l",
+#                  easyClose = T
+#              ))
+# )
 
 ##### Plot individual spectratype #####
 
-#render UI download button for individual spectratype
-output$downSpectrabis <- renderUI({
-    if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
-        downloadButton("Spectrabis", "Download PDF", style="background-color:white; border-color: #022F5A;")
-    }
-}) 
-# render plot individual spectratype
-observeEvent(input$doSpectrabis, {
-output$spectraPlotbis <- renderPlot({
-    sampleError(input$singleSample)
-    validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
-    validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "select a proportion"))
-    plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
-    },  width="auto", 
-        height <- function() {
-            if (is.null(input$singleSample) || input$singleSample == "") return(600)
-            else { 
-                nrowsGrid <- ceiling(length(AnalyzAIRR::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
-                return(150 * nrowsGrid) }
-        })
-})
-# download button for individual spectratype
-output$Spectrabis <- downloadHandler(
-    filename =  function() {
-        paste0("individual_spectratypeV_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".pdf")
-    },
-    # content is a function with argument file. content writes the plot to the device
-    content = function(file) {
-        pdf(file, height=4, width=6)
-        grid.draw(plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
-        dev.off()  
-    }
-)
+# #render UI download button for individual spectratype
+# output$downSpectrabis <- renderUI({
+#     if (!is.null(input$singleSample) & !(is.null(input$singleScale)) & !is.null(input$spectraProp)) {
+#         downloadButton("Spectrabis", "Download PDF", style="background-color:white; border-color: #022F5A;")
+#     }
+# }) 
+# # render plot individual spectratype
+# observeEvent(input$doSpectrabis, {
+# output$spectraPlotbis <- renderPlot({
+#     sampleError(input$singleSample)
+#     validate(need(!(is.null(input$singleScale) || input$singleScale == ""), "select a scale"))
+#     validate(need(!(is.null(input$spectraProp) || input$spectraProp == ""), "select a proportion"))
+#     plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp)
+#     },  width="auto", 
+#         height <- function() {
+#             if (is.null(input$singleSample) || input$singleSample == "") return(600)
+#             else { 
+#                 nrowsGrid <- ceiling(length(AnalyzAIRR::assay(dataFilt())[sample_id == input$singleSample, unique(V)])/4)
+#                 return(150 * nrowsGrid) }
+#         })
+# })
+# # download button for individual spectratype
+# output$Spectrabis <- downloadHandler(
+#     filename =  function() {
+#         paste0("individual_spectratypeV_", input$singleSample, "_", input$singleScale, "_", input$spectraProp, ".pdf")
+#     },
+#     # content is a function with argument file. content writes the plot to the device
+#     content = function(file) {
+#         pdf(file, height=4, width=6)
+#         grid.draw(plotSpectratypingV(x = dataFilt(), sampleName = input$singleSample, scale = input$singleScale, prop = input$spectraProp))
+#         dev.off()  
+#     }
+# )
+# 
+# output$SpectrabisHelp <- renderText({
+#     createHelp(?plotSpectratypingV)
+# })
 
-output$SpectrabisHelp <- renderText({
-    createHelp(?plotSpectratypingV)
-})
-
-observeEvent(input$spectbisHelp,
-             showModal(modalDialog(
-                 title = paste("Help"),
-                 htmlOutput("SpectrabisHelp"),
-                 size = "l",
-                 easyClose = T
-             ))
-)   
+# observeEvent(input$spectbisHelp,
+#              showModal(modalDialog(
+#                  title = paste("Help"),
+#                  htmlOutput("SpectrabisHelp"),
+#                  size = "l",
+#                  easyClose = T
+#              ))
+# )   
