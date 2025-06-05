@@ -128,8 +128,9 @@ observeEvent(input$indtreemapHelp,
 output$IndCountIntervals <- renderPlot({
     sampleError(input$singleSample)
     validate(need(!(is.null(input$indIntLevel) ||  input$indIntLevel == ""), "Select a level"))
-    validate(need(!(is.null(input$indMeth) || input$indMeth == ""), "select a statistics scale"))
-    plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indIntLevel, fractions=input$indMeth)
+    validate(need(!(is.null(input$indMeth) || input$indMeth == ""), "select a scale for fractions"))
+
+    plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indIntLevel, interval_scale=input$indMeth)
 })
 
 output$downPlotIndCountIntervals <- renderUI({
@@ -145,7 +146,7 @@ output$PlotIndCountIntervals <- downloadHandler(
     # content is a function with argument file. content writes the plot to the device
     content = function(file) {
         pdf(file, height=3, width=5)
-        grid.draw(plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indIntLevel, fractions=input$indMeth))
+        grid.draw(plotIndIntervals(x = dataFilt(), sampleName = input$singleSample, level = input$indIntLevel, interval_scale=input$indMeth))
         dev.off()
     }
 )

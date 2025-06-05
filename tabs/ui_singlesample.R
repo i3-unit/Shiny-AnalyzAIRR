@@ -80,13 +80,12 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
                                                 choices = list("ntCDR3", "aaCDR3", "aaClone", "ntClone"),
                                                 options = list(onInitialize = I('function() { this.setValue(""); }')))
                             ),
-                            column(width = 2,  style="margin-top: -22px; font-size:14px",
-                                   selectizeInput("indMeth", 
-                                                  "Select a statistics scale",
-                                                  choices = list("count" , "frequency"),
-                                                  options = list(onInitialize = I('function() { this.setValue(""); }')))
-                            )
-                   ),
+                          column(width = 2, style="margin-top: -22px; font-size:14px",
+                                 selectizeInput("indMeth",
+                                                "Select a scale for fractions",
+                                                choices = list("count", "frequency"),
+                                                options = list(onInitialize = I('function() { this.setValue(""); }')))
+                          ),
                     uiOutput("downPlotIndCountIntervals"),
                     plotOutput("IndCountIntervals"),
                     busyIndicator(wait = 500)
