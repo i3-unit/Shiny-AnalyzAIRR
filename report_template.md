@@ -89,7 +89,7 @@ p.caption {
 <p style="color: white;">
 <div class="form-group shiny-input-container">
 <label class="control-label" id="title-label" for="title">Enter title</label>
-<input id="title" type="text" class="form-control" value="Analysis report"/>
+<input id="title" type="text" class="shiny-input-text form-control" value="Analysis report"/>
 </div>
 </p>
 </body><!--/html_preserve-->
@@ -99,81 +99,12 @@ p.caption {
 <p style="color: white;">
 <div class="form-group shiny-input-container">
 <label class="control-label" id="authors-label" for="authors">Enter authors</label>
-<input id="authors" type="text" class="form-control" value=""/>
+<input id="authors" type="text" class="shiny-input-text form-control" value=""/>
 </div>
 </p>
 </body><!--/html_preserve-->
 
 
-# Data manipulation
-
-
-## Filtering
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Drop a sample**
-
-<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Github/generate-AnalyzAIRR/extdata/MiAIRR </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiAIRR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 113498 ntClone were filtered using filterCount: n= 1 and group= </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> sample tripod-30-815 was excluded from the RepSeqExperiment. </td>
-  </tr>
-</tbody>
-</table>
-
-
-**Extract shared sequences**
-
-<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;color: #022f5a !important;font-size: 12px;"> history </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> data directory=/Users/vanessamhanna/Github/generate-AnalyzAIRR/extdata/MiAIRR </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> readAIRRSet; cores=2; fileFormat=MiAIRR; chain=TRA; ambiguous FALSE; unprod FALSE; filter.singletons TRUE; aa threshold=8; raretab FALSE </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 113498 ntClone were filtered using filterCount: n= 1 and group= </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> sample tripod-30-815 was excluded from the RepSeqExperiment. </td>
-  </tr>
-</tbody>
-</table>
 
 
 
@@ -208,6 +139,35 @@ p.caption {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Exploratory statistics
 
 
 
@@ -246,7 +206,7 @@ p.caption {
 <!-- ``` -->
 
 
-
+## Diversity estimation 
 
 
 
@@ -290,11 +250,21 @@ p.caption {
 <!-- ``` -->
 
 
+### Renyi index
 
+<div class="figure" style="text-align: center">
+<img src="figure/renyi ind-1.png" alt="plot of chunk renyi ind"  />
+<p class="caption">plot of chunk renyi ind</p>
+</div>
 
-
-
-
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="renyiindText-label" for="renyiindText">Enter text</label>
+<input id="renyiindText" type="text" class="shiny-input-text form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 <!-- ```{r renyi ind tab,  echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, fig.width=17, fig.height=6, fig.align='center'} -->
@@ -311,10 +281,24 @@ p.caption {
 <!-- ``` -->
 
 
+## Clonal distribution
 
 
+### Per count interval
 
+<div class="figure" style="text-align: center">
+<img src="figure/count ind exp-1.png" alt="plot of chunk count ind exp"  />
+<p class="caption">plot of chunk count ind exp</p>
+</div>
 
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="countindexpText-label" for="countindexpText">Enter text</label>
+<input id="countindexpText" type="text" class="shiny-input-text form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 
@@ -362,8 +346,10 @@ p.caption {
 
 
 
+# Multi-sample analysis
 
 
+## Comparison of basic statistics
 
 
 
@@ -380,24 +366,38 @@ p.caption {
 
 
 
+### Renyi index
 
+<div class="figure" style="text-align: center">
+<img src="figure/renyi-1.png" alt="plot of chunk renyi"  />
+<p class="caption">plot of chunk renyi</p>
+</div>
 
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="renyiText-label" for="renyiText">Enter text</label>
+<input id="renyiText" type="text" class="shiny-input-text form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Count intervals
+
+<div class="figure" style="text-align: center">
+<img src="figure/countInt-1.png" alt="plot of chunk countInt"  />
+<p class="caption">plot of chunk countInt</p>
+</div>
+
+<!--html_preserve--><body style="color: white;">
+<p style="color: white;">
+<div class="form-group shiny-input-container">
+<label class="control-label" id="countIntText-label" for="countIntText">Enter text</label>
+<input id="countIntText" type="text" class="shiny-input-text form-control" value=""/>
+</div>
+</p>
+</body><!--/html_preserve-->
 
 
 

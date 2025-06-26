@@ -525,8 +525,9 @@ if(input$renyiLevel != "" && input$renyicolor != ""){cat("### Renyi index")}
 
 ```{r renyi ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(input$renyiLevel != "" && input$renyicolor !=""){
-   plotRenyiIndex(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor, 
+   plotGenDiversity(x=dataFilt(), level = input$renyiLevel, colorBy = input$renyicolor,                Hill=input$multidoHill,
                   facetBy=input$renyifacet,  grouped = FALSE, label_colors = NULL)
+
 }
       
 ```
@@ -567,7 +568,11 @@ if(input$countIntLevel != "" && input$countIntGroupMeth != ""){cat("### Per coun
 ```{r count ind exp, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(input$countIntLevel != "" && input$countIntGroupMeth != ""){
     plotIntervals(x=dataFilt(), level = input$countIntLevel, colorBy = NULL,
-                  facetBy = input$countIntfacet, fractions=input$countIntGroupMeth, grouped = F, label_colors = NULL)
+                  facetBy = input$countIntfacet,
+                   calculation_type = input$countIntCalType,
+                  interval_scale=input$countIntGroupMeth, grouped = F, label_colors = NULL)
+    
+
 }
       
 ```
@@ -797,7 +802,7 @@ if(!is.null(input$multrenLevel) && !is.null(input$multrenGroup)){
    #  } else {
    #    shape <- input$multrenshape
    #  }
-    plotRenyiIndex(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, facetBy=input$multrenfacet, grouped = TRUE, label_colors = NULL)
+    plotGenDiversity(x = dataFilt(), level = input$multrenLevel, colorBy = input$multrenGroup, facetBy=input$multrenfacet, Hill=input$multidoHill, grouped = TRUE, label_colors = NULL)
 }
     
 ```
@@ -817,7 +822,13 @@ if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) &&
 
 ```{r countInt, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$countIntervalsLevel) && !is.null(input$countIntervalsGroup) && !is.null(input$countIntervalsscale)){
-    plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, fractions=input$countIntervalsscale, colorBy = input$countIntervalsGroup, grouped=TRUE, facetBy=input$countIntervalsFacet, show_stats=input$countIntervalsshowstats, label_colors = NULL)
+    plotIntervals(x = dataFilt(), level = input$countIntervalsLevel, 
+                  interval_scale=input$countIntervalsscale,
+                  colorBy = input$countIntervalsGroup, grouped=TRUE, 
+                  facetBy=input$countIntervalsFacet, 
+                  calculation_type = input$countIntCalType,
+                  show_stats=input$countIntervalsshowstats, label_colors = NULL)
+
 }
        
 ```

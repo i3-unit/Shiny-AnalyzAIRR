@@ -611,16 +611,17 @@ if(!is.null(params$divIndex) && params$divLevel != "" && params$divcolor != ""){
 
 
 ```{r show Renyi index title, results='asis', echo=FALSE}
-if(params$renyiLevel != "" && params$renyicolor != ""){cat("### Renyi index")}
+if(params$renyiLevel != "" && params$renyicolor != ""){cat("### Generalized diversity")}
 ```
 
 ```{r renyi ind, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(params$renyiLevel != "" && params$renyicolor != ""){
    plotGenDiversity(x=params$dataFiltered, level = params$renyiLevel,
                   colorBy = params$renyicolor, facetBy=params$renyifacet, 
+                  Hill=params$multidoHill,
                   grouped = FALSE, label_colors = NULL)
 }
-      
+    
 ```
 
 ```{r show renyi ind entry, echo = FALSE, results='asis'}
@@ -852,14 +853,15 @@ if(!is.null(params$diverLevel) && !is.null(params$diverGroup) && !is.null(params
 
 
 ```{r show Renyi index multiple title, results='asis', echo=FALSE}
-if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){cat("### Renyi index")}
+if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){cat("### Generalized diversity")}
 ```
 
 ```{r renyi, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$multrenLevel) && !is.null(params$multrenGroup)){
    
     plotGenDiversity(x = params$dataFiltered, level = params$multrenLevel, 
-                    colorBy = params$multrenGroup,  grouped = TRUE,  Hill=params$multidoHill,
+                    colorBy = params$multrenGroup,  grouped = TRUE,  alpha = 
+                      Hill=params$multidoHill,
                     facetBy=params$multrenfacet, label_colors = NULL)
 }
     
