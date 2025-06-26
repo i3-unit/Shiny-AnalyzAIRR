@@ -26,7 +26,7 @@ requiredPkgs <- c("devtools", "shiny", "shinydashboard",  "shinysky", "DT", "Rcp
 githubPkgs <- "AnalyzAIRR"
 
 if (is.na(match("AnalyzAIRR", instPkgs))) {
-    devtools::install_github("https://github.com/vanessajmh/AnalyzAIRR")
+    devtools::install_github("https://github.com/i3-unit/AnalyzAIRR")
 }
 
 # #install shinythemes
