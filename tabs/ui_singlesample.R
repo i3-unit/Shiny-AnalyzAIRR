@@ -144,4 +144,5 @@ singleSampleTab <- tabItem(tabName = "singleSampleTab",
 
         ) # end tabBox 
       ) # end fluidRow
-    ) # end tabItem
+    )
+    )# end tabItem
