@@ -53,6 +53,6 @@ A **RepSeqExperiment** object generated using the **AnalyzAIRR** R package and s
 
 **2. Upload supported input formats**
 
-More details on how to prepare the input data can be found [here](i3-unit.github.io/AnalyzAIRR/)
+More details on how to prepare the input data can be found [here](https://i3-unit.github.io/AnalyzAIRR/)
 
 
