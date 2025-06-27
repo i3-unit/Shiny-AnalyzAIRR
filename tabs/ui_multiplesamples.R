@@ -93,13 +93,21 @@ CompBasicTab<-
                                        uiOutput("downPlotDiversity"),
                                        plotOutput("Diversity"),
                                        busyIndicator(wait = 500)),
-                              tabPanel("Renyi diversity",
+                              tabPanel("Generalized diversity",
                                        fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
                                                     circleButton(inputId = "RenHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
                                                                  style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
                                                 tags$head(tags$style(".modal-dialog{ width:1200px}")),
+                                                column(width = 2, style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput(
+                                                         "multidoHill",
+                                                         "Hill Diversity",
+                                                         choices = list("TRUE", 'FALSE'),
+                                                         selected = "FALSE",
+                                                         options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ),
                                                 column(width = 2, style="margin-top: -22px; font-size:14px",
                                                        selectizeInput("multrenLevel",
                                                                       "Select a level",
@@ -111,7 +119,8 @@ CompBasicTab<-
                                                 ), 
                                                 column(width = 4, style="margin-top: -22px; font-size:14px",
                                                        uiOutput("multrenfacet")
-                                                ),
+                                                )
+
                                                 # column(width = 2, 
                                                 #        style = "margin-top: 25px;",
                                                 #        tags$head(
@@ -148,6 +157,12 @@ CompBasicTab<-
                                                        selectizeInput("countIntervalsscale",
                                                                       "Select a scale for fractions",
                                                                       choices = list("count", "frequency"),
+                                                                      options = list(onInitialize = I('function() { this.setValue(""); }')))
+                                                ),
+                                                column(width = 2,  style="margin-top: -22px; font-size:14px",
+                                                       selectizeInput("countIntCalType", 
+                                                                      "Select a calculation type",
+                                                                      choices = list("distribution", "cumulative frequency"),
                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                 ),
                                                 column(width = 2,style="margin-top: -22px; font-size:14px",
@@ -196,7 +211,7 @@ CompBasicTab<-
                                                 column(width = 2, style="margin-top: -22px; font-size:14px",
                                                        selectizeInput("multRankScale",
                                                                       "Select a scale",
-                                                                      choices = list("count", "frequency"),
+                                                                      choices = list("count", "frequency", "log"),
                                                                       options = list(onInitialize = I('function() { this.setValue(""); }')))
                                                 ), 
                                                 column(width = 2, style="margin-top: -22px; font-size:14px",
@@ -332,7 +347,7 @@ SimTab<-
                                     column(width = 2, style="margin-top: -22px; font-size:14px",
                                            selectizeInput("scatterScale",
                                                           "Select a scale",
-                                                          choices = list("frequency", "count"),
+                                                          choices = list("frequency", "count", "log"),
                                                           options = list(onInitialize = I('function() { this.setValue(""); }'))
                                            )
                                     ),
@@ -455,6 +470,9 @@ SimTab<-
                                        column(width = 3, style="margin-top: -22px; font-size:14px",
                                               uiOutput("multMDSGroup")
                                        ),
+                                       column(width = 3, style="margin-top: -22px; font-size:14px",
+                                              uiOutput("multMDSShape")
+                                       ),
                                        column(width = 2, 
                                               style = "margin-top: 2px;",
                                               tags$head(
@@ -561,43 +579,43 @@ DiffTab<-
 
 
 
-PertTab<- 
-    tabItem(tabName = "showPertTab",
-            fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
-                         circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
-                                      style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
-                                                                      border-radius: 25px;  font-size: 15px; height: 25px; color:white;
-                                                                      line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
-                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                    column(width = 2,style="margin-top: -22px; font-size:14px",
-                                           uiOutput("PertGroupUI")
-                                    ),
-                                    column(width = 2, style="margin-top: -22px; font-size:14px",
-                                           uiOutput("CtrlGroupUI")
-                                    ),
-                                    column(width = 2, style="margin-top: -22px; font-size:14px",
-                                           uiOutput("PertDistUI")
-                                    ),
-                                    column(width = 2, style="margin-top: -22px; font-size:14px",
-                                           uiOutput("pertOrder")
-                                    ),
-                                    column(width = 2,  style="margin-top: -22px; font-size:14px",
-                                           style = "margin-top: 2px;",
-                                           tags$head(
-                                               tags$style(HTML('#doHm{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
-                                           ),
-                                           actionButton("doHm", "Run")
-                                    )
-                                    ),
-                                uiOutput("downPlotPert"),
-                                InteractiveComplexHeatmapOutput("ht", width1 = 800, width2 = 600, width3 = 0, title3 = " ", output_ui = NULL, height1=600, height2 = 400),
-                                busyIndicator(wait = 500),
-                                htmlOutput("NB_pert"),
-                                h4("Perturbation values"),
-            # div(style="position: absolute; top: 0; right: 0;",
-            #     circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
-            #                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
-                                downloadButton("downloadPertTab", "Export table", style="background-color:white; border-color: #022F5A;"),
-                                dataTableOutput("PertTab"),
-                                busyIndicator(wait = 500)
-    )
+# PertTab<- 
+#     tabItem(tabName = "showPertTab",
+#             fluidRow(div(style="display:block;margin-left: 97%;padding-bottom: 0px;",
+#                          circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), #size="sm", 
+#                                       style="background-color: #337ab7; border-color: #337ab7; margin-top: -10px;
+#                                                                       border-radius: 25px;  font-size: 15px; height: 25px; color:white;
+#                                                                       line-height: 50%; padding: 2px 0; text-align: center; width: 25px;")),
+#                      tags$head(tags$style(".modal-dialog{ width:1200px}")),
+#                                     column(width = 2,style="margin-top: -22px; font-size:14px",
+#                                            uiOutput("PertGroupUI")
+#                                     ),
+#                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+#                                            uiOutput("CtrlGroupUI")
+#                                     ),
+#                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+#                                            uiOutput("PertDistUI")
+#                                     ),
+#                                     column(width = 2, style="margin-top: -22px; font-size:14px",
+#                                            uiOutput("pertOrder")
+#                                     ),
+#                                     column(width = 2,  style="margin-top: -22px; font-size:14px",
+#                                            style = "margin-top: 2px;",
+#                                            tags$head(
+#                                                tags$style(HTML('#doHm{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
+#                                            ),
+#                                            actionButton("doHm", "Run")
+#                                     )
+#                                     ),
+#                                 uiOutput("downPlotPert"),
+#                                 InteractiveComplexHeatmapOutput("ht", width1 = 800, width2 = 600, width3 = 0, title3 = " ", output_ui = NULL, height1=600, height2 = 400),
+#                                 busyIndicator(wait = 500),
+#                                 htmlOutput("NB_pert"),
+#                                 h4("Perturbation values"),
+#             # div(style="position: absolute; top: 0; right: 0;",
+#             #     circleButton(inputId = "perttabHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
+#             #                     tags$head(tags$style(".modal-dialog{ width:1200px}")),
+#                                 downloadButton("downloadPertTab", "Export table", style="background-color:white; border-color: #022F5A;"),
+#                                 dataTableOutput("PertTab"),
+#                                 busyIndicator(wait = 500)
+#     )

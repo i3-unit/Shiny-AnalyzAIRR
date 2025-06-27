@@ -2,10 +2,10 @@
 
 # Shiny-AnalyzAIRR
 
-**Shiny-AnalyzAIRR** is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/vanessajmh/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
+**Shiny-AnalyzAIRR** is a Shiny web application developed for the [AnalyzAIRR package](https://github.com/i3-unit/AnalyzAIRR), making it user-friendly for biologists with little or no background in bioinformatics.
 
 **Shiny-AnalyzAIRR** can be download from the Github repository and run locally on any device.
-Alternatively, it was deployed on the Web and can thus be directly used at this [link](https://i3lab.shinyapps.io/shiny-analyzairr/).
+Alternatively, it was deployed on the Web and can be directly used at this [link](http://i3-analyzairr.fr/).
 
 
 # Package installation
@@ -14,7 +14,7 @@ The latest release of **AnalyzAIRR** can be installed from Github using devtools
 
 ```
 # AnalyzAIRR installation
-devtools::install_github("vanessajmh/AnalyzAIRR")
+devtools::install_github("i3-unit/AnalyzAIRR")
 
 ```
 
@@ -53,6 +53,6 @@ A **RepSeqExperiment** object generated using the **AnalyzAIRR** R package and s
 
 **2. Upload supported input formats**
 
-More details on how to prepare the input data can be found [here](https://vanessajmh.github.io/AnalyzAIRR.github.io/)
+More details on how to prepare the input data can be found [here](https://i3-unit.github.io/AnalyzAIRR/)
 
 

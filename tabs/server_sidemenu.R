@@ -3,23 +3,6 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------#  
 # open if RepSeqDT() is loaded
 observeEvent(is.RepSeqExperiment(RepSeqDT()), {
-    # render menu show data
-    output$showDataTab <- renderMenu({
-    convertMenuItem(
-        menuItem(tabName = "showDataTab",
-            text = "Data manipulation",
-            icon = icon("table", verify_fa = FALSE),
-            startExpanded = TRUE,
-            menuSubItem("Data extraction",
-                tabName = "showInfoTab", icon = icon("angle-double-right", verify_fa = FALSE)),
-            menuSubItem("Filtering",
-                tabName = "showFiltTab", icon = icon("angle-double-right", verify_fa = FALSE)),
-            menuSubItem("Normalization",
-                tabName = "showNormTab", icon = icon("angle-double-right", verify_fa = FALSE))
-        ),
-        tabName = "showDataTab"
-    )
-    })
     # render statistic menu       
     output$statisticTab <- renderMenu({
       convertMenuItem(
@@ -49,6 +32,23 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                 #     inline = T)
             ), "singleSampleTab")
     })
+    # render menu manipulation
+    output$showDataTab <- renderMenu({
+      convertMenuItem(
+        menuItem(tabName = "showDataTab",
+                 text = "Data manipulation",
+                 icon = icon("table", verify_fa = FALSE),
+                 startExpanded = TRUE,
+                 menuSubItem("Data extraction",
+                             tabName = "showInfoTab", icon = icon("angle-double-right", verify_fa = FALSE)),
+                 menuSubItem("Filtering",
+                             tabName = "showFiltTab", icon = icon("angle-double-right", verify_fa = FALSE)),
+                 menuSubItem("Normalization",
+                             tabName = "showNormTab", icon = icon("angle-double-right", verify_fa = FALSE))
+        ),
+        tabName = "showDataTab"
+      )
+    })
     # render multiple samples comparison menu
     output$multipleSampleTab <- renderMenu({
       if(input$putInfofile == "Yes" || !is.null(input$RDSfile)){
@@ -62,9 +62,8 @@ observeEvent(is.RepSeqExperiment(RepSeqDT()), {
                 menuSubItem("Similarity analysis",
                             tabName = "showSimTab", icon = icon("angle-double-right", verify_fa = FALSE)),
                 menuSubItem("Differential analysis",
-                            tabName = "showDiffTab", icon = icon("angle-double-right", verify_fa = FALSE)),
-                menuSubItem("Spectratyping comparison",
-                            tabName = "showPertTab", icon = icon("angle-double-right", verify_fa = FALSE))
+                            tabName = "showDiffTab", icon = icon("angle-double-right", verify_fa = FALSE))                #menuSubItem("Spectratyping comparison",
+                           # tabName = "showPertTab", icon = icon("angle-double-right", verify_fa = FALSE))
             ), tabName = "multipleSampleTab"
         )} else shinyjs::hide(selector = "a[data-value='multipleSampleTab']")
     })

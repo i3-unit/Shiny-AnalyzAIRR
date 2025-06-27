@@ -29,14 +29,15 @@ output$downloadMetadata <- downloadHandler(
 ) 
 # get information of slot metadata
 output$otherDataList <- renderUI({
-    selectList("otherDataList", dataFilt())
+  selectList("otherDataList", dataFilt())
 })
 
 output$metadataTable <- renderDataTable(
-    if(!(is.null(input$otherDataList)))
-        AnalyzAIRR::oData(dataFilt())[[input$otherDataList]], 
-        options = list(scrollX=TRUE )
+  if(!(is.null(input$otherDataList)))
+    AnalyzAIRR::oData(dataFilt())[[input$otherDataList]], 
+  options = list(scrollX=TRUE )
 )
+
 
 output$downloadOtherdata <- downloadHandler(
     paste0("RepSeqOtherdata", eval(input$otherDataList), ".csv"),
@@ -440,7 +441,7 @@ downSampling <- reactive({
 })
 
 output$downsampleddata <- renderDataTable({
-    validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
+    validate(need(!(input$doDown==FALSE || input$doDown == ""), ""))
     validate(need(!(is.null(input$downSampleSize) || input$downSampleSize == ""), "select a sample size"))
     validate(need(!(is.null(input$downReplace) || input$downReplace == ""), "select if replacement"))
     return(datatable(AnalyzAIRR::History(downSampling()),
@@ -472,7 +473,7 @@ observeEvent(input$downHelp,
 # new libsize after downsampling # library sizes
 observeEvent(c(input$doDown, input$DownLevel), {
     output$histdownlibsizes <- renderPlot({
-        validate(need(!(input$doDown==FALSE || input$doDown == ""), "Perform a down-sampling normalization ?"))
+        validate(need(!(input$doDown==FALSE || input$doDown == ""), ""))
         validate(need(!(is.null(input$DownLevel) || input$DownLevel == ""), "select a level"))
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$DownLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$DownLevel)) +
@@ -530,7 +531,7 @@ output$Plothistdownlibsizes <- downloadHandler(
 )
 
 shannonNormed <- reactive({
-    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
+    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), ""))
 
     if(input$doNorm){
         shannonsampleddata <- ShannonNorm(x = RepSeqDT())
@@ -541,7 +542,7 @@ shannonNormed <- reactive({
 
 
 output$shannonsampleddata <- renderDataTable({
-    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
+    validate(need(!(input$doNorm == FALSE || input$doNorm == ""), ""))
     return(datatable(AnalyzAIRR::History(shannonNormed()),
                      options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
 })
@@ -570,7 +571,7 @@ observeEvent(input$shannonHelp,
 
 observeEvent(c(input$doNorm, input$NormLevel), {
     output$histshannonlibsizes <- renderPlot({
-        validate(need(!(input$doNorm == FALSE || input$doNorm == ""), "Perform a shannon normalization ?"))
+        validate(need(!(input$doNorm == FALSE || input$doNorm == ""), " "))
         validate(need(!(is.null(input$NormLevel) || input$NormLevel == ""), "select a level"))
         cts1 <- AnalyzAIRR::assay(RepSeqDT())
         p1 <- histSums(cts1[, sum(count), by=eval(input$NormLevel)][,V1], xlab="count", ylab=paste0("Number of ", input$NormLevel)) +
