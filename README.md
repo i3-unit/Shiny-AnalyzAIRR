@@ -14,7 +14,7 @@ The latest release of **AnalyzAIRR** can be installed from Github using devtools
 
 ```
 # AnalyzAIRR installation
-devtools::install_github("vanessajmh/AnalyzAIRR")
+devtools::install_github("i3-unit/AnalyzAIRR")
 
 ```
 
