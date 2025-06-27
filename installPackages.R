@@ -20,7 +20,8 @@ if (is.na(match("BiocManager", instPkgs))) {
 # required packages
 requiredPkgs <- c("devtools", "shiny", "shinydashboard",  "shinysky", "DT", "Rcpp", 
                   "shinyjs",  "shinyWidgets", "rmarkdown","markdown", "BiocStyle",
-                  "InteractiveComplexHeatmap","plotly","gbRd")
+                  "InteractiveComplexHeatmap","plotly","gbRd", "reactable",
+                  "shinythemes")
 
 
 githubPkgs <- "AnalyzAIRR"
