@@ -601,7 +601,9 @@ output$MDS <- plotly::renderPlotly({
   validate(need(!(is.null(input$MDSMethod) || input$MDSMethod == ""), "Select a dissimilarity method"))
   validate(need(!(is.null(input$multMDSGroup) || input$multMDSGroup == ""), "Select one group"))
 
-  plotly::ggplotly(plotDissMDS(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, colorBy = input$multMDSGroup, shapeBy=input$multMDSShape, binary = FALSE, label_colors = NULL))  
+  plotly::ggplotly(plotDissMDS(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod, 
+                               colorBy = input$multMDSGroup, shapeBy=input$multMDSShape, binary = FALSE, 
+                               label_colors = NULL))  
 })   
 })
 

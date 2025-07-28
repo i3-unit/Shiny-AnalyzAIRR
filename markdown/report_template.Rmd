@@ -937,8 +937,8 @@ if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !
 
 ```{r disHM, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityLevel) && !is.null(input$dissimilarityIndex) && !is.null(input$dissimilarityClustering) && !is.null(input$multdissGroup) && input$doHm1 == 1){
-     plotDissimilarity(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, 
-                       label_colors = NULL, colorBy =input$multdissGroup ,  plot="Heatmap")
+     plotDissHeatmap(x = dataFilt(), level = input$dissimilarityLevel, method = input$dissimilarityIndex, binary = FALSE, clustering = input$dissimilarityClustering, 
+                       label_colors = NULL, annotation_groups =input$multdissGroup)
 }
     
 ```
@@ -960,7 +960,7 @@ if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod)
 
 ```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=17, fig.height=6, fig.align='center'}
 if(!is.null(input$MDSLevel) && !is.null(input$MDSMethod) && !is.null(input$multMDSGroup)){
-    plotDissimilarity(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod,  label_colors = NULL, colorBy = input$multMDSGroup, plot = "MDS")
+    plotDissMDS(x = dataFilt(), level = input$MDSLevel, method = input$MDSMethod,  label_colors = NULL, colorBy = input$multMDSGroup, shapeBy= input$multMDSShape)
 }
     
 ```
