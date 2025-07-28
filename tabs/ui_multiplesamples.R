@@ -513,7 +513,7 @@ DiffTab<-
                                                selectizeInput(
                                                    "diffLevel",
                                                    "Select a level",
-                                                   choices = list("V", "J", "VJ", "ntCDR3", "aaCDR3", "aaClone", "ntClone"),
+                                                   choices = list("V", "J", "VJ"),
                                                    options = list(onInitialize = I('function() { this.setValue(""); }'))
                                                )
                                         ),

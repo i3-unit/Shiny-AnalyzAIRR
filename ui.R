@@ -264,6 +264,13 @@ bodyTabs <-
                                        column(width = 2, style="margin-top: -22px; font-size:14px;",
                                                      uiOutput("dropSampleNames")
                                      ),
+                                     column(width = 2, 
+                                            style = "margin-top: 1px;",
+                                            tags$head(
+                                              tags$style(HTML('#doDrop{background-color:white; border-color: #022F5A; border-radius: 50px;}'))
+                                            ),
+                                            actionButton("doDrop", "Run")
+                                     ),
                                      # column(width = 10,
                                      #        div(style="display:block;margin-left: 97%;padding-bottom: 10px;",
                                      #            circleButton(inputId = "dropHelp", icon = icon("question", verify_fa = FALSE), size="sm", style="background-color:white; border-color: #022F5A;")),
@@ -520,7 +527,6 @@ bodyTabs <-
     CompBasicTab,
     SimTab,
     DiffTab,
-    # PertTab,
     basicstats,
     divstats,
     clonalstats,

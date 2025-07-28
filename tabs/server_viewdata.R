@@ -263,22 +263,27 @@ output$dropSampleNames <- renderUI({
     selectizeInput("dropSampleNames",
                    "Select sample",  
                    choices = choices,
-                   options = list(maxItems = 1, onInitialize = I('function() { this.setValue(""); }')),
-                   multiple = T)
+                   options = list( maxItems = 1, onInitialize = I('function() { this.setValue(""); }')),
+                   multiple = FALSE)
 })
 
-dataDropedSamples <- reactive({
-    validate(need(!(is.null(input$dropSampleNames) || input$dropSampleNames == ""), "select a sample"))
-    dropeddata <- dropSamples(x = RepSeqDT(), sampleNames = input$dropSampleNames)
 
-    return(dropeddata)
+dataDropedSamples <- eventReactive(input$doDrop, {
+  validate(need(!( input$dropSampleNames == ""), "select one sample"))
+  dropeddata <- dropSamples(x = RepSeqDT(), sampleNames = input$dropSampleNames)
+  return(dropeddata)
 })
 
-output$dropeddata <- renderDataTable({
-    validate(need(!(is.null(input$dropSampleNames) || input$dropSampleNames == ""), "select a sample"))
-    return(datatable(AnalyzAIRR::History(dataDropedSamples()), 
-                     options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
-})
+
+observeEvent(input$doDrop,
+            output$dropeddata <- renderDataTable({
+                validate(need(!( input$dropSampleNames == ""), "select a sample"))
+                return(datatable(AnalyzAIRR::History(dataDropedSamples()), 
+                                 options = list(scrollX=TRUE, dom = 'Bfrtip', pageLength = 10)))
+            })
+)
+
+
 
 output$downloaddataDropedSamples <- downloadHandler(
         "RepSeqData_dropedsamples.rds",
@@ -287,6 +292,7 @@ output$downloaddataDropedSamples <- downloadHandler(
         saveRDS(dataDropedSamples(), file)
     }, 
 ) 
+
 
 output$DropSamplesHelp <- renderText({
     createHelp(?dropSamples)
@@ -635,7 +641,7 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
                             input$doPublic, input$publicLevel, input$publicProp,
                             input$doPrivate, input$privateLevel, input$privateSingletons, 
                             input$doProductive, 
-                            input$dropSampleNames,
+                            input$doDrop==1, input$dropSampleNames,
                             input$doTopSeq, input$topSeqLevel, input$topSeqProp,
                             input$doNorm,
                             input$doDown, input$downReplace), {
@@ -657,7 +663,8 @@ dataFilt <- eventReactive(c(input$doFilterCount,input$filterCountLevel, input$fi
         return(dataPrivate())
     }else if(input$doProductive == 1){
         return(dataProductiveOrUnproductive())
-    } else if(!(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
+    } else if(input$doDrop==1 &&
+              !(is.null(input$dropSampleNames) || input$dropSampleNames == "")){
         return(dataDropedSamples())
     } else if(input$doTopSeq==1 &&
               !(is.null(input$topSeqLevel) || input$topSeqLevel == "") && 

@@ -1006,7 +1006,7 @@ if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod)
 
 ```{r MDS, echo=FALSE, warning=FALSE, message=FALSE, error=TRUE, results='hide',fig.keep='all', fig.width=12, fig.height=6}
 if(!is.null(params$MDSLevel) && !is.null(params$MDSMethod) && !is.null(params$multMDSGroup)){
-    plotDissMDS(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, label_colors = NULL, colorBy=params$multMDSGroup , shapeBy=params$multMDSShape, plot = "MDS")
+    plotDissMDS(x = params$dataFiltered, level = params$MDSLevel, method = params$MDSMethod, label_colors = NULL, colorBy=params$multMDSGroup , shapeBy=params$multMDSShape)
 }
     
 ```
